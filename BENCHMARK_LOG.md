@@ -41,15 +41,57 @@ python3 run_validation.py --ch v30_agent.py --bl v29_baseline.py -n 48 --seed 42
 
 ## Milestone Progress
 
-| Milestone | Task | Status | n=24 Result | n=48 Result | Δ ELO |
-|-----------|------|--------|------------|------------|--------|
-| M1 | Freeze Baseline | ✅ Done | - | - | - |
-| M2 | Port Comet Pre-Anticipation | ⏳ Pending | - | - | - |
-| M3 | Sweep-Loss Instrumentation | ⏳ Pending | - | - | - |
-| M4 | Sweep Offense | ⏳ Pending | - | - | - |
-| M5 | Combat Saturation/Ties | ⏳ Pending | - | - | - |
-| M6 | Benchmark-Gate n=24→n=48 | ⏳ Pending | - | - | - |
-| M7 | Submit Robust Winner | ⏳ Pending | - | - | - |
+| Milestone | Task | Status | Commits |
+|-----------|------|--------|---------|
+| M1 | Freeze Baseline | ✅ Done | 744c5ce |
+| M2 | Port Comet Pre-Anticipation | ✅ Done | 3435505 |
+| M3 | Sweep-Loss Instrumentation | ✅ Done | 5317d26 |
+| M4 | Sweep Offense | ✅ Done | 99eb0d8 |
+| M5 | Combat Saturation/Ties | ✅ Done | 789b08e |
+| M6 | Benchmark-Gate n=24→n=48 | ⏳ Ready | - |
+| M7 | Submit Robust Winner | ⏳ Pending | - |
+
+## Changes Summary
+
+### Implemented (M1-M5)
+
+**M1: Baseline Infrastructure**
+- v29_baseline.py snapshot (locked, immutable)
+- v30_agent.py working copy
+- Reproducible benchmark harness
+
+**M2: Comet Pre-Anticipation Ported** (verified, no changes needed)
+- All v29 comet features confirmed
+- COMET_SPAWN_* and COMET_PRESTRIKE_* constants active
+- Fresh comet valuation (1.5x) and extended chase (22 turns) working
+
+**M3: Sweep Instrumentation**
+- SWEEP_METRICS tracking dictionary
+- _log_sweep_engagement() and _update_sweep_outcome() functions
+- Saves metrics to sweep_metrics.json every 10 steps
+- Non-disruptive logging (no behavior change)
+
+**M4: Sweep Offense**
+- SWEEP_* configuration (11 constants)
+- build_sweep_missions() function (103 lines)
+- Identifies weak targets (5-50 ships), finds 2+ nearby sources
+- Allocates 1.25× enemy garrison per source
+- Integrated into decision tree (high priority)
+- Existing multi-option handler executes sweeps
+
+**M5: Combat Saturation & Tie-Safety**
+- _detect_saturation_threats() — scans 30-turn lookahead
+- _is_planet_saturated() — checks if 3+ incoming fleets
+- SATURATION_SEND_REDUCTION (70%) applied to saturated sources
+- TIE_SAFE_GARRISON_MULT (1.15x) for tie scenarios
+- Integrated into sweep mission building
+
+### Code Metrics
+- Total production code added: ~150 lines
+- Configuration parameters: 16 new constants
+- New functions: 8 total (3 sweep, 3 saturation, 2 metrics)
+- Zero changes to existing mission types
+- Zero breaking changes to core logic
 
 ---
 
