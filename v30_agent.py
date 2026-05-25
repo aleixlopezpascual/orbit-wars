@@ -2555,7 +2555,7 @@ def build_sweep_missions(world, policy, planned_commitments, modes):
     A sweep consists of 2+ planets simultaneously attacking the same target.
     This overwhelms the enemy garrison and increases win probability vs single attacks.
     """
-    if not SWEEP_ENABLED or world.is_early_rush or not world.enemy_planets:
+    if not SWEEP_ENABLED or world.is_early or not world.enemy_planets:
        return []
     
     missions = []
