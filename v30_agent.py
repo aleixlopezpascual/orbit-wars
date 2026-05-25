@@ -211,6 +211,23 @@ SNIPE_SCORE_MULT = 1.12
 SWARM_SCORE_MULT = 1.06
 CRASH_EXPLOIT_SCORE_MULT = 1.05
 
+# ============================================================
+# v30: Sweep Offense Configuration
+# ============================================================
+# Sweeps are coordinated multi-planet attacks on weak enemy targets.
+# Goal: overwhelm enemy garrison with simultaneous arrivals.
+
+SWEEP_ENABLED = True                    # Enable sweep missions
+SWEEP_MIN_TARGET_SHIPS = 5              # Target must have < this many ships
+SWEEP_MAX_TARGET_SHIPS = 50             # But not too many (prevents waste)
+SWEEP_MIN_SOURCES = 2                   # At least 2 planets must participate
+SWEEP_FLEET_SIZE_MULT = 1.25            # Send 1.25x enemy garrison per sweep
+SWEEP_MAX_SEND_PER_SOURCE = 40          # Max ships per source in a sweep
+SWEEP_TIMING_WINDOW = 2                 # Allow +/- 2 turns on arrival (relax simultaneity)
+SWEEP_VALUE_MULT = 1.3                  # Boost sweep value (reward coordination)
+SWEEP_MAX_DIST = 60.0                   # Max source-to-target distance
+SWEEP_SCORE_MULT = 1.15                 # Sweep score multiplier for priority
+
 FOLLOWUP_MIN_SHIPS = 12             # v22: was 8 — bigger followups
 LOW_VALUE_COMET_PRODUCTION = 1
 LATE_CAPTURE_BUFFER = 5
@@ -2519,6 +2536,112 @@ def build_crash_exploit_missions(world, policy, planned_commitments, modes):
     return missions
 
 
+def build_sweep_missions(world, policy, planned_commitments, modes):
+    """
+    Coordinate multi-planet attacks on weak enemy targets.
+    
+    A sweep consists of 2+ planets simultaneously attacking the same target.
+    This overwhelms the enemy garrison and increases win probability vs single attacks.
+    """
+    if not SWEEP_ENABLED or world.is_early_rush or not world.enemy_planets:
+       return []
+    
+    missions = []
+    targets_attempted = set()
+    
+    for target in world.enemy_planets:
+       if target.id in targets_attempted:
+           continue
+       if target.ships < SWEEP_MIN_TARGET_SHIPS or target.ships > SWEEP_MAX_TARGET_SHIPS:
+           continue
+        
+       # Find nearby sources that can participate in the sweep
+       sources = []
+       for src in world.my_planets:
+           d = dist(src.x, src.y, target.x, target.y)
+           if d > SWEEP_MAX_DIST:
+               continue
+           available = int(src.ships) - planned_commitments.get(src.id, 0)
+           if available < SWEEP_FLEET_SIZE_MULT * target.ships * 0.5:  # At least half needed
+               continue
+           sources.append((src, d, available))
+        
+       if len(sources) < SWEEP_MIN_SOURCES:
+           continue
+        
+       # Sort by distance (prefer closer sources for faster arrival)
+       sources.sort(key=lambda x: x[1])
+        
+       # Calculate ideal arrival time from closest source
+       closest_src = sources[0][0]
+       base_plan = world.best_probe_aim(closest_src.id, target.id, max(1, int(target.ships)))
+       if base_plan is None:
+           continue
+       base_angle, base_turns = base_plan
+        
+       # Build sweep options (one per source, coordinated timing)
+       sweep_options = []
+       for src, src_dist, available in sources[:4]:  # Max 4 sources per sweep (avoid overkill)
+           # Adjust timing for farther sources to align with closest
+           plan = world.best_probe_aim(src.id, target.id, max(1, int(target.ships)))
+           if plan is None:
+               continue
+           angle, turns = plan
+            
+           # Allow slight timing variation (within SWEEP_TIMING_WINDOW)
+           if abs(turns - base_turns) > SWEEP_TIMING_WINDOW + 5:
+               continue  # Too far off, skip this source
+            
+           ship_send = min(
+               available,
+               int(SWEEP_FLEET_SIZE_MULT * target.ships),
+               SWEEP_MAX_SEND_PER_SOURCE,
+           )
+           if ship_send < int(SWEEP_FLEET_SIZE_MULT * target.ships * 0.3):
+               continue  # Insufficient contribution
+            
+           need = max(1, int(target.ships * 0.8))  # Minimum to hurt target
+           score = 1.0 / (turns + 1.0)  # Fast arrival = higher score
+            
+           option = ShotOption(
+               score=score,
+               src_id=src.id,
+               target_id=target.id,
+               angle=angle,
+               turns=turns,
+               needed=need,
+               send_cap=ship_send,
+               mission="capture",
+               anchor_turn=None,
+           )
+           sweep_options.append(option)
+        
+       if len(sweep_options) >= SWEEP_MIN_SOURCES:
+           targets_attempted.add(target.id)
+            
+           # Calculate aggregate sweep score
+           total_ships = sum(opt.send_cap for opt in sweep_options)
+           avg_turns = sum(opt.turns for opt in sweep_options) / len(sweep_options)
+            
+           value = target_value(target, int(avg_turns), "capture", world, modes, policy)
+           value *= SWEEP_VALUE_MULT  # Boost value for coordinated attack
+            
+           sweep_score = (value / (total_ships + avg_turns * 2.0)) * SWEEP_SCORE_MULT
+            
+           missions.append(Mission(
+               kind="sweep",
+               score=sweep_score,
+               target_id=target.id,
+               turns=int(avg_turns),
+               options=sweep_options,
+           ))
+            
+           # Log sweep initiation (instrumentation)
+           _log_sweep_engagement(target.id, [opt.src_id for opt in sweep_options], total_ships, "sweep_mission")
+    
+    return missions
+
+
 def build_gang_up_missions(world, policy, planned_commitments, modes):
     """
     Attack enemy planets that will be weakened by inter-enemy combat.
@@ -2822,6 +2945,9 @@ def plan_moves(world, deadline=None):
 
     missions.extend(build_rescue_missions(world, policy, planned_commitments, modes))
     missions.extend(build_recapture_missions(world, policy, planned_commitments, modes))
+
+    # v30: Sweep missions — coordinated multi-planet attacks (high priority)
+    missions.extend(build_sweep_missions(world, policy, planned_commitments, modes))
 
     # Elimination missions — high priority in 4P
     if allow_heavy_phase():
