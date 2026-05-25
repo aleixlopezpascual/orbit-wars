@@ -2589,7 +2589,7 @@ def build_sweep_missions(world, policy, planned_commitments, modes):
        base_plan = world.best_probe_aim(closest_src.id, target.id, max(1, int(target.ships)))
        if base_plan is None:
            continue
-       base_angle, base_turns = base_plan
+       _, (base_angle, base_turns, _, _) = base_plan
         
        # Build sweep options (one per source, coordinated timing)
        sweep_options = []
@@ -2598,7 +2598,7 @@ def build_sweep_missions(world, policy, planned_commitments, modes):
            plan = world.best_probe_aim(src.id, target.id, max(1, int(target.ships)))
            if plan is None:
                continue
-           angle, turns = plan
+           _, (angle, turns, _, _) = plan
             
            # Allow slight timing variation (within SWEEP_TIMING_WINDOW)
            if abs(turns - base_turns) > SWEEP_TIMING_WINDOW + 5:
