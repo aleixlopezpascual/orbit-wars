@@ -1,14 +1,64 @@
 # v29: v28 + comet pre-anticipation (v29-A)
+# v30: v29 + sweep offense + instrumentation
 from collections import defaultdict
 MEMEX_ARCHIVE = defaultdict(list)
 MEMEX_SUMMARIES = {}
 MEMEX_MAX_RAW = 30
 
+import json
 import math
 import time
 from collections import defaultdict, namedtuple
 from dataclasses import dataclass, field
 from typing import Optional
+
+# ============================================================
+# v30: Sweep Metrics Instrumentation
+# ============================================================
+SWEEP_METRICS = {
+    "game_step": 0,
+    "sweep_initiated": 0,           # count of sweep engagements started
+    "sweep_completed": 0,           # count of sweeps that reached target
+    "sweep_won": 0,                 # wins (enemy eliminated or defeated)
+    "sweep_lost": 0,                # losses (our fleets destroyed)
+    "sweep_tied": 0,                # ties (simultaneous elimination)
+    "sweep_total_sent": 0,          # total ships sent in sweeps
+    "sweep_total_lost": 0,          # total ships lost in sweeps
+    "sweep_target_captures": 0,     # planets successfully captured via sweep
+    "sweep_engagements": [],        # detailed per-engagement logs
+}
+
+def _log_sweep_engagement(target_id, src_ids, ship_count, engagement_type="initiated"):
+    """Log a sweep engagement event."""
+    SWEEP_METRICS["sweep_initiated"] += 1
+    SWEEP_METRICS["sweep_total_sent"] += ship_count
+    SWEEP_METRICS["sweep_engagements"].append({
+        "step": SWEEP_METRICS["game_step"],
+        "type": engagement_type,
+        "target": target_id,
+        "sources": src_ids,
+        "ships": ship_count,
+    })
+
+def _update_sweep_outcome(target_id, outcome, ships_lost=0):
+    """Update sweep outcome after combat (win/loss/tie)."""
+    if outcome == "won":
+        SWEEP_METRICS["sweep_won"] += 1
+        SWEEP_METRICS["sweep_target_captures"] += 1
+    elif outcome == "lost":
+        SWEEP_METRICS["sweep_lost"] += 1
+    elif outcome == "tie":
+        SWEEP_METRICS["sweep_tied"] += 1
+    SWEEP_METRICS["sweep_total_lost"] += ships_lost
+    SWEEP_METRICS["sweep_completed"] += 1
+
+def _save_sweep_metrics():
+    """Save sweep metrics to JSON file."""
+    try:
+        with open("sweep_metrics.json", "w") as f:
+            json.dump(SWEEP_METRICS, f, indent=2)
+    except Exception:
+        pass  # Silently fail; metrics are diagnostics only
 
 # ============================================================
 # Shared Configuration
@@ -3704,13 +3754,23 @@ def agent(obs, config=None):
     global _agent_step
     _agent_step += 1
     start_time = time.perf_counter()
+    
+    # v30: Update sweep metrics game step
+    SWEEP_METRICS["game_step"] = _agent_step
+    
     world = build_world(obs, inferred_step=_agent_step - 1)
     if not world.my_planets:
         return []
     act_timeout = _read(config, "actTimeout", 1.0) if config is not None else 1.0
     soft_budget = min(SOFT_ACT_DEADLINE, max(0.55, act_timeout * 0.82))
     deadline = start_time + soft_budget
-    return plan_moves(world, deadline=deadline)
+    moves = plan_moves(world, deadline=deadline)
+    
+    # v30: Save sweep metrics after planning (non-blocking)
+    if _agent_step % 10 == 0:  # Save every 10 steps to reduce overhead
+        _save_sweep_metrics()
+    
+    return moves
 
 
 __all__ = ["agent", "build_world"]
