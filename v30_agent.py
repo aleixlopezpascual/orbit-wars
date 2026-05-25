@@ -228,6 +228,18 @@ SWEEP_VALUE_MULT = 1.3                  # Boost sweep value (reward coordination
 SWEEP_MAX_DIST = 60.0                   # Max source-to-target distance
 SWEEP_SCORE_MULT = 1.15                 # Sweep score multiplier for priority
 
+# ============================================================
+# v30: Combat Saturation & Tie-Annihilation
+# ============================================================
+# Detect when a planet is under simultaneous attack (saturation).
+# Prevent over-commitment that leaves us vulnerable to counterattacks.
+
+SATURATION_LOOKAHEAD_TURNS = 30         # How many turns ahead to check incoming threats
+SATURATION_ATTACK_COUNT_THRESHOLD = 3   # Trigger saturation if 3+ enemy fleets incoming
+SATURATION_SEND_REDUCTION = 0.7         # Reduce sweep sends to 70% when saturated
+TIE_SAFE_GARRISON_MULT = 1.15          # Keep 1.15x enemy force to survive ties
+TIE_SAFETY_ENABLED = True               # Enable tie-safe garrison checks
+
 FOLLOWUP_MIN_SHIPS = 12             # v22: was 8 — bigger followups
 LOW_VALUE_COMET_PRODUCTION = 1
 LATE_CAPTURE_BUFFER = 5
@@ -2615,19 +2627,42 @@ def build_sweep_missions(world, policy, planned_commitments, modes):
                anchor_turn=None,
            )
            sweep_options.append(option)
-        
+         
        if len(sweep_options) >= SWEEP_MIN_SOURCES:
            targets_attempted.add(target.id)
             
+           # v30-M5: Check saturation on source planets and reduce sends if needed
+           saturated_sources = []
+           for opt in sweep_options:
+               if _is_planet_saturated(opt.src_id, world, planned_commitments):
+                   saturated_sources.append(opt.src_id)
+            
+           # Apply saturation reduction if any source is under attack
+           if saturated_sources:
+               sweep_options = [
+                   ShotOption(
+                       score=opt.score,
+                       src_id=opt.src_id,
+                       target_id=opt.target_id,
+                       angle=opt.angle,
+                       turns=opt.turns,
+                       needed=opt.needed,
+                       send_cap=int(opt.send_cap * SATURATION_SEND_REDUCTION) if opt.src_id in saturated_sources else opt.send_cap,
+                       mission=opt.mission,
+                       anchor_turn=opt.anchor_turn,
+                   )
+                   for opt in sweep_options
+               ]
+             
            # Calculate aggregate sweep score
            total_ships = sum(opt.send_cap for opt in sweep_options)
            avg_turns = sum(opt.turns for opt in sweep_options) / len(sweep_options)
-            
+             
            value = target_value(target, int(avg_turns), "capture", world, modes, policy)
            value *= SWEEP_VALUE_MULT  # Boost value for coordinated attack
             
            sweep_score = (value / (total_ships + avg_turns * 2.0)) * SWEEP_SCORE_MULT
-            
+             
            missions.append(Mission(
                kind="sweep",
                score=sweep_score,
@@ -2635,11 +2670,57 @@ def build_sweep_missions(world, policy, planned_commitments, modes):
                turns=int(avg_turns),
                options=sweep_options,
            ))
-            
+             
            # Log sweep initiation (instrumentation)
            _log_sweep_engagement(target.id, [opt.src_id for opt in sweep_options], total_ships, "sweep_mission")
-    
+     
     return missions
+
+
+def _detect_saturation_threats(planet_id, world, planned_commitments, lookahead_turns):
+    """
+    Count enemy fleets incoming to a planet within lookahead window.
+    Returns number of distinct enemy attack arrivals.
+    """
+    threat_turns = set()
+    
+    # Check incoming enemy fleets
+    for fleet in world.enemy_fleets:
+       if fleet.target_id != planet_id:
+           continue
+       arrival = fleet.arrival_turn
+       if 0 < arrival <= lookahead_turns:
+           threat_turns.add(arrival)
+    
+    # Check planned commitments (our own incoming attacks)
+    if planet_id in planned_commitments:
+       for turn, owner, ships in planned_commitments[planet_id]:
+           if owner != world.player and 0 < turn <= lookahead_turns:
+               threat_turns.add(turn)
+    
+    return len(threat_turns)
+
+
+def _is_planet_saturated(planet_id, world, planned_commitments):
+    """
+    Check if planet is under heavy simultaneous attack.
+    Saturated planets should reduce outbound sweep allocation (conserve garrison).
+    """
+    threat_count = _detect_saturation_threats(
+       planet_id, world, planned_commitments, SATURATION_LOOKAHEAD_TURNS
+    )
+    return threat_count >= SATURATION_ATTACK_COUNT_THRESHOLD
+
+
+def _get_tie_safe_garrison(planet, enemy_incoming_ships):
+    """
+    Calculate minimum garrison to survive tie scenarios.
+    In a tie (simultaneous arrival + combat), both fleets are destroyed.
+    Keep extra garrison to survive the tie.
+    """
+    if not TIE_SAFETY_ENABLED:
+       return 0
+    return int(enemy_incoming_ships * TIE_SAFE_GARRISON_MULT)
 
 
 def build_gang_up_missions(world, policy, planned_commitments, modes):
