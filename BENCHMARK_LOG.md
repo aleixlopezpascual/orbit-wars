@@ -29,6 +29,9 @@ python3 run_validation.py --ch v30_agent.py --bl v29_baseline.py -n 48 --seed 42
 ### v31 Ablation Benchmark Commands
 
 ```bash
+# One-command helper:
+bash scripts/run_control_gate.sh 24
+
 # Step 0: control sanity (must be near 50/50 before any ablation run)
 python3 run_validation.py --ch v31_control_v29.py --bl v29_baseline.py -n 24 --seed 42 --label control_v29_n24
 python3 run_validation.py --ch v31_control_v29.py --bl v29_baseline.py -n 48 --seed 42 --label control_v29_n48
