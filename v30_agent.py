@@ -237,6 +237,7 @@ SWEEP_SCORE_MULT = 1.15                 # Sweep score multiplier for priority
 SATURATION_LOOKAHEAD_TURNS = 30         # How many turns ahead to check incoming threats
 SATURATION_ATTACK_COUNT_THRESHOLD = 3   # Trigger saturation if 3+ enemy fleets incoming
 SATURATION_SEND_REDUCTION = 0.7         # Reduce sweep sends to 70% when saturated
+SATURATION_ENABLED = True               # Master toggle for saturation checks
 TIE_SAFE_GARRISON_MULT = 1.15          # Keep 1.15x enemy force to survive ties
 TIE_SAFETY_ENABLED = True               # Enable tie-safe garrison checks
 
@@ -2699,6 +2700,8 @@ def _is_planet_saturated(planet_id, world, planned_commitments):
     Check if planet is under heavy simultaneous attack.
     Saturated planets should reduce outbound sweep allocation (conserve garrison).
     """
+    if not SATURATION_ENABLED:
+       return False
     threat_count = _detect_saturation_threats(
        planet_id, world, planned_commitments, SATURATION_LOOKAHEAD_TURNS
     )
@@ -3986,4 +3989,3 @@ kaggle competitions submit orbit-wars -f submission.py -m "Tamrazov×Ykhnkf hybr
 ```
 
 """
-

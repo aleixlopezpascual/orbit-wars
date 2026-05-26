@@ -26,6 +26,18 @@ python3 run_validation.py --ch v30_agent.py --bl v29_baseline.py -n 24 --seed 42
 python3 run_validation.py --ch v30_agent.py --bl v29_baseline.py -n 48 --seed 42
 ```
 
+### v31 Ablation Benchmark Commands
+
+```bash
+# Candidate A: Hellburner + sweep only
+python3 run_validation.py --ch v31_candidate_sweep_only.py --bl v29_baseline.py -n 24 --seed 42 --label sweep_only_n24
+python3 run_validation.py --ch v31_candidate_sweep_only.py --bl v29_baseline.py -n 48 --seed 42 --label sweep_only_n48
+
+# Candidate B: Hellburner + comet-only control (sweep stack off)
+python3 run_validation.py --ch v31_candidate_comet_only.py --bl v29_baseline.py -n 24 --seed 42 --label comet_only_n24
+python3 run_validation.py --ch v31_candidate_comet_only.py --bl v29_baseline.py -n 48 --seed 42 --label comet_only_n48
+```
+
 ### Benchmark Results
 
 #### M1: Freeze Baseline (2026-05-26)
