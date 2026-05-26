@@ -51,6 +51,7 @@ python3 run_validation.py --ch v31_candidate_comet_only.py --bl v29_baseline.py 
 - `comet_only_n24`: 1W/23L/0T (4.2%, CI95 [1–20]) ❌
 - Decision: no n=48 and no submission from these wrappers.
 - Next gate: run `v31_control_v29.py` vs `v29_baseline.py`; only proceed if control is near 50/50.
+- Important: `v31_control_v29.py` is now a byte-identical copy of `v29_baseline.py` (not an import wrapper) to avoid module-path asymmetry in the harness.
 
 ### Benchmark Results
 
