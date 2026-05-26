@@ -29,14 +29,25 @@ python3 run_validation.py --ch v30_agent.py --bl v29_baseline.py -n 48 --seed 42
 ### v31 Ablation Benchmark Commands
 
 ```bash
-# Candidate A: Hellburner + sweep only
+# Step 0: control sanity (must be near 50/50 before any ablation run)
+python3 run_validation.py --ch v31_control_v29.py --bl v29_baseline.py -n 24 --seed 42 --label control_v29_n24
+python3 run_validation.py --ch v31_control_v29.py --bl v29_baseline.py -n 48 --seed 42 --label control_v29_n48
+
+# Step 1: Candidate A (currently experimental wrapper on v30 import path)
 python3 run_validation.py --ch v31_candidate_sweep_only.py --bl v29_baseline.py -n 24 --seed 42 --label sweep_only_n24
 python3 run_validation.py --ch v31_candidate_sweep_only.py --bl v29_baseline.py -n 48 --seed 42 --label sweep_only_n48
 
-# Candidate B: Hellburner + comet-only control (sweep stack off)
+# Step 1: Candidate B (currently experimental wrapper on v30 import path)
 python3 run_validation.py --ch v31_candidate_comet_only.py --bl v29_baseline.py -n 24 --seed 42 --label comet_only_n24
 python3 run_validation.py --ch v31_candidate_comet_only.py --bl v29_baseline.py -n 48 --seed 42 --label comet_only_n48
 ```
+
+### v31 Ablation Status (2026-05-26)
+
+- `sweep_only_n24`: 1W/23L/0T (4.2%, CI95 [1–20]) ❌
+- `comet_only_n24`: 1W/23L/0T (4.2%, CI95 [1–20]) ❌
+- Decision: no n=48 and no submission from these wrappers.
+- Next gate: run `v31_control_v29.py` vs `v29_baseline.py`; only proceed if control is near 50/50.
 
 ### Benchmark Results
 
