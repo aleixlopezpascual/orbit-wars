@@ -59,6 +59,8 @@ python3 run_validation.py --ch v31_candidate_comet_only.py --bl v29_baseline.py 
 - Candidates have been rebuilt as standalone files (no import wrappers) to avoid module-name/path side effects during dynamic loading:
   - `v31_candidate_sweep_only.py` (SWEEP on, SATURATION/TIE off)
   - `v31_candidate_comet_only.py` (SWEEP off, SATURATION/TIE off)
+- Runtime pathology observed in uv-capable run (n=24, steps=300, act-timeout=1): both candidates reached only game 2 after ~6.5 minutes and showed identical first-two-game traces; runs stopped.
+- Root debug clue: these two files currently differ by only one constant (`SWEEP_ENABLED`), so when sweep path is not active early they behave effectively identical while both still carry full v30 runtime overhead.
 
 ### Benchmark Results
 
