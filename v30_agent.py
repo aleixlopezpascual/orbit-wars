@@ -2683,21 +2683,14 @@ def _detect_saturation_threats(planet_id, world, planned_commitments, lookahead_
     Returns number of distinct enemy attack arrivals.
     """
     threat_turns = set()
-    
-    # Check incoming enemy fleets
-    for fleet in world.enemy_fleets:
-       if fleet.target_id != planet_id:
+     
+    # Check incoming enemy fleets from arrivals_by_planet (eta, owner, ships)
+    for eta, owner, ships in world.arrivals_by_planet.get(planet_id, []):
+       if owner == world.player or owner == -1:  # Skip our own or neutral
            continue
-       arrival = fleet.arrival_turn
-       if 0 < arrival <= lookahead_turns:
-           threat_turns.add(arrival)
-    
-    # Check planned commitments (our own incoming attacks)
-    if planet_id in planned_commitments:
-       for turn, owner, ships in planned_commitments[planet_id]:
-           if owner != world.player and 0 < turn <= lookahead_turns:
-               threat_turns.add(turn)
-    
+       if 0 < eta <= lookahead_turns:
+           threat_turns.add(eta)
+     
     return len(threat_turns)
 
 
