@@ -29,8 +29,10 @@ python3 run_validation.py --ch v30_agent.py --bl v29_baseline.py -n 48 --seed 42
 ### v31 Ablation Benchmark Commands
 
 ```bash
-# One-command helper:
+# One-command helper (defaults aligned with validated uv fast gate: steps=300, act-timeout=1):
 bash scripts/run_control_gate.sh 24
+bash scripts/run_ablation_gate.sh sweep 24
+bash scripts/run_ablation_gate.sh comet 24
 
 # Step 0: control sanity (must be near 50/50 before any ablation run)
 python3 run_validation.py --ch v31_control_v29.py --bl v29_baseline.py -n 24 --seed 42 --label control_v29_n24
@@ -52,6 +54,11 @@ python3 run_validation.py --ch v31_candidate_comet_only.py --bl v29_baseline.py 
 - Decision: no n=48 and no submission from these wrappers.
 - Next gate: run `v31_control_v29.py` vs `v29_baseline.py`; only proceed if control is near 50/50.
 - Important: `v31_control_v29.py` is now a byte-identical copy of `v29_baseline.py` (not an import wrapper) to avoid module-path asymmetry in the harness.
+- Control revalidation in uv-capable workspace (fast settings) passed sanity:
+  - `control_v29_n24_fast` (n=24, steps=300, act-timeout=1): 11W/13L/0T, 45.8%, CI95 [28–65] ✅
+- Candidates have been rebuilt as standalone files (no import wrappers) to avoid module-name/path side effects during dynamic loading:
+  - `v31_candidate_sweep_only.py` (SWEEP on, SATURATION/TIE off)
+  - `v31_candidate_comet_only.py` (SWEEP off, SATURATION/TIE off)
 
 ### Benchmark Results
 
