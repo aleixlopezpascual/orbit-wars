@@ -62,6 +62,23 @@ python3 run_validation.py --ch v31_candidate_comet_only.py --bl v29_baseline.py 
 - Runtime pathology observed in uv-capable run (n=24, steps=300, act-timeout=1): both candidates reached only game 2 after ~6.5 minutes and showed identical first-two-game traces; runs stopped.
 - Root debug clue: these two files currently differ by only one constant (`SWEEP_ENABLED`), so when sweep path is not active early they behave effectively identical while both still carry full v30 runtime overhead.
 
+### v32 Conservative Ablation Commands (v29-lineage)
+
+```bash
+# v32 candidates are built from v29 lineage to avoid v30 bundled overhead/path effects.
+bash scripts/run_ablation_gate.sh sweep 2
+bash scripts/run_ablation_gate.sh comet 2
+
+# Promote to full gate only if smoke checks complete normally.
+bash scripts/run_ablation_gate.sh sweep 24
+bash scripts/run_ablation_gate.sh comet 24
+```
+
+v32 candidate deltas:
+- `v32_candidate_sweep_only.py`: adds lightweight sweep mission builder and routing with no saturation/tie stack.
+- `v32_candidate_comet_only.py`: comet-only parameter tune (`SPAWN_VALUE_MULT=1.6`, `SPAWN_CHASE_TURNS=24`, `PRESTRIKE_MAX_DIST=55.0`).
+- Both expose `V32_ABLATION_MODE` and `V32_DEBUG_COUNTERS` for path/runtime sanity checks.
+
 ### Benchmark Results
 
 #### M1: Freeze Baseline (2026-05-26)

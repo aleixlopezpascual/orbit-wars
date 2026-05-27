@@ -17,12 +17,12 @@ ACT_TIMEOUT="${ACT_TIMEOUT:-1}"
 
 case "$MODE" in
   sweep)
-    CH="v31_candidate_sweep_only.py"
-    DEFAULT_LABEL="sweep_only_n${N}_fast"
+    CH="v32_candidate_sweep_only.py"
+    DEFAULT_LABEL="v32_sweep_only_n${N}_fast"
     ;;
   comet)
-    CH="v31_candidate_comet_only.py"
-    DEFAULT_LABEL="comet_only_n${N}_fast"
+    CH="v32_candidate_comet_only.py"
+    DEFAULT_LABEL="v32_comet_only_n${N}_fast"
     ;;
   *)
     echo "error: mode must be 'sweep' or 'comet'" >&2
