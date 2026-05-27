@@ -1,4 +1,62 @@
-# v30 Benchmark Log
+# Benchmark Log
+
+---
+
+## v33 Methodology Reset (2026-05-27)
+
+### True Control: hellburner-x2-main → `control_hbx2.py`
+
+- **Source:** `v30_agent.py` (fully fixed: all 3 bug-fix commits applied post-submission)
+- **Rationale:** v29_baseline.py == agent.py (byte-identical, 981 ELO snapshot) but is WEAKER
+  than the live hellburner-x2-main. control_hbx2.py is the correct, stronger reference.
+- **File locked:** `control_hbx2.py` — do not modify; treat as immutable.
+
+### Gate Commands (v33+)
+
+```bash
+# P0-B: Control sanity gate (must land ~50% ±12pp at n=24)
+bash scripts/run_control_gate.sh 24
+
+# P1: Triage existing v32 candidates vs correct control
+bash scripts/run_ablation_gate.sh comet 24
+bash scripts/run_ablation_gate.sh sweep 24
+bash scripts/run_ablation_gate.sh sweep_tight 24
+
+# P2+: Any v33 candidate (pass .py filename as first arg)
+bash scripts/run_ablation_gate.sh v33_candidate_comet_tune.py 24
+bash scripts/run_ablation_gate.sh v33_candidate_sweep.py 24
+
+# Promote to n=48 only after n=24 pass (WR>50%, CI lower>35%)
+bash scripts/run_ablation_gate.sh v33_candidate_comet_tune.py 48
+```
+
+### Promotion Thresholds
+
+| n | Pass Condition | Submit? |
+|---|---------------|---------|
+| n=24 | WR > 50% point estimate, CI lower > 35% | Promote to n=48 |
+| n=48 | WR ≥ 56% AND CI lower ≥ 45% | ✅ Submit |
+| n=48 | WR 52–55% AND CI lower ≥ 40% | ⚠️ Hold, find companion |
+| n=48 | WR < 52% OR CI lower < 40% | ❌ Discard |
+
+Max 1 live submission per day. Never submit on n=24 alone.
+
+### Rollback Trigger
+
+If new live submission drops below 970 ELO after 50 ladder games → copy control_hbx2.py to
+agent.py and resubmit immediately.
+
+---
+
+## v30/v31/v32 History (archived — wrong control was used)
+
+**Note:** All v31/v32 bench runs below used `v29_baseline.py` as control. That is the WEAKER
+baseline. Results are archived for reference only; they do not predict performance vs the live
+hellburner-x2-main control.
+
+---
+
+## v30 Benchmark Log (archived)
 
 ## Baseline: v29 (Hellburner)
 
