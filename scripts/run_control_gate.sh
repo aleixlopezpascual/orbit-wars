@@ -6,7 +6,8 @@ cd "$ROOT_DIR"
 
 SEED="${SEED:-42}"
 N="${1:-24}"
-LABEL="${2:-control_v29_n${N}}"
+# v33: control is hellburner-x2-main (control_hbx2.py), not the weaker v29 snapshot
+LABEL="${2:-control_hbx2_n${N}}"
 STEPS="${STEPS:-300}"
 ACT_TIMEOUT="${ACT_TIMEOUT:-1}"
 
@@ -15,15 +16,16 @@ if [[ ! -f "run_validation.py" ]]; then
   exit 1
 fi
 
-if [[ ! -f "v31_control_v29.py" || ! -f "v29_baseline.py" ]]; then
-  echo "error: expected v31_control_v29.py and v29_baseline.py in repo root" >&2
+if [[ ! -f "control_hbx2.py" ]]; then
+  echo "error: expected control_hbx2.py in repo root (hellburner-x2-main snapshot)" >&2
   exit 1
 fi
 
-echo "Running control gate: n=${N}, seed=${SEED}, steps=${STEPS}, act-timeout=${ACT_TIMEOUT}, label=${LABEL}"
+echo "Running control sanity gate: n=${N}, seed=${SEED}, steps=${STEPS}, act-timeout=${ACT_TIMEOUT}, label=${LABEL}"
+echo "  control_hbx2.py (ch) vs control_hbx2.py (bl) — expect ~50%"
 python3 run_validation.py \
-  --ch v31_control_v29.py \
-  --bl v29_baseline.py \
+  --ch control_hbx2.py \
+  --bl control_hbx2.py \
   -n "${N}" \
   --steps "${STEPS}" \
   --act-timeout "${ACT_TIMEOUT}" \
