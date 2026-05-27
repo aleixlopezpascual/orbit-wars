@@ -13,6 +13,9 @@
 
 ### Gate Commands (v33+)
 
+> ⚠️ **Environment note:** `orbit-wars` requires the Kaggle notebook environment.
+> All benchmark commands below must be run in a Kaggle notebook, not locally.
+
 ```bash
 # P0-B: Control sanity gate (must land ~50% ±12pp at n=24)
 bash scripts/run_control_gate.sh 24
