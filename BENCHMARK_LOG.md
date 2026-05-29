@@ -218,6 +218,24 @@ v32 candidate deltas:
 
 ---
 
+## v33 Phase 2 — n=24 Triage Results (2026-05-28)
+
+### v33 Candidates vs control_hbx2 (n=24, seed=42)
+
+| Label | Result | WR | CI95 | Gate |
+|---|---|---|---|---|
+| `v33_comet_tune_n24_vs_hbx2` | 10W/14L/0T | 41.7% | [24–61] | ❌ |
+| `v33_sweep_tune_n24_vs_hbx2` | 10W/14L/0T | 41.7% | [24–61] | ❌ |
+| `v33_saturation_tune_n24_vs_hbx2` | 10W/14L/0T | 41.7% | [24–61] | ❌ |
+
+**Decision:** All three fail n=24 gate (need WR>50%, CI-lower>35%). No n=48 promotion.
+
+**Assessment:** Files were verified to differ from control_hbx2 (parameters confirmed correct). Results
+are genuine — parameter tweaks of ±5–8% are too small to shift outcomes in these 24 games. The control
+is already well-tuned at this scale; need more aggressive or structural changes for Phase 3.
+
+---
+
 ## v30 Development Plan
 
 See `plan.md` for full roadmap with M1-M7 details.
