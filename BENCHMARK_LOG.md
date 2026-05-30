@@ -51,6 +51,21 @@ agent.py and resubmit immediately.
 
 ---
 
+## v33 Phase 3 — n=24 Triage Results (2026-05-30)
+
+### Aggressive single-feature candidates vs `control_hbx2.py`
+
+| Label | Result | WR | CI95 | Gate |
+|---|---|---|---|---|
+| `v33_comet_aggressive_n24_vs_hbx2` | 12W/12L/0T | 50.0% | [31–69] | ❌ |
+| `v33_sweep_aggressive_n24_vs_hbx2` | 9W/15L/0T | 37.5% | [21–57] | ❌ |
+
+Gate remains: promote only if `WR > 50%` **and** `CI lower > 35%` at n=24.
+
+**Decision:** no n=48 promotion from this pass.
+
+---
+
 ## v30/v31/v32 History (archived — wrong control was used)
 
 **Note:** All v31/v32 bench runs below used `v29_baseline.py` as control. That is the WEAKER
