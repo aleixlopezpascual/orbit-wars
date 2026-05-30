@@ -81,6 +81,19 @@ Gate at n=24: promote if `WR > 50%` and `CI lower > 35%`.
 
 ---
 
+## v34 Phase 4 — n=48 Confirmation Results (2026-05-30)
+
+### Structural single-feature candidates vs `control_hbx2.py`
+
+| Label | Result | WR | CI95 | Submit Gate (WR≥56, CI-lower≥45) |
+|---|---|---|---|---|
+| `v34_early_rush_n48_vs_hbx2` | 28W/20L/0T | 58.3% | [44–71] | ❌ FAIL (CI-lower 44) |
+| `v34_planet_priority_n48_vs_hbx2` | 29W/19L/0T | 60.4% | [46–73] | ✅ PASS |
+
+**Decision:** `v34_candidate_planet_priority.py` is submission-eligible. `v34_candidate_early_rush_logic.py` is hold/no-go for now.
+
+---
+
 ## v30/v31/v32 History (archived — wrong control was used)
 
 **Note:** All v31/v32 bench runs below used `v29_baseline.py` as control. That is the WEAKER
