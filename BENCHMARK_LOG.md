@@ -66,6 +66,21 @@ Gate remains: promote only if `WR > 50%` **and** `CI lower > 35%` at n=24.
 
 ---
 
+## v34 Phase 4 — n=24 Triage Results (2026-05-30)
+
+### Structural single-feature candidates vs `control_hbx2.py`
+
+| Label | Result | WR | CI95 | Gate |
+|---|---|---|---|---|
+| `v34_early_rush_n24_vs_hbx2` | 15W/9L/0T | 62.5% | [43–79] | ✅ PASS |
+| `v34_planet_priority_n24_vs_hbx2` | 14W/10L/0T | 58.3% | [39–76] | ✅ PASS |
+
+Gate at n=24: promote if `WR > 50%` and `CI lower > 35%`.
+
+**Decision:** both candidates promoted to n=48 confirmation.
+
+---
+
 ## v30/v31/v32 History (archived — wrong control was used)
 
 **Note:** All v31/v32 bench runs below used `v29_baseline.py` as control. That is the WEAKER
