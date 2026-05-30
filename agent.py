@@ -579,7 +579,9 @@ def _v28_evaluate_plan_outcome(world, moves, horizon=20):
         start_x = src.x + math.cos(angle) * (src.radius + LAUNCH_CLEARANCE)
         start_y = src.y + math.sin(angle) * (src.radius + LAUNCH_CLEARANCE)
         fleet = Fleet(-1, world.player, start_x, start_y, angle, src_id, int(ships))
-        tgt_planet, eta = fleet_target_planet(fleet, world.planets)
+        tgt_planet, eta = fleet_target_planet(
+            fleet, world.planets, cache=world.fleet_target_cache,
+        )
         if tgt_planet is not None and eta is not None and eta <= horizon:
             extra_by_target[tgt_planet.id].append((eta, world.player, int(ships)))
 
@@ -631,7 +633,22 @@ def aim_with_prediction(src, target, ships, initial_by_id, ang_vel, comets, come
 # World Model
 # ============================================================
 
-def fleet_target_planet(fleet, planets):
+def fleet_target_planet(fleet, planets, cache=None):
+    cache_key = None
+    if cache is not None:
+        cache_key = (
+            int(fleet.id),
+            int(fleet.owner),
+            round(float(fleet.x), 6),
+            round(float(fleet.y), 6),
+            round(float(fleet.angle), 9),
+            int(fleet.from_planet_id),
+            int(fleet.ships),
+        )
+        cached = cache.get(cache_key)
+        if cached is not None:
+            return cached
+
     best_planet = None
     best_time = 1e9
     dir_x = math.cos(fleet.angle)
@@ -654,15 +671,16 @@ def fleet_target_planet(fleet, planets):
             best_time = turns
             best_planet = planet
 
-    if best_planet is None:
-        return None, None
-    return best_planet, int(math.ceil(best_time))
+    result = (None, None) if best_planet is None else (best_planet, int(math.ceil(best_time)))
+    if cache is not None:
+        cache[cache_key] = result
+    return result
 
 
-def build_arrival_ledger(fleets, planets):
+def build_arrival_ledger(fleets, planets, fleet_target_cache=None):
     arrivals_by_planet = {planet.id: [] for planet in planets}
     for fleet in fleets:
-        target, eta = fleet_target_planet(fleet, planets)
+        target, eta = fleet_target_planet(fleet, planets, cache=fleet_target_cache)
         if target is None:
             continue
         arrivals_by_planet[target.id].append((eta, fleet.owner, int(fleet.ships)))
@@ -801,13 +819,18 @@ def state_at_timeline(timeline, arrival_turn):
     return owner, max(0.0, ships)
 
 
-def count_players(planets, fleets):
+def count_players(planets, fleets, initial_by_id=None):
     owners = set()
     for planet in planets:
         if planet.owner != -1:
             owners.add(planet.owner)
     for fleet in fleets:
-        owners.add(fleet.owner)
+        if fleet.owner != -1:
+            owners.add(fleet.owner)
+    if initial_by_id:
+        for planet in initial_by_id.values():
+            if planet.owner != -1:
+                owners.add(planet.owner)
     return max(2, len(owners))
 
 
@@ -875,7 +898,18 @@ def _compute_leader_enemy(enemy_planets, owner_strength, owner_production):
 
 
 class WorldModel:
-    def __init__(self, player, step, planets, fleets, initial_by_id, ang_vel, comets, comet_ids):
+    def __init__(
+        self,
+        player,
+        step,
+        planets,
+        fleets,
+        initial_by_id,
+        ang_vel,
+        comets,
+        comet_ids,
+        num_players=None,
+    ):
         self.player = player
         self.step = step
         self.planets = planets
@@ -893,7 +927,11 @@ class WorldModel:
             planet for planet in self.neutral_planets if is_static_planet(planet)
         ]
 
-        self.num_players = count_players(planets, fleets)
+        self.num_players = (
+            int(num_players)
+            if num_players is not None
+            else count_players(planets, fleets, initial_by_id=initial_by_id)
+        )
         self.remaining_steps = max(1, TOTAL_STEPS - step)
         self.is_early = step < EARLY_TURN_LIMIT
         self.is_opening = step < OPENING_TURN_LIMIT
@@ -952,7 +990,10 @@ class WorldModel:
         # to runaway, not the trailing weakling. Activate kingmaker priority.
         self._kingmaker_mode = self.is_four_player and self._is_behind_leader
 
-        self.arrivals_by_planet = build_arrival_ledger(fleets, planets)
+        self.fleet_target_cache = {}
+        self.arrivals_by_planet = build_arrival_ledger(
+            fleets, planets, fleet_target_cache=self.fleet_target_cache,
+        )
         self.base_timeline = {
             planet.id: simulate_planet_timeline(
                 planet,
@@ -3687,6 +3728,7 @@ def build_world(obs, inferred_step=None):
     fleets = [Fleet(*fleet) for fleet in raw_fleets]
     initial_planets = [Planet(*planet) for planet in raw_init]
     initial_by_id = {planet.id: planet for planet in initial_planets}
+    num_players = count_players(planets, fleets, initial_by_id=initial_by_id)
 
     return WorldModel(
         player=player,
@@ -3697,6 +3739,7 @@ def build_world(obs, inferred_step=None):
         ang_vel=ang_vel,
         comets=comets,
         comet_ids=comet_ids,
+        num_players=num_players,
     )
 
 
@@ -3726,4 +3769,3 @@ kaggle competitions submit orbit-wars -f submission.py -m "Tamrazov×Ykhnkf hybr
 ```
 
 """
-
