@@ -15,6 +15,7 @@
 ### 🗃️ Historical + Operations Docs
 - **Historical v30 docs** - `archive/v30/`
 - **Benchmark operations log** - `operations/BENCHMARK_LOG.md`
+- **Versioned agent snapshots** - `../agents/variants/`
 
 ### 📄 Full Research Reports (Deep Dives)
 - **Full Report** - `/research/orbit-wars-research.md` (24 KB, 680 lines)

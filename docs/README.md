@@ -87,6 +87,7 @@ Welcome! This directory contains all documentation for the Orbit Wars Kaggle com
 **Folders**:
 - `archive/v30/` - Historical v30 planning/submission docs that were previously in the repository root
 - `operations/BENCHMARK_LOG.md` - Operational benchmark history (control vs challenger tracking)
+- `../agents/variants/` - Versioned experimental/baseline agent snapshots (`v26`-`v34`)
 
 ## Key Dates to Remember
 

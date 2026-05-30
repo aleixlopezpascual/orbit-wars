@@ -4,6 +4,9 @@
 
 ## v33 Methodology Reset (2026-05-27)
 
+> Repository layout note: versioned `v*.py` agents now live under `agents/variants/`.  
+> Historical commands below may show old root paths; prepend `agents/variants/` when running them now.
+
 ### True Control: hellburner-x2-main → `control_hbx2.py`
 
 - **Source:** `v30_agent.py` (fully fixed: all 3 bug-fix commits applied post-submission)

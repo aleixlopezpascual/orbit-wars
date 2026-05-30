@@ -96,8 +96,8 @@ def h2h(challenger_path, baseline_path, n_games, steps, label, seed_base=42, act
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--ch", default="main.py", help="challenger agent path")
-    parser.add_argument("--bl", default="v26.py", help="baseline agent path")
+    parser.add_argument("--ch", default="agent.py", help="challenger agent path")
+    parser.add_argument("--bl", default="control_hbx2.py", help="baseline agent path")
     parser.add_argument("-n", type=int, default=8)
     parser.add_argument("--steps", type=int, default=500)
     parser.add_argument("--label", default="ch_vs_bl")
