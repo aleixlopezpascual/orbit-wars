@@ -77,6 +77,17 @@ Welcome! This directory contains all documentation for the Orbit Wars Kaggle com
 - Submission methods (browser, CLI, notebook)
 - Troubleshooting guide
 
+### 🧭 Competition Intelligence Updates (Latest)
+**Files**:
+- `11_HBX2_BASELINE_CORRECTION.md` - Correct baseline lineage (`hellburner-x2-main.py` -> `control_hbx2.py`)
+- `12_COMPETITION_STATUS_NOTEBOOKS_DISCUSSIONS.md` - Live snapshot of leaderboard, notebook, and discussion meta
+- `13_IMPROVEMENT_HYPOTHESIS_BACKLOG.md` - Prioritized hypotheses for later implementation (documentation-only phase)
+
+### 🗂️ Repository Organization (Moved from Root)
+**Folders**:
+- `archive/v30/` - Historical v30 planning/submission docs that were previously in the repository root
+- `operations/BENCHMARK_LOG.md` - Operational benchmark history (control vs challenger tracking)
+
 ## Key Dates to Remember
 
 | Date | Event |

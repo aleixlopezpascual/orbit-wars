@@ -7,7 +7,16 @@
 2. **08_RESEARCH_SUMMARY.md** - Executive summary of all findings
 3. **Quick Reference** - `/research/quick-reference.md` (30-second guide)
 
-### �� Full Research Reports (Deep Dives)
+### 🧭 Current Competition Docs (Newest)
+1. **11_HBX2_BASELINE_CORRECTION.md** - Baseline correction to HBX2 lineage
+2. **12_COMPETITION_STATUS_NOTEBOOKS_DISCUSSIONS.md** - Current status snapshot from notebooks/discussions
+3. **13_IMPROVEMENT_HYPOTHESIS_BACKLOG.md** - Prioritized backlog for future implementation phase (docs-only now)
+
+### 🗃️ Historical + Operations Docs
+- **Historical v30 docs** - `archive/v30/`
+- **Benchmark operations log** - `operations/BENCHMARK_LOG.md`
+
+### 📄 Full Research Reports (Deep Dives)
 - **Full Report** - `/research/orbit-wars-research.md` (24 KB, 680 lines)
 - Contains: Strategies, pitfalls, baselines, what works/doesn't, implementation path
 
@@ -276,6 +285,11 @@ docs/
 ├── 06_DATA_UTILITIES.md
 ├── 07_GETTING_STARTED_TUTORIAL.md
 ├── 08_RESEARCH_SUMMARY.md
+├── 09_NJABULO55_STATUS.md
+├── 10_NJABULO55_STATUS_AFTER_V28.md
+├── 11_HBX2_BASELINE_CORRECTION.md
+├── 12_COMPETITION_STATUS_NOTEBOOKS_DISCUSSIONS.md
+├── 13_IMPROVEMENT_HYPOTHESIS_BACKLOG.md
 ├── README.md
 └── INDEX.txt
 

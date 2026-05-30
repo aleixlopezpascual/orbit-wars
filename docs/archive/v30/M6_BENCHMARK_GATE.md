@@ -110,7 +110,7 @@ print(f'Total Ships Lost: {m.get(\"sweep_total_lost\", 0)}')
 "
 ```
 
-**Update BENCHMARK_LOG.md** with:
+**Update ../../operations/BENCHMARK_LOG.md** with:
 ```markdown
 ### M6: Benchmark-Gate Validation (2026-05-26)
 

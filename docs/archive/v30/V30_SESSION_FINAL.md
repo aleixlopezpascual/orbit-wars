@@ -213,7 +213,7 @@ Enable: Post-game analysis of sweep effectiveness
 ### Short Term (M6: Benchmarking)
 1. Run n=24 benchmark validation
 2. Run n=48 full validation (if n=24 passes)
-3. Document results in BENCHMARK_LOG.md
+3. Document results in ../../operations/BENCHMARK_LOG.md
 4. Compare cumulative gain vs v29 baseline
 
 ### Deploy Decision (M7)
@@ -255,7 +255,7 @@ Enable: Post-game analysis of sweep effectiveness
 
 ### Benchmarking
 - `run_validation.py` — Benchmark harness (head-to-head)
-- `BENCHMARK_LOG.md` — Results tracking
+- `../../operations/BENCHMARK_LOG.md` — Results tracking
 
 ### Documentation
 - `M2_COMET_VERIFICATION.md` — v29 feature verification (52 lines)
@@ -263,7 +263,7 @@ Enable: Post-game analysis of sweep effectiveness
 - `M4_SWEEP_OFFENSE.md` — Sweep algorithm (195 lines)
 - `M5_SATURATION_SAFETY.md` — Saturation + ties (235 lines)
 - `M6_BENCHMARK_GATE.md` — Validation strategy (227 lines)
-- `V30_SUMMARY.md` — Complete overview (310 lines)
+- `v30_MASTER_SUMMARY.md` — Complete overview (310 lines)
 - `V30_SESSION_FINAL.md` — This file
 
 ### Git History
