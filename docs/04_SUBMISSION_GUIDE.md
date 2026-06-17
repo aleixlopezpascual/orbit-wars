@@ -98,6 +98,29 @@ env.render(mode="ipython", width=800, height=600)
 
 Your submission must have **main.py** at the root with an `agent` function.
 
+### Mandatory Offline Tournament Check (Before Every Submission)
+
+Every candidate must be evaluated with the offline tournament system before pushing to Kaggle.
+
+```bash
+# One-time environment setup
+bash scripts/setup_tournament_env.sh
+
+# Refresh tournament opponent pool from Kaggle
+bash scripts/download_kaggle_agents.sh
+
+# Run full tournament for candidate agent
+.venv/bin/python3 run_tournament.py --agent <candidate_agent.py>
+```
+
+Expected tournament setup:
+- 10 agents total: candidate + 5 local baselines + 4 Kaggle public agents
+- 4-player round-robin combinations (210 games when all 10 are present)
+- Results saved in `artifacts/tournament_<timestamp>.json`
+
+Fallback rule:
+- If Kaggle public agents are temporarily unavailable, run fallback tournament with 50+ games and record the reason in `docs/operations/BENCHMARK_LOG.md`.
+
 ### Single File Submission
 
 ```bash

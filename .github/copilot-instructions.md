@@ -84,6 +84,28 @@ bash scripts/run_ablation_gate.sh <variant> 24
 ```
 Tests a candidate agent (e.g., `sweep` or `comet_only`) against the control baseline.
 
+### Mandatory Pre-Submission Tournament Gate
+Before any Kaggle submission, every candidate agent must pass the offline tournament gate.
+
+Required workflow:
+1. Ensure tournament environment and Kaggle agents are ready:
+```bash
+bash scripts/setup_tournament_env.sh
+bash scripts/download_kaggle_agents.sh
+```
+2. Run tournament eval for the candidate:
+```bash
+.venv/bin/python3 run_tournament.py --agent <candidate_agent.py>
+```
+3. Check result artifact:
+`artifacts/tournament_<timestamp>.json`
+4. Log outcome in `docs/operations/BENCHMARK_LOG.md` before submitting.
+
+Policy:
+- Do **not** submit agents that skip this tournament evaluation step.
+- Use full 10-agent pool whenever available (1 candidate + 5 local baselines + 4 Kaggle public agents).
+- If Kaggle agents are unavailable, run fallback tournament (50+ games) and document why.
+
 ## Versioning and Ablation Studies
 
 The repo maintains a history of agent versions to track improvements:
