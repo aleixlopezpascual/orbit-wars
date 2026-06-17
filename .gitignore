@@ -1,0 +1,17 @@
+# Downloaded Kaggle agent files — not committed
+tournament_agents/*.py
+tournament_agents/orbit_lite/
+
+# Python virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Artifacts (large log/result files)
+artifacts/logs/
+artifacts/tournament_*.json
+
+# Submission archives
+*.tar.gz
