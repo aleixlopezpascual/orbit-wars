@@ -1,0 +1,9 @@
+[project]
+name = "orbit-wars"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "kaggle>=2.1.2",
+    "kaggle-environments>=1.29.0",
+    "torch>=2.0",
+]
