@@ -46,28 +46,34 @@ Fixed to use `final_scores` (planet + fleet ship counts) for true 4P ranking.
 ### New Control Baseline: Producer → `control_producer.py` (PRIMARY)
 
 - **Kaggle submission:** "Orbit Wars Producer - Version 1"
-- **Public ELO:** 1180.2 (submitted ~13h ago as of 2026-06-18)
-- **Status:** ⏳ Pending download — file only exists in Kaggle notebook
-- **Action required:** Download from Kaggle, save as `control_producer.py`, lock as immutable.
+- **Public ELO:** 1180.2 (2026-06-18)
+- **Status:** ✅ Locked — extracted from Kaggle notebook (scriptVersionId 328072528), committed to repo root.
+- **Architecture:** PyTorch `ProducerLiteRuntime` + `orbit_lite` planner package.
 - **Rationale:** Highest ELO recorded in this project (+199 over previous control_hbx2 peak).
   All future ablation candidates must beat this bar to be considered promotable.
 
 ### Secondary Control: I'M STRONGER → `control_stronger.py`
 
 - **Kaggle submission:** "Orbit Wars | I'M STRONGER - Version 1"
-- **Public ELO:** 981.3 (submitted ~12h ago as of 2026-06-18)
-- **Status:** ⏳ Pending download — file only exists in Kaggle notebook
-- **Action required:** Download from Kaggle, save as `control_stronger.py`, lock as immutable.
+- **Public ELO:** 981.3 (2026-06-18)
+- **Status:** ✅ Locked — extracted from Kaggle notebook (scriptVersionId 328077330), committed to repo root.
+- **Architecture:** Same `ProducerLiteRuntime` / `orbit_lite` family as Producer.
 - **Rationale:** Strong secondary reference point; useful for benchmarking candidates that
-  cannot yet beat Producer but are still improvements over the old hbx2 control.
+  cannot yet beat Producer but are improvements over the old hbx2 control.
 
-### Download Instructions
+### Supporting infrastructure added (2026-06-18)
 
-1. Open each notebook in Kaggle and copy the agent code.
-2. Save as `control_producer.py` and `control_stronger.py` in the repo root.
-3. Run sanity self-play: `python run_validation.py --ch control_producer.py --bl control_stronger.py -n 24 --seed 42`
+- `orbit_lite/` — PyTorch planner package required by both controls. Copied from `tournament_agents/` sibling worktree. Must be importable (repo root on `sys.path`).
+- `run_validation.py` — fixed `@dataclass` crash in `load_agent()`: added `sys.modules[name] = mod` before `exec_module`.
+- `run_tournament.py` — added `control_producer` and `control_stronger` to agent pool (always included); fixed ranking to use `final_scores` (ship counts) instead of binary rewards so 3rd/4th place columns populate correctly.
+- **Local venv for orbit_wars + torch:** `aleixlopezpascual-fantastic-system/.venv/bin/python3` — only venv that has both `kaggle_environments[orbit_wars]` and `torch` installed.
+
+### Download Instructions (completed)
+
+1. ~~Open each notebook in Kaggle and copy the agent code.~~
+2. ~~Save as `control_producer.py` and `control_stronger.py` in the repo root.~~
+3. Run sanity self-play: `/path/to/venv/python3 run_validation.py --ch control_producer.py --bl control_stronger.py -n 24 --seed 42`
 4. Expected: Producer wins >55% (CI lower >40%) to confirm ELO ordering is consistent.
-5. Commit both files with message `feat: lock new control baselines (Producer 1180, Stronger 981)`.
 
 ### Sanity Gate Result (2026-06-18)
 

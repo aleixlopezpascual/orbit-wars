@@ -75,15 +75,19 @@ Simulates multiple matches and returns final scores. Use to benchmark against ba
 ### Control Gate (Sanity Check)
 ```bash
 # Primary control sanity (Producer vs Stronger — must confirm Producer wins ~60%+)
-python run_validation.py --ch control_producer.py --bl control_stronger.py -n 24 --seed 42
+VENV=/Users/aleix.lopez/copilot-worktrees/orbit-wars/aleixlopezpascual-fantastic-system/.venv/bin/python3
+$VENV run_validation.py --ch control_producer.py --bl control_stronger.py -n 24 --seed 42
 ```
 `control_producer.py` (1180.2 ELO) is the **primary control**. `control_stronger.py` (981.3 ELO) is the secondary reference.
 `control_hbx2.py` is retained as a historical snapshot but is no longer the active control.
 
+> **Venv note:** `orbit_wars` + `torch` are only available in `aleixlopezpascual-fantastic-system/.venv`. Use that Python for all local validation and tournament runs.
+
 ### Candidate Gate (Ablation Testing)
 ```bash
+VENV=/Users/aleix.lopez/copilot-worktrees/orbit-wars/aleixlopezpascual-fantastic-system/.venv/bin/python3
 # Run candidate vs primary control
-python run_validation.py --ch <candidate>.py --bl control_producer.py -n 24 --seed 42
+$VENV run_validation.py --ch <candidate>.py --bl control_producer.py -n 24 --seed 42
 ```
 Tests a candidate against the primary control (`control_producer.py`).
 
@@ -98,7 +102,8 @@ bash scripts/download_kaggle_agents.sh
 ```
 2. Run tournament eval for the candidate:
 ```bash
-.venv/bin/python3 run_tournament.py --agent <candidate_agent.py>
+VENV=/Users/aleix.lopez/copilot-worktrees/orbit-wars/aleixlopezpascual-fantastic-system/.venv/bin/python3
+$VENV run_tournament.py --agent <candidate_agent.py>
 ```
 3. Check result artifact:
 `artifacts/tournament_<timestamp>.json`
@@ -106,8 +111,10 @@ bash scripts/download_kaggle_agents.sh
 
 Policy:
 - Do **not** submit agents that skip this tournament evaluation step.
+- `control_producer` and `control_stronger` are always included in the tournament pool (hardcoded in `run_tournament.py`).
 - Use full 10-agent pool whenever available (1 candidate + 5 local baselines + 4 Kaggle public agents).
 - If Kaggle agents are unavailable, run fallback tournament (50+ games) and document why.
+- Tournament rankings use **final ship-count scores** (not binary rewards) — 3rd/4th place columns must populate for a valid run.
 
 ## Versioning and Ablation Studies
 
@@ -116,8 +123,8 @@ The repo maintains a history of agent versions to track improvements:
 **Baseline versions** (locked references):
 - `v26_baseline.py`, `v27_baseline.py`, etc. — research snapshots
 - `control_hbx2.py` — Hellburner-X2 (historical, ~981 ELO, no longer active control)
-- `control_producer.py` — **PRIMARY control** (Orbit Wars Producer, 1180.2 ELO, 2026-06-18) ⚠️ PENDING DOWNLOAD
-- `control_stronger.py` — Secondary control (I'M STRONGER, 981.3 ELO, 2026-06-18) ⚠️ PENDING DOWNLOAD
+- `control_producer.py` — **PRIMARY control** (Orbit Wars Producer, 1180.2 ELO, 2026-06-18) ✅ locked
+- `control_stronger.py` — Secondary control (I'M STRONGER, 981.3 ELO, 2026-06-18) ✅ locked
 
 **Development versions** (current variants):
 - `agent.py` — main submission candidate
