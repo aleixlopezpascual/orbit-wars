@@ -74,15 +74,18 @@ Simulates multiple matches and returns final scores. Use to benchmark against ba
 
 ### Control Gate (Sanity Check)
 ```bash
-bash scripts/run_control_gate.sh 24
+# Primary control sanity (Producer vs Stronger — must confirm Producer wins ~60%+)
+python run_validation.py --ch control_producer.py --bl control_stronger.py -n 24 --seed 42
 ```
-Runs 24 episodes of `control_hbx2.py` (locked baseline) to verify environment stability.
+`control_producer.py` (1180.2 ELO) is the **primary control**. `control_stronger.py` (981.3 ELO) is the secondary reference.
+`control_hbx2.py` is retained as a historical snapshot but is no longer the active control.
 
 ### Candidate Gate (Ablation Testing)
 ```bash
-bash scripts/run_ablation_gate.sh <variant> 24
+# Run candidate vs primary control
+python run_validation.py --ch <candidate>.py --bl control_producer.py -n 24 --seed 42
 ```
-Tests a candidate agent (e.g., `sweep` or `comet_only`) against the control baseline.
+Tests a candidate against the primary control (`control_producer.py`).
 
 ### Mandatory Pre-Submission Tournament Gate
 Before any Kaggle submission, every candidate agent must pass the offline tournament gate.
@@ -112,7 +115,9 @@ The repo maintains a history of agent versions to track improvements:
 
 **Baseline versions** (locked references):
 - `v26_baseline.py`, `v27_baseline.py`, etc. — research snapshots
-- `control_hbx2.py` — Hellburner-X2 locked control baseline
+- `control_hbx2.py` — Hellburner-X2 (historical, ~981 ELO, no longer active control)
+- `control_producer.py` — **PRIMARY control** (Orbit Wars Producer, 1180.2 ELO, 2026-06-18) ⚠️ PENDING DOWNLOAD
+- `control_stronger.py` — Secondary control (I'M STRONGER, 981.3 ELO, 2026-06-18) ⚠️ PENDING DOWNLOAD
 
 **Development versions** (current variants):
 - `agent.py` — main submission candidate
@@ -177,7 +182,7 @@ v34: Early rush logic refinement
 - Lowered EARLY_RUSH_TURN_LIMIT from 32 to 30
 - Increased aggressive send ratio in 2P by 0.05
 - Hypothesis: Earlier aggression reduces comet race delays
-- Test: 24 episodes vs control_hbx2.py baseline
+- Test: 24 episodes vs control_producer.py baseline
 ```
 
 Include:
