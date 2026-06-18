@@ -101,6 +101,7 @@ This is a time-slice and will drift as the competition evolves.
 2. Lightweight forward simulation and mission scoring.
 3. Clear runtime-aware pruning under strict action-time budgets.
 4. Replay-driven evaluation loops and local tournament tooling.
+5. Forum-reported fast-win path: per-planet behavioral cloning (small MLP for launch/target intent) combined with rule-based geometry execution.
 
 ### What repeatedly failed or underperformed
 
