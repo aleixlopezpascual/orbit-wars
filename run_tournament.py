@@ -91,7 +91,10 @@ def build_agent_pool(test_agent_path: str, root: str) -> list[dict]:
     up to 10 agents total. Agents that fail to load are skipped with a warning.
     """
     candidates = [
-        # Local baselines (priority order)
+        # New high-ELO controls (always included — primary and secondary baselines)
+        "control_producer.py",   # 1180.2 ELO — PRIMARY control
+        "control_stronger.py",   # 981.3 ELO  — secondary control
+        # Legacy baselines (kept for historical reference)
         "control_hbx2.py",
         "v29_baseline.py",
         "v28_baseline.py",
