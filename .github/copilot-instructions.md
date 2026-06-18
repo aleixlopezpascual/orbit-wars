@@ -95,24 +95,19 @@ Tests a candidate against the primary control (`control_producer.py`).
 Before any Kaggle submission, every candidate agent must pass the offline tournament gate.
 
 Required workflow:
-1. Ensure tournament environment and Kaggle agents are ready:
+1. Run the required gate script:
 ```bash
-bash scripts/setup_tournament_env.sh
-bash scripts/download_kaggle_agents.sh
+bash scripts/pre_submission_tournament_gate.sh <candidate_agent.py>
 ```
-2. Run tournament eval for the candidate:
-```bash
-VENV=/Users/aleix.lopez/copilot-worktrees/orbit-wars/aleixlopezpascual-fantastic-system/.venv/bin/python3
-$VENV run_tournament.py --agent <candidate_agent.py>
-```
-3. Check result artifact:
+2. Check result artifact:
 `artifacts/tournament_<timestamp>.json`
-4. Log outcome in `docs/operations/BENCHMARK_LOG.md` before submitting.
+3. Log outcome in `docs/operations/BENCHMARK_LOG.md` before submitting.
 
 Policy:
 - Do **not** submit agents that skip this tournament evaluation step.
-- `control_producer` and `control_stronger` are always included in the tournament pool (hardcoded in `run_tournament.py`).
-- Use full 10-agent pool whenever available (1 candidate + 5 local baselines + 4 Kaggle public agents).
+- Use the full 10-agent pool whenever available. The default priority pool includes
+  `control_producer.py`, `control_stronger.py`, `control_hbx2.py`, the versioned local baselines,
+  and Kaggle public agents.
 - If Kaggle agents are unavailable, run fallback tournament (50+ games) and document why.
 - Tournament rankings use **final ship-count scores** (not binary rewards) — 3rd/4th place columns must populate for a valid run.
 

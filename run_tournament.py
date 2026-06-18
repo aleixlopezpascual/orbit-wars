@@ -86,7 +86,7 @@ def build_agent_pool(test_agent_path: str, root: str) -> list[dict]:
       [{"name": str, "path": str}, ...]
 
     The test agent is always index 0. The pool is filled with:
-      - local baselines (control + version history)
+      - locked local controls + version-history baselines
       - downloaded Kaggle agents from tournament_agents/
     up to 10 agents total. Agents that fail to load are skipped with a warning.
     """
@@ -101,10 +101,11 @@ def build_agent_pool(test_agent_path: str, root: str) -> list[dict]:
         "v27_baseline.py",
         "v26_baseline.py",
         # Kaggle downloads
-        "tournament_agents/kaggle_producer.py",
         "tournament_agents/kaggle_i_the_orbit.py",
         "tournament_agents/kaggle_v2_gru.py",
         "tournament_agents/kaggle_v44_elo.py",
+        # Fallback if the locked local Producer control is missing
+        "tournament_agents/kaggle_producer.py",
     ]
 
     pool = [{"name": Path(test_agent_path).name, "path": test_agent_path}]

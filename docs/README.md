@@ -38,6 +38,8 @@ Welcome! This directory contains all documentation for the Orbit Wars Kaggle com
 - Prerequisites (Kaggle CLI, API authentication)
 - Joining the competition
 - Local testing and validation
+- Mandatory offline pre-submission gate (`scripts/pre_submission_tournament_gate.sh`)
+- Optional external benchmark framework (`automatylicza/orbit-wars-lab`)
 - Submission formats (single file, multi-file, notebook)
 - Monitoring submissions and episodes
 - Downloading replays and logs for analysis
