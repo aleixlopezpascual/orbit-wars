@@ -214,6 +214,26 @@ kaggle competitions logs <EPISODE_ID> 0
 kaggle competitions logs <EPISODE_ID> 1 -p ./logs
 ```
 
+### Batch Download Episodes, Replays, and Logs
+
+For repeated post-submission analysis, use the repo helper to fetch the latest
+episodes for one submission, save the raw episode CSV, and optionally download
+replays plus your own agent logs:
+
+```bash
+python3 scripts/fetch_kaggle_match_artifacts.py \
+  --submission-id <SUBMISSION_ID> \
+  --limit 20 \
+  --download-replays \
+  --download-logs \
+  --agent-index 0 \
+  --out-dir artifacts/kaggle/submission_<SUBMISSION_ID>
+```
+
+Notes:
+- Logs are only available for your own submission seats.
+- The helper writes `episodes.csv`, `episodes.json`, and `manifest.json` so runs are reproducible.
+
 ### Check Leaderboard
 
 ```bash

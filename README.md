@@ -30,9 +30,18 @@ Operational benchmark tracking lives in:
 # Control sanity gate
 bash scripts/run_control_gate.sh 24
 
-# Candidate gate (example)
-bash scripts/run_ablation_gate.sh sweep 24
+# Candidate gate against Producer (example)
+bash scripts/run_ablation_gate.sh agent.py 24
 
 # Mandatory pre-submission offline tournament gate
 bash scripts/pre_submission_tournament_gate.sh agent.py
+
+# Batch download Kaggle replays/logs for one submission
+python3 scripts/fetch_kaggle_match_artifacts.py \
+  --submission-id <SUBMISSION_ID> \
+  --limit 10 \
+  --download-replays \
+  --download-logs \
+  --agent-index 0 \
+  --out-dir artifacts/kaggle/submission_<SUBMISSION_ID>
 ```

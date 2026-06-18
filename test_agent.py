@@ -11,7 +11,7 @@ Tests the agent with various mock observations to ensure:
 import json
 import sys
 from pathlib import Path
-from baseline.agent import agent
+from agent import agent
 
 
 def validate_actions(actions):
@@ -76,7 +76,11 @@ def test_with_enemy_fleets():
         "fleets": [
             [0, 1, 40.0, 40.0, 0.5, 1, 15],  # enemy fleet approaching
         ],
-        "initial_planets": [[0, 10.0, 10.0]],
+        "initial_planets": [
+            [0, 0, 10.0, 10.0, 2.5, 80, 3],
+            [1, -1, 50.0, 50.0, 2.0, 20, 2],
+            [2, 0, 70.0, 10.0, 1.5, 50, 3],
+        ],
         "comets": [],
         "comet_planet_ids": [],
     }
@@ -104,8 +108,17 @@ def test_with_comets():
             [2, 1, 85.0, 85.0, 2.7, 40, 4],
         ],
         "fleets": [],
-        "initial_planets": [[0, 10.0, 10.0]],
-        "comets": [[1, 50.0, 50.0, 1.0]],
+        "initial_planets": [
+            [0, 0, 10.0, 10.0, 2.5, 60, 3],
+            [2, 1, 85.0, 85.0, 2.7, 40, 4],
+        ],
+        "comets": [
+            {
+                "planet_ids": [1],
+                "path_index": 0,
+                "paths": [[(50.0, 50.0), (50.0, 50.0), (50.0, 50.0)]],
+            }
+        ],
         "comet_planet_ids": [1],
     }
     
@@ -177,7 +190,7 @@ def test_empty_actions():
 def main():
     """Run all tests."""
     print("=" * 60)
-    print("Orbit Wars Baseline Agent Local Tests")
+    print("Orbit Wars Agent Local Tests")
     print("=" * 60)
     print()
     

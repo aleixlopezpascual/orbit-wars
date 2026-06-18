@@ -62,7 +62,7 @@ Hypotheses are ranked by:
 
 ## Guardrails for future implementation phase
 
-1. Every candidate must declare parent: `control_hbx2.py`.
+1. Every candidate must declare parent: `control_producer.py`.
 2. One hypothesis family per candidate file.
 3. Promotion gate: n=24 pass before n=48.
 4. Submission decisions use confidence intervals and stability, not single peak runs.

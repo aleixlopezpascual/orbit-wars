@@ -4,30 +4,46 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+VENV_PY="${VENV_PY:-python3}"
 SEED="${SEED:-42}"
 N="${1:-24}"
-# v33: control is hellburner-x2-main (control_hbx2.py), not the weaker v29 snapshot
-LABEL="${2:-control_hbx2_n${N}}"
+# v35+: Producer is the active primary control; sanity compares Producer vs Stronger.
+LABEL="${2:-producer_vs_stronger_n${N}}"
 STEPS="${STEPS:-300}"
 ACT_TIMEOUT="${ACT_TIMEOUT:-1}"
+JSON_OUT="${JSON_OUT:-}"
 
 if [[ ! -f "run_validation.py" ]]; then
   echo "error: run_validation.py not found in repo root" >&2
   exit 1
 fi
 
-if [[ ! -f "control_hbx2.py" ]]; then
-  echo "error: expected control_hbx2.py in repo root (hellburner-x2-main snapshot)" >&2
+if [[ ! -f "control_producer.py" ]]; then
+  echo "error: expected control_producer.py in repo root (PRIMARY control)" >&2
+  exit 1
+fi
+
+if [[ ! -f "control_stronger.py" ]]; then
+  echo "error: expected control_stronger.py in repo root (secondary control)" >&2
   exit 1
 fi
 
 echo "Running control sanity gate: n=${N}, seed=${SEED}, steps=${STEPS}, act-timeout=${ACT_TIMEOUT}, label=${LABEL}"
-echo "  control_hbx2.py (ch) vs control_hbx2.py (bl) — expect ~50%"
-python3 run_validation.py \
-  --ch control_hbx2.py \
-  --bl control_hbx2.py \
-  -n "${N}" \
-  --steps "${STEPS}" \
-  --act-timeout "${ACT_TIMEOUT}" \
-  --seed "${SEED}" \
+echo "  control_producer.py (ch) vs control_stronger.py (bl) — expect Producer > Stronger"
+
+CMD=(
+  "${VENV_PY}" run_validation.py
+  --ch control_producer.py
+  --bl control_stronger.py
+  -n "${N}"
+  --steps "${STEPS}"
+  --act-timeout "${ACT_TIMEOUT}"
+  --seed "${SEED}"
   --label "${LABEL}"
+)
+
+if [[ -n "${JSON_OUT}" ]]; then
+  CMD+=(--json-out "${JSON_OUT}")
+fi
+
+"${CMD[@]}"

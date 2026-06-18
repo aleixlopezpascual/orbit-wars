@@ -71,7 +71,7 @@ Then move it to **Completed Experiments** when done.
 
 ### Files to Check
 - **Current candidate:** `agent.py`
-- **Recent baseline:** `control_hbx2.py`
+- **Recent baseline:** `control_producer.py`
 - **Test harness:** `python test_agent.py`
 - **Gate scripts:** `scripts/run_control_gate.sh`, `scripts/run_ablation_gate.sh`
 
@@ -88,5 +88,5 @@ bash scripts/run_control_gate.sh 24
 bash scripts/run_ablation_gate.sh v34_candidate_early_rush 24
 
 # Head-to-head
-python run_validation.py agent.py control_hbx2.py 42 24
+python run_validation.py --ch agent.py --bl control_producer.py -n 24 --seed 42
 ```
