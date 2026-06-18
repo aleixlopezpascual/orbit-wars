@@ -4,11 +4,10 @@
 
 This document is a prioritized backlog of strategy hypotheses to test in a later implementation phase.
 
-- **Baseline for all future tests:** `control_producer.py` (Orbit Wars Producer, 1180.2 ELO — PRIMARY).
-  Secondary reference: `control_stronger.py` (I'M STRONGER, 981.3 ELO).
-  Both files are **pending download from Kaggle** — see BENCHMARK_LOG.md for instructions.
-- **Current phase:** documentation and planning only.
-- **No code changes are executed from this document.**
+- **Baseline for all future tests:** `control_producer.py` (Orbit Wars Producer, 1180.2 ELO — PRIMARY). ✅ Locked in repo.
+  Secondary reference: `control_stronger.py` (I'M STRONGER, 981.3 ELO). ✅ Locked in repo.
+- **Current phase:** implementation — orbit_lite architecture adoption required.
+- **Key finding (2026-06-18 tournament):** heuristic stack (`agent.py`, v26–v29, hbx2) is at the performance ceiling. orbit_lite agents win 80–84% of games; heuristics win 0–8%. **The next candidate must adopt `ProducerLiteRuntime` / `orbit_lite` to be competitive.**
 
 ---
 
