@@ -2,7 +2,42 @@
 
 ---
 
-## Mandatory Tournament Gate (2026-06-18) — agent.py vs full pool
+## Mandatory Tournament Gate — corrected rankings (2026-06-18)
+
+### Fix applied
+Previous run used binary `rewards` for ranking — all non-winners tied at 2nd (3rd/4th never appeared).
+Fixed to use `final_scores` (planet + fleet ship counts) for true 4P ranking.
+
+### Setup
+- **Test agent:** `agent.py` (v29 heuristic lineage)
+- **Pool:** 8 agents — control_producer, control_stronger, control_hbx2, v26–v29 baselines
+- **Games:** 50 × 4-player round-robin
+- **Runtime:** 428.8s, 0 errors
+- **Artifact:** `artifacts/tournament_20260618_154159.json`
+
+### Leaderboard
+
+| Rank | Agent | Pts | Avg | 1st% | 1st | 2nd | 3rd | 4th | Games |
+|------|-------|-----|-----|------|-----|-----|-----|-----|-------|
+| 1 | control_stronger | 67.0 | 2.68 | 84% | 21 | 4 | 0 | 0 | 25 |
+| 2 | control_producer | 65.0 | 2.60 | 80% | 20 | 5 | 0 | 0 | 25 |
+| 3 | v28_baseline | 32.0 | 1.23 | 7.7% | 2 | 23 | 1 | 0 | 26 |
+| 4 | v29_baseline | 31.0 | 1.24 | 8.0% | 2 | 22 | 0 | 1 | 25 |
+| 5 | v26_baseline | 30.0 | 1.20 | 8.0% | 2 | 20 | 3 | 0 | 25 |
+| 6 | v27_baseline | 28.0 | 1.12 | 8.0% | 2 | 20 | 2 | 1 | 25 |
+| **7** | **agent.py** ◄ | **24.0** | **1.04** | **0%** | **0** | **21** | **1** | **1** | **23** |
+| 8 | control_hbx2 | 23.0 | 0.89 | 3.8% | 1 | 19 | 1 | 5 | 26 |
+
+### Verdict: ❌ FAIL — agent.py rank 7/8, 0 wins
+
+- Two-tier structure is clear: orbit_lite agents (80–84% wins) vs heuristic agents (0–8%)
+- agent.py beats control_hbx2 but cannot win a single game
+- Notable: control_hbx2 now has 5 fourth-place finishes — confirmed weakest of the heuristic tier
+- **action required:** next candidate must adopt orbit_lite / ProducerLiteRuntime architecture
+
+---
+
+
 
 ### Setup
 - **Test agent:** `agent.py` (v29 heuristic lineage)
