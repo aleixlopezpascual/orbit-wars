@@ -60,6 +60,22 @@ This downloads starter kits and any provided data files.
 
 ## Local Testing
 
+> **Python environment note:** `orbit_wars` is only registered in the project venvs, not in the system Python.
+> Use the `fantastic-system` venv for all local validation runs:
+> ```bash
+> VENV=/Users/aleix.lopez/copilot-worktrees/orbit-wars/aleixlopezpascual-fantastic-system/.venv/bin/python3
+> ```
+
+### Head-to-Head Validation (recommended)
+
+```bash
+# Sanity: confirm Producer (1180) beats Stronger (981)
+$VENV run_validation.py --ch control_producer.py --bl control_stronger.py -n 4 --seed 42
+
+# Benchmark a new candidate against the PRIMARY control
+$VENV run_validation.py --ch <candidate>.py --bl control_producer.py -n 24 --seed 42
+```
+
 ### Test Your Agent Locally
 
 ```python
