@@ -91,9 +91,10 @@ def build_agent_pool(test_agent_path: str, root: str) -> list[dict]:
     up to 10 agents total. Agents that fail to load are skipped with a warning.
     """
     candidates = [
-        # Local controls / baselines (priority order)
-        "control_producer.py",
-        "control_stronger.py",
+        # New high-ELO controls (always included — primary and secondary baselines)
+        "control_producer.py",   # 1180.2 ELO — PRIMARY control
+        "control_stronger.py",   # 981.3 ELO  — secondary control
+        # Legacy baselines (kept for historical reference)
         "control_hbx2.py",
         "v29_baseline.py",
         "v28_baseline.py",
@@ -214,7 +215,10 @@ def _run_game(args: tuple) -> dict:
         dt = _time.time() - t0
 
         rewards = [s.reward for s in state[-1]]
-        ranks = compute_placements(rewards)
+        scores = final_scores(state, len(combo))
+        # Use final ship-count scores for ranking (rewards are binary win/loss
+        # in orbit_wars — all non-winners tie at 0, so 3rd/4th never appear).
+        ranks = compute_placements(scores)
         pts = placement_points(ranks)
 
         return {
