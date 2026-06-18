@@ -82,6 +82,16 @@ Welcome! This directory contains all documentation for the Orbit Wars Kaggle com
 - `11_HBX2_BASELINE_CORRECTION.md` - Correct baseline lineage (`hellburner-x2-main.py` -> `control_hbx2.py`)
 - `12_COMPETITION_STATUS_NOTEBOOKS_DISCUSSIONS.md` - Live snapshot of leaderboard, notebook, and discussion meta
 - `13_IMPROVEMENT_HYPOTHESIS_BACKLOG.md` - Prioritized hypotheses for later implementation (documentation-only phase)
+- `14_PLANET_WARS_REFERENCE_REPO_FINDINGS.md` - What to borrow from `eonarheim/planet-wars-competition` (simulation/tests/telemetry, not strategy)
+
+### 🏆 Control Baselines (Current)
+**Files**:
+- `control_producer.py` — **PRIMARY control** (Orbit Wars Producer, 1180.2 ELO, 2026-06-18). All new candidates must beat this.
+- `control_stronger.py` — Secondary control (I'M STRONGER, 981.3 ELO, 2026-06-18). Secondary benchmark reference.
+- `orbit_lite/` — PyTorch planner package required by both new controls. Must be on `sys.path` when running validations.
+- `control_hbx2.py` — Archived historical control (Hellburner-X2, ~981 ELO). No longer the active bar.
+
+**Sanity gate result (2026-06-18):** Producer 75% WR vs Stronger at n=4, CI95 [30–95]. ✅
 
 ### 🏆 Control Baselines (Current)
 **Files**:
