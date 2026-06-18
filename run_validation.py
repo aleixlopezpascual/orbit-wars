@@ -13,6 +13,7 @@ def load_agent(path, suffix=""):
     name = f"agent_{suffix}_{random.random()}"
     spec = importlib.util.spec_from_file_location(name, path)
     mod = importlib.util.module_from_spec(spec)
+    sys.modules[name] = mod  # required for @dataclass to resolve cls.__module__
     spec.loader.exec_module(mod)
     return mod.agent
 

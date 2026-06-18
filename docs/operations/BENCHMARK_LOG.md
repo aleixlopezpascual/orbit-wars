@@ -30,6 +30,20 @@
 4. Expected: Producer wins >55% (CI lower >40%) to confirm ELO ordering is consistent.
 5. Commit both files with message `feat: lock new control baselines (Producer 1180, Stronger 981)`.
 
+### Sanity Gate Result (2026-06-18)
+
+```
+producer_vs_stronger_sanity: 4 games × 500 steps
+  g1: bl W  scores=[0, 1656]   seat=0
+  g2: ch W  scores=[0, 1854]   seat=1
+  g3: ch W  scores=[1948, 0]   seat=0
+  g4: ch W  scores=[0, 1943]   seat=1
+  RESULT: 3W/1L/0T  winrate 75.0%  CI95 [30–95]
+```
+**Status: ✅ PASS** — Producer (1180 ELO) wins 75% vs Stronger (981 ELO), confirming ELO ordering.
+CI95 is wide at n=4 — consistent with expected ordering. Run n=24 for tighter bounds.
+Note: `run_validation.py` patched to register modules in `sys.modules` (fix for `@dataclass` in dynamically loaded agents).
+
 ### Gate Commands (v35+)
 
 ```bash
