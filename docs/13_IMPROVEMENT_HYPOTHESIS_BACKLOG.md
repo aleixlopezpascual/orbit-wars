@@ -4,7 +4,9 @@
 
 This document is a prioritized backlog of strategy hypotheses to test in a later implementation phase.
 
-- **Baseline for all future tests:** `control_hbx2.py` (HBX2 lineage).
+- **Baseline for all future tests:** `control_producer.py` (Orbit Wars Producer, 1180.2 ELO — PRIMARY).
+  Secondary reference: `control_stronger.py` (I'M STRONGER, 981.3 ELO).
+  Both files are **pending download from Kaggle** — see BENCHMARK_LOG.md for instructions.
 - **Current phase:** documentation and planning only.
 - **No code changes are executed from this document.**
 

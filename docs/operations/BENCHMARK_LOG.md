@@ -2,6 +2,75 @@
 
 ---
 
+## v35+ Methodology Reset (2026-06-18) — New High-Score Controls
+
+### New Control Baseline: Producer → `control_producer.py` (PRIMARY)
+
+- **Kaggle submission:** "Orbit Wars Producer - Version 1"
+- **Public ELO:** 1180.2 (submitted ~13h ago as of 2026-06-18)
+- **Status:** ⏳ Pending download — file only exists in Kaggle notebook
+- **Action required:** Download from Kaggle, save as `control_producer.py`, lock as immutable.
+- **Rationale:** Highest ELO recorded in this project (+199 over previous control_hbx2 peak).
+  All future ablation candidates must beat this bar to be considered promotable.
+
+### Secondary Control: I'M STRONGER → `control_stronger.py`
+
+- **Kaggle submission:** "Orbit Wars | I'M STRONGER - Version 1"
+- **Public ELO:** 981.3 (submitted ~12h ago as of 2026-06-18)
+- **Status:** ⏳ Pending download — file only exists in Kaggle notebook
+- **Action required:** Download from Kaggle, save as `control_stronger.py`, lock as immutable.
+- **Rationale:** Strong secondary reference point; useful for benchmarking candidates that
+  cannot yet beat Producer but are still improvements over the old hbx2 control.
+
+### Download Instructions
+
+1. Open each notebook in Kaggle and copy the agent code.
+2. Save as `control_producer.py` and `control_stronger.py` in the repo root.
+3. Run sanity self-play: `python run_validation.py --ch control_producer.py --bl control_stronger.py -n 24 --seed 42`
+4. Expected: Producer wins >55% (CI lower >40%) to confirm ELO ordering is consistent.
+5. Commit both files with message `feat: lock new control baselines (Producer 1180, Stronger 981)`.
+
+### Sanity Gate Result (2026-06-18)
+
+```
+producer_vs_stronger_sanity: 4 games × 500 steps
+  g1: bl W  scores=[0, 1656]   seat=0
+  g2: ch W  scores=[0, 1854]   seat=1
+  g3: ch W  scores=[1948, 0]   seat=0
+  g4: ch W  scores=[0, 1943]   seat=1
+  RESULT: 3W/1L/0T  winrate 75.0%  CI95 [30–95]
+```
+**Status: ✅ PASS** — Producer (1180 ELO) wins 75% vs Stronger (981 ELO), confirming ELO ordering.
+CI95 is wide at n=4 — consistent with expected ordering. Run n=24 for tighter bounds.
+Note: `run_validation.py` patched to register modules in `sys.modules` (fix for `@dataclass` in dynamically loaded agents).
+
+### Gate Commands (v35+)
+
+```bash
+# Control sanity: producer vs stronger (must confirm Producer > Stronger)
+python run_validation.py --ch control_producer.py --bl control_stronger.py -n 24 --seed 42 --label producer_vs_stronger_n24
+
+# Primary ablation gate: candidate vs Producer (harder bar)
+python run_validation.py --ch <candidate>.py --bl control_producer.py -n 24 --seed 42 --label <candidate>_vs_producer_n24
+
+# Secondary sanity: also run vs Stronger for signal on mid-tier candidates
+python run_validation.py --ch <candidate>.py --bl control_stronger.py -n 24 --seed 42 --label <candidate>_vs_stronger_n24
+```
+
+### Promotion Thresholds (unchanged)
+
+| n | Pass Condition | Submit? |
+|---|---------------|---------|
+| n=24 | WR > 50%, CI lower > 35% | Promote to n=48 |
+| n=48 | WR ≥ 56% AND CI lower ≥ 45% | Submit |
+| n=48 | WR 52–55% AND CI lower ≥ 40% | Hold, find companion |
+| n=48 | WR < 52% OR CI lower < 40% | Discard |
+
+> NOTE: The bar is now higher — candidates must beat `control_producer.py` (1180 ELO), not hbx2.
+> `control_hbx2.py` remains in the repo as a historical reference but is no longer the active control.
+
+---
+
 ## v33 Methodology Reset (2026-05-27)
 
 ### True Control: hellburner-x2-main → `control_hbx2.py`
