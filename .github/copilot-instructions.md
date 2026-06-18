@@ -143,6 +143,20 @@ For operation tracking:
 For historical research:
 - `docs/archive/v30/` — v30 planning and research artifacts
 
+## External Replay Data for Behavioral Cloning
+
+Useful Kaggle discussion/data source for offline learning workflows:
+- https://www.kaggle.com/competitions/orbit-wars/discussion/697413
+- Update/fix thread: https://www.kaggle.com/competitions/orbit-wars/discussion/701894
+
+What it provides:
+- Daily replay datasets: `bovard/orbit-wars-top10-episodes-YYYY-MM-DD`
+- `episodes.tar.gz` replay JSONs plus `manifest.csv` metadata
+
+Usage guidance:
+- Use as a replay corpus for behavioral cloning, imitation learning, and opponent profiling.
+- Validate dataset completeness (`manifest.csv` vs files in `episodes.tar.gz`) before training, especially for early-date snapshots.
+
 ## Commit Message Convention
 
 When committing agent changes, include a concise hypothesis in the message:
