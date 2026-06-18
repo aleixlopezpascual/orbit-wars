@@ -146,8 +146,8 @@ For historical research:
 ## External Replay Data for Behavioral Cloning
 
 Useful Kaggle discussion/data source for offline learning workflows:
-- `https://www.kaggle.com/competitions/orbit-wars/discussion/697413`
-- update/fix thread: `https://www.kaggle.com/competitions/orbit-wars/discussion/701894`
+- https://www.kaggle.com/competitions/orbit-wars/discussion/697413
+- Update/fix thread: https://www.kaggle.com/competitions/orbit-wars/discussion/701894
 
 What it provides:
 - Daily replay datasets: `bovard/orbit-wars-top10-episodes-YYYY-MM-DD`
