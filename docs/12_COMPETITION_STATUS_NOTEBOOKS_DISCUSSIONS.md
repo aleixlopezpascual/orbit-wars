@@ -51,6 +51,15 @@ This is a time-slice and will drift as the competition evolves.
 2. **Hybridization is growing** (rule-based policy plus learned validator/value components).
 3. **RL is active but not yet the default winning path** in reproducible public pipelines.
 4. **Tooling notebooks are influential** (visualizers, replay tools, tournament runners).
+5. **Replay corpora are now available for offline learning loops** (behavioral cloning, opponent profiling), but dataset completeness should be checked per day.
+
+### Replay dataset note (behavioral cloning)
+
+- Staff thread **697413** publishes daily datasets (`bovard/orbit-wars-top10-episodes-YYYY-MM-DD`) containing:
+  - `episodes.tar.gz` replay JSONs at `episodes/{episode_id}.json`
+  - `manifest.csv` with episode metadata and score-based priority
+- Selection policy: top 10% daily episodes by summed post-episode ratings, with an approximately 20 GiB/day cap.
+- Practical caveat: community reports indicated missing replay files for parts of the initial series; track fixes/refreshes via thread **701894** and validate `manifest.csv` against available tar members before training.
 
 ---
 
@@ -66,6 +75,7 @@ This is a time-slice and will drift as the competition evolves.
 | Baseline method thread (ID 692800) | 39 | recurring baseline design references |
 | Runtime environment specs (ID 700191) | 34 | local-vs-Kaggle runtime mismatches affect outcomes |
 | Target evaluation considerations (ID 699003) | 31 | practical value scoring guidance |
+| Top-10% daily replay datasets (ID 697413, updated in 701894) | 8 | high-quality replay corpus for imitation/behavioral cloning, opponent profiling, and offline evaluation |
 | Validation episode failed (ID 692938) | 13 | common submission packaging/runtime failure modes |
 | Observation inconsistency report (ID 692695) | 21 | highlights environment-version drift risk |
 
@@ -76,6 +86,8 @@ This is a time-slice and will drift as the competition evolves.
 - https://www.kaggle.com/competitions/orbit-wars/discussion/694310
 - https://www.kaggle.com/competitions/orbit-wars/discussion/700191
 - https://www.kaggle.com/competitions/orbit-wars/discussion/699003
+- https://www.kaggle.com/competitions/orbit-wars/discussion/697413
+- https://www.kaggle.com/competitions/orbit-wars/discussion/701894
 - https://www.kaggle.com/competitions/orbit-wars/discussion/692938
 - https://www.kaggle.com/competitions/orbit-wars/discussion/692695
 
