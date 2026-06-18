@@ -91,22 +91,19 @@ Tests a candidate against the primary control (`control_producer.py`).
 Before any Kaggle submission, every candidate agent must pass the offline tournament gate.
 
 Required workflow:
-1. Ensure tournament environment and Kaggle agents are ready:
+1. Run the required gate script:
 ```bash
-bash scripts/setup_tournament_env.sh
-bash scripts/download_kaggle_agents.sh
+bash scripts/pre_submission_tournament_gate.sh <candidate_agent.py>
 ```
-2. Run tournament eval for the candidate:
-```bash
-.venv/bin/python3 run_tournament.py --agent <candidate_agent.py>
-```
-3. Check result artifact:
+2. Check result artifact:
 `artifacts/tournament_<timestamp>.json`
-4. Log outcome in `docs/operations/BENCHMARK_LOG.md` before submitting.
+3. Log outcome in `docs/operations/BENCHMARK_LOG.md` before submitting.
 
 Policy:
 - Do **not** submit agents that skip this tournament evaluation step.
-- Use full 10-agent pool whenever available (1 candidate + 5 local baselines + 4 Kaggle public agents).
+- Use the full 10-agent pool whenever available. The default priority pool includes
+  `control_producer.py`, `control_stronger.py`, `control_hbx2.py`, the versioned local baselines,
+  and Kaggle public agents.
 - If Kaggle agents are unavailable, run fallback tournament (50+ games) and document why.
 
 ## Versioning and Ablation Studies
@@ -116,8 +113,8 @@ The repo maintains a history of agent versions to track improvements:
 **Baseline versions** (locked references):
 - `v26_baseline.py`, `v27_baseline.py`, etc. — research snapshots
 - `control_hbx2.py` — Hellburner-X2 (historical, ~981 ELO, no longer active control)
-- `control_producer.py` — **PRIMARY control** (Orbit Wars Producer, 1180.2 ELO, 2026-06-18) ⚠️ PENDING DOWNLOAD
-- `control_stronger.py` — Secondary control (I'M STRONGER, 981.3 ELO, 2026-06-18) ⚠️ PENDING DOWNLOAD
+- `control_producer.py` — **PRIMARY control** (Orbit Wars Producer, 1180.2 ELO, 2026-06-18)
+- `control_stronger.py` — Secondary control (I'M STRONGER, 981.3 ELO, 2026-06-18)
 
 **Development versions** (current variants):
 - `agent.py` — main submission candidate

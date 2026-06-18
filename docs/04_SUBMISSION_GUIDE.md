@@ -60,10 +60,10 @@ This downloads starter kits and any provided data files.
 
 ## Local Testing
 
-> **Python environment note:** `orbit_wars` is only registered in the project venvs, not in the system Python.
-> Use the `fantastic-system` venv for all local validation runs:
+> **Python environment note:** `orbit_wars` is only registered in project virtualenvs, not system Python.
+> Use this workspace venv for local validation:
 > ```bash
-> VENV=/Users/aleix.lopez/copilot-worktrees/orbit-wars/aleixlopezpascual-fantastic-system/.venv/bin/python3
+> VENV=.venv/bin/python3
 > ```
 
 ### Head-to-Head Validation (recommended)
@@ -108,6 +108,15 @@ print([(i, s.reward) for i, s in enumerate(env.steps[-1])])
 env.render(mode="ipython", width=800, height=600)
 ```
 
+## External Local Benchmark Framework (Optional)
+
+For richer local benchmarking/visual analysis, you can also use:
+
+- `automatylicza/orbit-wars-lab` — https://github.com/automatylicza/orbit-wars-lab
+
+Use it for tournament visualization, replay inspection, and broader baseline comparisons.  
+Competition submission gating in this repository still uses `run_tournament.py` and the policy below.
+
 ## Submission Requirements
 
 ### File Structure
@@ -119,23 +128,22 @@ Your submission must have **main.py** at the root with an `agent` function.
 Every candidate must be evaluated with the offline tournament system before pushing to Kaggle.
 
 ```bash
-# One-time environment setup
-bash scripts/setup_tournament_env.sh
-
-# Refresh tournament opponent pool from Kaggle
-bash scripts/download_kaggle_agents.sh
-
-# Run full tournament for candidate agent
-.venv/bin/python3 run_tournament.py --agent <candidate_agent.py>
+# Required gate runner (executes setup + tournament and validates artifact)
+bash scripts/pre_submission_tournament_gate.sh <candidate_agent.py>
 ```
 
 Expected tournament setup:
-- 10 agents total: candidate + 5 local baselines + 4 Kaggle public agents
+- Up to 10 agents total: candidate + prioritized local controls/baselines + Kaggle public agents
+- The default priority pool now includes `control_producer.py` and `control_stronger.py`
 - 4-player round-robin combinations (210 games when all 10 are present)
 - Results saved in `artifacts/tournament_<timestamp>.json`
 
 Fallback rule:
 - If Kaggle public agents are temporarily unavailable, run fallback tournament with 50+ games and record the reason in `docs/operations/BENCHMARK_LOG.md`.
+
+No Kaggle submission should be sent without:
+1. A fresh passing artifact in `artifacts/tournament_<timestamp>.json` for the same candidate file.
+2. A benchmark log entry in `docs/operations/BENCHMARK_LOG.md`.
 
 ### Single File Submission
 

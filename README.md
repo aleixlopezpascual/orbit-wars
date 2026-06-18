@@ -5,9 +5,12 @@ This repository contains active agent code plus historical research/benchmark ar
 ## Top-level layout
 
 - `agent.py` — current working agent variant
-- `control_hbx2.py` — locked Hellburner-X2 control baseline
+- `control_producer.py` — primary control baseline (active bar)
+- `control_stronger.py` — secondary control baseline
+- `control_hbx2.py` — historical control baseline
 - `run_validation.py` — local head-to-head validation harness
-- `scripts/` — convenience benchmark gate scripts
+- `run_tournament.py` — offline tournament gate harness
+- `scripts/` — convenience benchmark/submission gate scripts
 - `docs/` — competition docs, research notes, and archived phase docs
 - `artifacts/logs/` — benchmark output logs and run artifacts
 
@@ -29,4 +32,7 @@ bash scripts/run_control_gate.sh 24
 
 # Candidate gate (example)
 bash scripts/run_ablation_gate.sh sweep 24
+
+# Mandatory pre-submission offline tournament gate
+bash scripts/pre_submission_tournament_gate.sh agent.py
 ```
