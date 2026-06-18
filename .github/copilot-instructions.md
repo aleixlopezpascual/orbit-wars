@@ -167,7 +167,6 @@ When time is limited, prefer a **per-planet supervised hybrid** over large end-t
   - Launch gate: binary hold/fire
   - Target head: categorical target over top-k candidates
 - Keep execution hybrid: learned policy predicts intent; `orbit_lite` remains responsible for intercept angle, ship sizing, and safety constraints.
-
 ## Commit Message Convention
 
 When committing agent changes, include a concise hypothesis in the message:
