@@ -13,17 +13,24 @@ from pathlib import Path
 
 
 def run_command(command, *, capture_output=True):
-    return subprocess.run(
-        command,
-        check=False,
-        text=True,
-        capture_output=capture_output,
-    )
+    try:
+        return subprocess.run(
+            command,
+            check=False,
+            text=True,
+            capture_output=capture_output,
+        )
+    except FileNotFoundError:
+        print(
+            f"Error: command '{command[0]}' not found. Install Kaggle CLI and ensure it is in PATH.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
 
 def write_text(path: Path, content: str):
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(content)
+    path.write_text(content, encoding="utf-8")
 
 
 def write_json(path: Path, payload):
@@ -64,7 +71,7 @@ def parse_episode_rows(csv_text: str):
     return parsed
 
 
-def list_submission_episodes(kaggle_bin: str, competition: str, submission_id: int):
+def list_submission_episodes(kaggle_bin: str, submission_id: int):
     command = [
         kaggle_bin,
         "competitions",
@@ -146,7 +153,7 @@ def main():
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    csv_text = list_submission_episodes(args.kaggle_bin, args.competition, args.submission_id)
+    csv_text = list_submission_episodes(args.kaggle_bin, args.submission_id)
     write_text(out_dir / "episodes.csv", csv_text)
 
     parsed_rows = parse_episode_rows(csv_text)

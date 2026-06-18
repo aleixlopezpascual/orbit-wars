@@ -100,8 +100,7 @@ def _persistent_lead_turn(turns, diff_series):
     for idx, sign in enumerate(signs):
         if sign == 0:
             continue
-        tail = [value for value in signs[idx:] if value != 0]
-        if tail and all(value == sign for value in tail):
+        if all(value == sign for value in signs[idx:]):
             return turns[idx]
     return None
 
@@ -143,7 +142,7 @@ def wilson_ci(wins, total, z=1.96):
 def write_json(path, payload):
     out_path = Path(path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(payload, indent=2) + "\n")
+    out_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
 def h2h(challenger_path, baseline_path, n_games, steps, label, seed_base=42, act_timeout=10, json_out=None):
