@@ -214,7 +214,10 @@ def _run_game(args: tuple) -> dict:
         dt = _time.time() - t0
 
         rewards = [s.reward for s in state[-1]]
-        ranks = compute_placements(rewards)
+        scores = final_scores(state, len(combo))
+        # Use final ship-count scores for ranking (rewards are binary win/loss
+        # in orbit_wars — all non-winners tie at 0, so 3rd/4th never appear).
+        ranks = compute_placements(scores)
         pts = placement_points(ranks)
 
         return {
