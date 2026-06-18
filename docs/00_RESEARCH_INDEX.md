@@ -5,12 +5,14 @@
 ### 🎯 Quick Start (Read These First)
 1. **00_RESEARCH_INDEX.md** ← You are here
 2. **08_RESEARCH_SUMMARY.md** - Executive summary of all findings
-3. **Quick Reference** - `/research/quick-reference.md` (30-second guide)
+3. **14_PLANET_WARS_REFERENCE_REPO_FINDINGS.md** - Reference repo takeaways for simulator correctness, tests, and telemetry
+4. **Quick Reference** - `/research/quick-reference.md` (30-second guide)
 
 ### 🧭 Current Competition Docs (Newest)
 1. **11_HBX2_BASELINE_CORRECTION.md** - Baseline correction to HBX2 lineage
 2. **12_COMPETITION_STATUS_NOTEBOOKS_DISCUSSIONS.md** - Current status snapshot from notebooks/discussions
 3. **13_IMPROVEMENT_HYPOTHESIS_BACKLOG.md** - Prioritized backlog for future implementation phase (docs-only now)
+4. **14_PLANET_WARS_REFERENCE_REPO_FINDINGS.md** - Focused note on what the old Planet Wars repo can still teach us
 
 ### 🗃️ Historical + Operations Docs
 - **Historical v30 docs** - `archive/v30/`
