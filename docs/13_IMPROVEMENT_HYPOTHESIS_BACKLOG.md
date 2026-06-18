@@ -27,6 +27,7 @@ Hypotheses are ranked by:
 | H-A1 | Add lightweight lookahead mission scoring on top of HBX2 | Public top strategies repeatedly converge on simulation-aware mission selection | Compare vs HBX2 with fixed seed panel (n=24 then n=48), split by 2P/4P |
 | H-A2 | Add present-value target scoring + risk discount | Discussion evidence suggests naive target selection leaves value on table | Ablation against HBX2 with one change only; report winrate + CI + runtime |
 | H-A3 | Build mode-specific weights for 2P vs 4P | Community reports 2P and 4P requiring different tactical behavior | Run separate 2P/4P benchmarks and combined weighted score |
+| H-A4 | Per-planet behavioral cloning hybrid (dual-head MLP + orbit_lite geometry) | Forum signal indicates replacing large end-to-end models with per-planet supervised intent prediction can improve win rate quickly while keeping rule-based physics safety | Train on top replay datasets with no-op downsampling (keep all launch frames, keep ~10% hold frames), run n=24 then n=48 vs HBX2 and report winrate + CI + action validity |
 
 ---
 
@@ -37,6 +38,15 @@ Hypotheses are ranked by:
 | H-B1 | Replay-derived opponent profiling | Better adaptation to aggressors/turtles should improve matchup consistency | Evaluate against mixed-opponent panel with slice metrics |
 | H-B2 | Hybrid shot validator (small learned component) | Public notebooks show hybrid rule-based + ML validators as an emerging path | Keep inference lightweight; test impact vs pure heuristic planner |
 | H-B3 | Runtime-guarded fallback policy | Discussion history shows runtime mismatch can silently kill strong logic | Track turn-time percentile and compare score stability |
+
+### Notes for H-A4 implementation design (future)
+
+1. Training unit should be **owned-planet decision rows** rather than full-board snapshots.
+2. Feature blocks should include: local planet state, distance-to-sun, and top-k neighbor context (distance, ETA, owner).
+3. Policy shape should be a small dual-head MLP:
+   - Head A: launch gate (hold/fire binary)
+   - Head B: target selector over top-k candidates
+4. Inference should remain hybrid: ML predicts intent; `orbit_lite` computes angle/ship sizing/safety constraints.
 
 ---
 

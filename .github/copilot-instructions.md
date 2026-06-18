@@ -146,7 +146,7 @@ For historical research:
 ## External Replay Data for Behavioral Cloning
 
 Useful Kaggle discussion/data source for offline learning workflows:
-- https://www.kaggle.com/competitions/orbit-wars/discussion/697413
+- Main dataset thread: https://www.kaggle.com/competitions/orbit-wars/discussion/697413
 - Update/fix thread: https://www.kaggle.com/competitions/orbit-wars/discussion/701894
 
 What it provides:
@@ -157,6 +157,16 @@ Usage guidance:
 - Use as a replay corpus for behavioral cloning, imitation learning, and opponent profiling.
 - Validate dataset completeness (`manifest.csv` vs files in `episodes.tar.gz`) before training, especially for early-date snapshots.
 
+### Final-week behavioral cloning blueprint (forum signal)
+
+When time is limited, prefer a **per-planet supervised hybrid** over large end-to-end architectures:
+- Build training rows from each owned planet's decision point (not full-board monolith states).
+- Rebalance no-op skew: keep all launch frames, keep only a small sample of hold frames (~10%).
+- Use compact features: local planet state, distance-to-sun, and top-k neighbor context (distance, ETA, owner).
+- Train a small dual-head MLP:
+  - Launch gate: binary hold/fire
+  - Target head: categorical target over top-k candidates
+- Keep execution hybrid: learned policy predicts intent; `orbit_lite` remains responsible for intercept angle, ship sizing, and safety constraints.
 ## Commit Message Convention
 
 When committing agent changes, include a concise hypothesis in the message:
