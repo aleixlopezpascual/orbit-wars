@@ -72,7 +72,7 @@ class ProducerLiteConfig:
     # sinking its whole garrison into a doomed attack (the flow scorer projects
     # opponents do-nothing, so it can't see reactive reinforcement). ``beta = 0``
     # disables it (bare floor).
-    reinforce_size_beta: float = 2.2
+    reinforce_size_beta: float = 1.8
     reinforce_eta_free: float = 3.0
     reinforce_eta_scale: float = 12.0
     # --- regroup  ------------------------------
@@ -399,4 +399,3 @@ def agent(obs):
     with torch.no_grad():
         sparse_row = _RUNTIME.tensor_action(obs_tensors)
     return sparse_action_row_to_moves(sparse_row, obs, player_id=player_id)
-
