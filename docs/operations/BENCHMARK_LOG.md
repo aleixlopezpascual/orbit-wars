@@ -126,6 +126,24 @@ single-knob changes; be sceptical of large local WR gains.
 
 ---
 
+### v37 Initial Counter-Meta Probes (2026-06-19)
+
+Goal: run low-risk, transfer-first probes from the new counter-meta roadmap while v36 Kaggle ELO is still settling.
+
+| Candidate | Change | Validation slice | Result | Verdict |
+|---|---|---|---|---|
+| `v37_candidate_wave_cap_5.py` | `max_waves_per_turn`: 6 -> 5 | vs Producer, n=24, seed 42 | 16W/8L/0T, WR 66.7% [47-82] | Pass on single-seed gate |
+| `v37_candidate_wave_cap_5.py` | `max_waves_per_turn`: 6 -> 5 | vs Producer, n=24, seed 142 | 10W/13L/1T, WR 43.5% [26-63] | Fail anti-mirror consistency |
+| `v37_candidate_wave_cap_5.py` | `max_waves_per_turn`: 6 -> 5 | vs Producer, n=24, seed 242 | 11W/13L/0T, WR 45.8% [28-65] | Fail anti-mirror consistency |
+| `v37_candidate_wave_cap_5.py` | `max_waves_per_turn`: 6 -> 5 | vs Stronger, n=24, seed 42 | 15W/9L/0T, WR 62.5% [43-79] | Positive secondary signal |
+| `v37_candidate_horizon_16.py` | `horizon`: 18 -> 16 | vs Producer, n=24, seed 42 | 11W/13L/0T, WR 45.8% [28-65] | Early fail |
+
+**Interpretation:** wave-cap 5 shows upside on some seeds but fails anti-mirror seed stability versus Producer, so it is not promotion-ready. Horizon 16 underperformed on the first gate and is deprioritized for now.
+
+**Action:** hold v37 promotion until v36 Kaggle ELO resolves; if v36 regresses, retry wave-cap tuning with stricter variance controls (or conditional cap) before any Kaggle submit.
+
+---
+
 ### v35 Candidate Ablations (2026-06-19)
 
 | Candidate | Hypothesis | n=24 vs Producer | Verdict |
