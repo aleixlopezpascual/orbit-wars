@@ -1,11 +1,13 @@
 """Local head-to-head validation harness."""
 import argparse
 import importlib.util
+import json
 import math
 import random
 import sys
 import time
 import traceback
+from pathlib import Path
 from kaggle_environments import make
 
 
@@ -30,6 +32,103 @@ def final_scores(state):
     return scores
 
 
+def step_metrics(step_state):
+    obs = step_state[0].observation
+    n = len(step_state)
+    ships = [0] * n
+    planets = [0] * n
+    production = [0] * n
+    fleet_ships = [0] * n
+
+    for p in obs.get("planets", []):
+        owner = p[1]
+        if 0 <= owner < n:
+            ships[owner] += p[5]
+            planets[owner] += 1
+            production[owner] += p[6]
+
+    for f in obs.get("fleets", []):
+        owner = f[1]
+        if 0 <= owner < n:
+            ships[owner] += f[6]
+            fleet_ships[owner] += f[6]
+
+    return {
+        "turn": int(obs.get("step", 0) or 0),
+        "ships": ships,
+        "planets": planets,
+        "production": production,
+        "fleet_ships": fleet_ships,
+        "scores": ships[:],
+    }
+
+
+def timeline_metrics(state):
+    return [step_metrics(step_state) for step_state in state]
+
+
+def _sign(value):
+    if value > 0:
+        return 1
+    if value < 0:
+        return -1
+    return 0
+
+
+def _lead_changes(diff_series):
+    prev = None
+    changes = 0
+    for value in diff_series:
+        sign = _sign(value)
+        if sign == 0:
+            continue
+        if prev is not None and sign != prev:
+            changes += 1
+        prev = sign
+    return changes
+
+
+def _first_nonzero_turn(turns, diff_series):
+    for turn, value in zip(turns, diff_series):
+        if value != 0:
+            return turn
+    return None
+
+
+def _persistent_lead_turn(turns, diff_series):
+    signs = [_sign(value) for value in diff_series]
+    for idx, sign in enumerate(signs):
+        if sign == 0:
+            continue
+        if all(value == sign for value in signs[idx:]):
+            return turns[idx]
+    return None
+
+
+def summarize_timeline(timeline, challenger_seat, baseline_seat):
+    turns = [entry["turn"] for entry in timeline]
+    score_diff = [entry["scores"][challenger_seat] - entry["scores"][baseline_seat] for entry in timeline]
+    ship_diff = [entry["ships"][challenger_seat] - entry["ships"][baseline_seat] for entry in timeline]
+    planet_diff = [entry["planets"][challenger_seat] - entry["planets"][baseline_seat] for entry in timeline]
+    prod_diff = [entry["production"][challenger_seat] - entry["production"][baseline_seat] for entry in timeline]
+
+    return {
+        "score_lead_changes": _lead_changes(score_diff),
+        "ship_lead_changes": _lead_changes(ship_diff),
+        "planet_lead_changes": _lead_changes(planet_diff),
+        "production_lead_changes": _lead_changes(prod_diff),
+        "first_score_lead_turn": _first_nonzero_turn(turns, score_diff),
+        "persistent_score_lead_turn": _persistent_lead_turn(turns, score_diff),
+        "peak_ship_advantage": max(ship_diff) if ship_diff else 0,
+        "peak_ship_disadvantage": min(ship_diff) if ship_diff else 0,
+        "peak_planet_advantage": max(planet_diff) if planet_diff else 0,
+        "peak_planet_disadvantage": min(planet_diff) if planet_diff else 0,
+        "final_ship_diff": ship_diff[-1] if ship_diff else 0,
+        "final_planet_diff": planet_diff[-1] if planet_diff else 0,
+        "final_production_diff": prod_diff[-1] if prod_diff else 0,
+    }
+
+
 def wilson_ci(wins, total, z=1.96):
     if total == 0:
         return 0.0, 100.0
@@ -40,7 +139,13 @@ def wilson_ci(wins, total, z=1.96):
     return max(0, (centre - margin)) * 100, min(1, (centre + margin)) * 100
 
 
-def h2h(challenger_path, baseline_path, n_games, steps, label, seed_base=42, act_timeout=10):
+def write_json(path, payload):
+    out_path = Path(path)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+def h2h(challenger_path, baseline_path, n_games, steps, label, seed_base=42, act_timeout=10, json_out=None):
     print(f"\n=== {label}: {n_games} games × {steps} steps ===", flush=True)
     ch_w = bl_w = ties = 0
     log = []
@@ -70,6 +175,7 @@ def h2h(challenger_path, baseline_path, n_games, steps, label, seed_base=42, act
         dt = time.time() - t0
         rewards = [s.reward for s in state[-1]]
         scores = final_scores(state)
+        timeline = timeline_metrics(state)
         if rewards[0] == rewards[1]:
             ties += 1
             tag = "TIE"
@@ -79,9 +185,23 @@ def h2h(challenger_path, baseline_path, n_games, steps, label, seed_base=42, act
         else:
             bl_w += 1
             tag = "bl W"
-        log.append({"g": g + 1, "ch_seat": ch_seat, "result": tag, "scores": scores, "time_s": dt})
+        summary = summarize_timeline(timeline, ch_seat, 1 - ch_seat)
+        log.append(
+            {
+                "g": g + 1,
+                "ch_seat": ch_seat,
+                "result": tag,
+                "scores": scores,
+                "time_s": dt,
+                "timeline_summary": summary,
+                "timeline": timeline,
+            }
+        )
         print(
-            f"  g{g+1:2d}: {tag:5s}  scores={scores}  seat={ch_seat}  t={dt:.1f}s",
+            "  "
+            f"g{g+1:2d}: {tag:5s}  scores={scores}  seat={ch_seat}  t={dt:.1f}s"
+            f"  scoreL={summary['score_lead_changes']}  shipL={summary['ship_lead_changes']}"
+            f"  lock={summary['persistent_score_lead_turn']}",
             flush=True,
         )
 
@@ -92,7 +212,25 @@ def h2h(challenger_path, baseline_path, n_games, steps, label, seed_base=42, act
         f"\n  RESULT: {ch_w}W/{bl_w}L/{ties}T  winrate {wr:.1f}%  CI95 [{lo:.0f}–{hi:.0f}]",
         flush=True,
     )
-    return {"wins": ch_w, "losses": bl_w, "ties": ties, "wr": wr, "ci": (lo, hi), "log": log}
+    result = {
+        "label": label,
+        "challenger_path": challenger_path,
+        "baseline_path": baseline_path,
+        "n_games": n_games,
+        "steps": steps,
+        "seed_base": seed_base,
+        "act_timeout": act_timeout,
+        "wins": ch_w,
+        "losses": bl_w,
+        "ties": ties,
+        "wr": wr,
+        "ci": (lo, hi),
+        "log": log,
+    }
+    if json_out:
+        write_json(json_out, result)
+        print(f"  Telemetry artifact: {json_out}", flush=True)
+    return result
 
 
 if __name__ == "__main__":
@@ -104,6 +242,7 @@ if __name__ == "__main__":
     parser.add_argument("--label", default="ch_vs_bl")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--act-timeout", type=int, default=10)
+    parser.add_argument("--json-out", help="Optional path to save per-game telemetry JSON.")
     args = parser.parse_args()
 
     h2h(
@@ -114,4 +253,5 @@ if __name__ == "__main__":
         args.label,
         seed_base=args.seed,
         act_timeout=args.act_timeout,
+        json_out=args.json_out,
     )
