@@ -68,6 +68,64 @@ Fixed to use `final_scores` (planet + fleet ship counts) for true 4P ranking.
 - `run_tournament.py` — added `control_producer` and `control_stronger` to agent pool (always included); fixed ranking to use `final_scores` (ship counts) instead of binary rewards so 3rd/4th place columns populate correctly.
 - **Local venv for orbit_wars + torch:** `aleixlopezpascual-fantastic-system/.venv/bin/python3` — only venv that has both `kaggle_environments[orbit_wars]` and `torch` installed.
 
+### v36 Ablations (2026-06-19) — Post-v35 Regression Recovery
+
+#### Context
+v35 (`reinforce_size_beta=1.8`) regressed **−89.4 ELO** on Kaggle (1050.1 vs baseline 1139.5).
+`control_producer.py` reverted to `reinforce_size_beta=2.2` (ELO 1139.5 baseline restored).
+
+**Lesson:** Local pool (v26–v29 + hbx2) is too weak — generates false positives. Prefer conservative
+single-knob changes; be sceptical of large local WR gains.
+
+#### Candidate Ablation Table
+
+| Candidate | Hypothesis | Change | n=24 vs Producer | Verdict |
+|---|---|---|---:|---|
+| `v36_candidate_roi_threshold.py` | Tighter target selection reduces over-extension | roi_threshold: 1.5 → 1.65 | 11W/13L/0T, WR 45.8% [28–65] | ❌ Fail — too passive |
+| `v36_candidate_min_ships.py` | Eliminate micro-fleets for better fleet efficiency | min_ships_to_launch: 4.0 → 8.0 | 13W/11L/0T, WR 54.2% [35–72] | ✅ **PASS** |
+
+#### Tournament Gate — `v36_candidate_min_ships.py`
+
+- **Script:** `bash scripts/pre_submission_tournament_gate.sh v36_candidate_min_ships.py`
+- **Pool:** 10 agents — control_producer, control_stronger, control_hbx2, v26–v29 baselines, kaggle_i_the_orbit, kaggle_v2_gru
+- **Games:** 210 × 4-player round-robin, 0 errors, 554.4s
+- **Artifact:** `artifacts/tournament_20260619_111111.json`
+
+| Rank | Agent | Pts | Avg | 1st% | 1st | 2nd | 3rd | 4th | Games |
+|------|-------|-----|-----|------|-----|-----|-----|-----|-------|
+| **1** | **v36_candidate_min_ships.py** ◄ | **196.5** | **2.339** | **65.5%** | **55** | **28** | **1** | **0** | **84** |
+| 2 | control_producer | 180.0 | 2.143 | 57.1% | 48 | 31 | 5 | 0 | 84 |
+| 3 | control_stronger | 172.5 | 2.054 | 52.4% | 44 | 37 | 3 | 0 | 84 |
+| 4 | kaggle_v2_gru | 172.0 | 2.048 | 51.2% | 43 | 40 | 1 | 0 | 84 |
+| 5 | v27_baseline | 99.0 | 1.179 | 8.3% | 7 | 73 | 2 | 2 | 84 |
+| 6 | v26_baseline | 92.5 | 1.101 | 3.6% | 3 | 77 | 3 | 1 | 84 |
+| 7 | v28_baseline | 91.0 | 1.083 | 4.8% | 4 | 74 | 4 | 2 | 84 |
+| 8 | v29_baseline | 86.5 | 1.030 | 1.2% | 1 | 78 | 3 | 2 | 84 |
+| 9 | control_hbx2 | 85.5 | 1.018 | 1.2% | 1 | 76 | 6 | 1 | 84 |
+| 10 | kaggle_i_the_orbit | 84.5 | 1.006 | 4.8% | 4 | 68 | 6 | 6 | 84 |
+
+**Verdict: ✅ PASS — Rank 1/10, 65.5% 1st-place rate (+8.4pp over control_producer)**
+
+**Promoted into `main.py` for submission**
+
+- `min_ships_to_launch` raised from `4.0` to `8.0`.
+- Hypothesis: raising the launch floor eliminates micro-fleets that are inefficient vs strong Kaggle opponents.
+- **Caution:** Local signal again shows +8pp 1st-place rate over control_producer — recall v35 false positive. Submit and verify Kaggle ELO before promoting further.
+
+#### Kaggle submission (2026-06-19)
+
+- **Submission ID:** 53843506
+- **File:** `submission.tar.gz` (main.py + orbit_lite)
+- **Message:** "v36: raise min_ships_to_launch 4.0→8.0 to eliminate micro-fleets"
+- **Status:** PENDING → TBD
+- **Baseline to beat:** 1139.5 (ref 53789266)
+- **Decision tree:**
+  - ELO > 1139.5 → PROMOTE as new control_producer baseline
+  - 1050 < ELO < 1139.5 → Partial improvement; investigate stacking
+  - ELO < 1050 → Regression; try max_waves_per_turn 6→5 or horizon 18→15
+
+---
+
 ### v35 Candidate Ablations (2026-06-19)
 
 | Candidate | Hypothesis | n=24 vs Producer | Verdict |
