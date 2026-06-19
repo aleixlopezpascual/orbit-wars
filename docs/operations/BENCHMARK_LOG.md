@@ -71,7 +71,7 @@ Fixed to use `final_scores` (planet + fleet ship counts) for true 4P ranking.
 ### v36 Ablations (2026-06-19) — Post-v35 Regression Recovery
 
 #### Context
-v35 (`reinforce_size_beta=1.8`) regressed **−127.5 ELO** on Kaggle (1012.0 vs baseline 1139.5).
+v35 (`reinforce_size_beta=1.8`) regressed **−89.4 ELO** on Kaggle (1050.1 vs baseline 1139.5).
 `control_producer.py` reverted to `reinforce_size_beta=2.2` (ELO 1139.5 baseline restored).
 
 **Lesson:** Local pool (v26–v29 + hbx2) is too weak — generates false positives. Prefer conservative
@@ -106,11 +106,23 @@ single-knob changes; be sceptical of large local WR gains.
 
 **Verdict: ✅ PASS — Rank 1/10, 65.5% 1st-place rate (+8.4pp over control_producer)**
 
-#### Promoted into `main.py` for submission
+**Promoted into `main.py` for submission**
 
 - `min_ships_to_launch` raised from `4.0` to `8.0`.
 - Hypothesis: raising the launch floor eliminates micro-fleets that are inefficient vs strong Kaggle opponents.
 - **Caution:** Local signal again shows +8pp 1st-place rate over control_producer — recall v35 false positive. Submit and verify Kaggle ELO before promoting further.
+
+#### Kaggle submission (2026-06-19)
+
+- **Submission ID:** 53843506
+- **File:** `submission.tar.gz` (main.py + orbit_lite)
+- **Message:** "v36: raise min_ships_to_launch 4.0→8.0 to eliminate micro-fleets"
+- **Status:** PENDING → TBD
+- **Baseline to beat:** 1139.5 (ref 53789266)
+- **Decision tree:**
+  - ELO > 1139.5 → PROMOTE as new control_producer baseline
+  - 1050 < ELO < 1139.5 → Partial improvement; investigate stacking
+  - ELO < 1050 → Regression; try max_waves_per_turn 6→5 or horizon 18→15
 
 ---
 
