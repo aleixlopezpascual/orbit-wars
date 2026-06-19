@@ -14,6 +14,22 @@ Track active and historical experiments with their hypothesis, status, and resul
 
 ## Completed Experiments
 
+### v38: exp50 Transfer Ablations (Terminal Tuning)
+- **Hypothesis:** exp50-style terminal aggression (more late-game pressure + lower ROI gating) improves performance vs `control_producer.py`
+- **Test Method:** Isolated v38 candidates (`terminal_wave_boost`, `terminal_roi_lower`, `terminal_aggressive`) in short gates vs `control_producer.py`
+- **Status:** ✅ Completed
+- **Result:** No measurable gain; all variants were non-promotable
+- **Date:** 2026-06-19
+- **Notes:** Main failure mode was architecture mismatch. exp50 is wave-limited, while `agent.py` is mission-priority greedy dispatch; terminal-wave style knobs did not translate.
+
+### v39: exp50 Transfer Ablation (Multi-size Fleets)
+- **Hypothesis:** Sending split fleet sizes toward the same target (0.5/0.75/1.0 style) increases robustness and lift vs `control_producer.py`
+- **Test Method:** Implemented candidate `v39_candidate_multisize_fleets.py`, then ran validation + runtime checks
+- **Status:** ✅ Completed
+- **Result:** Discarded; approach conflicted with current budgeting/dispatch flow
+- **Date:** 2026-06-19
+- **Notes:** Multi-size wave semantics from exp50 do not map cleanly to our mission execution model without deeper refactor. Decision: stop exp50 feature transfer and continue independent control_producer research.
+
 ### v33: Contested Neutral Margin Tuning
 - **Hypothesis:** Increasing `CONTESTED_NEUTRAL_MARGIN` from 1 to 2 improves safety on multi-player neutral captures
 - **Test Method:** 24 episodes vs `control_hbx2.py`

@@ -174,6 +174,27 @@ Single-change candidate from v36 baseline:
 - `v37_candidate_horizon_16.py`
 - Smoke-only signal vs Producer before full gating: `0W/2L` at `n=2` (deprioritized and held)
 
+### exp50 Integration Review (2026-06-19)
+
+#### Objective
+Assess whether high-ELO Kaggle agent `exp50` provides transferable improvements for `control_producer` line.
+
+#### What was run
+- Extracted and benchmarked `exp50` locally (`tournament_agents/kaggle_exp50.py`)
+- Multi-agent tournament with controls + baselines
+- Transfer ablations in our codebase:
+  - v38 terminal tuning set (wave/ROI-inspired knobs)
+  - v39 multi-size fleet dispatch attempt
+
+#### Key findings
+- `control_producer` remained stronger locally than `exp50` in tournament settings.
+- v38 terminal tuning produced no promotable improvement.
+- v39 multi-size behavior did not translate under our mission-budget dispatch architecture.
+
+#### Decision
+- **Do not merge exp50 mechanics directly into `control_producer`.**
+- Keep `exp50` as a reference opponent and continue independent producer-focused research.
+
 ---
 
 ### v35 Candidate Ablations (2026-06-19)
