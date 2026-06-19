@@ -118,9 +118,9 @@ single-knob changes; be sceptical of large local WR gains.
 - **File:** `submission.tar.gz` (main.py + orbit_lite)
 - **Message:** "v36: raise min_ships_to_launch 4.0→8.0 to eliminate micro-fleets"
 - **Status:** ✅ COMPLETE
-- **Public score:** **1120.8**
+- **Public score:** **1186.3**
 - **Baseline to beat:** 1139.5 (ref 53789266)
-- **Outcome:** No baseline promotion (1120.8 < 1139.5), but also no catastrophic regression (above prior v35 live score).
+- **Outcome:** ✅ **Promotable as strongest observed live baseline** (1186.3 > 1139.5).
 
 #### v37 Execution Trigger (2026-06-19)
 
@@ -158,16 +158,26 @@ Single-change candidate from v36 baseline:
   - 2nd: `kaggle_i_the_orbit` (182.0)
   - 3rd: `control_producer` (157.5)
 
-**Current recommendation:** `v37_candidate_wave_cap_5.py` is submission-ready under current gates. Keep `v37_candidate_horizon_16.py` on hold unless wave-cap path is rejected for external reasons.
+**Current recommendation (pre-live):** `v37_candidate_wave_cap_5.py` is submission-ready under offline gates.
 
-##### Kaggle submission (2026-06-19)
+##### Kaggle submissions and live outcome (2026-06-19)
 
-- **Submission ID:** `53847726`
-- **File:** `submission.tar.gz` (`main.py` from `v37_candidate_wave_cap_5.py` + `orbit_lite/`)
-- **Message:** "v37: wave-cap 6->5 after v36 stabilization"
-- **Status:** ⏳ **PENDING**
-- **Near-simultaneous duplicate observed:** `53847724` (`submission_v37_wave_cap_5.tar.gz`)
-- **Canonical tracking ID:** `53847726`
+- **Canonical v37 ref:** `53847724`
+  - File: `submission_v37_wave_cap_5.tar.gz`
+  - Message: "v37 wave-cap: max_waves_per_turn 6→5 on v36 baseline"
+  - Status: ✅ **COMPLETE**
+  - Public score: **1170.0**
+- **Duplicate/failed ref:** `53847726`
+  - File: `submission.tar.gz`
+  - Message: "v37: wave-cap 6->5 after v36 stabilization"
+  - Status: ❌ **ERROR**
+  - Cause: packaged `main.py` wrapper imported `v36_candidate_min_ships.py`, but that file was not included in the bundle (dependency omission).
+
+##### Post-live decision
+
+- v37 wave-cap **underperformed** v36 live baseline (`1170.0 < 1186.3`).
+- Keep v36 behavior as active baseline reference.
+- Treat v37 wave-cap as a documented negative/neutral ablation (good offline, weaker live transfer).
 
 ##### Parallel-prepared secondary artifact (not submitted)
 
