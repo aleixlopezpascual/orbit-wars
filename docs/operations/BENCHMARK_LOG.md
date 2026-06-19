@@ -117,30 +117,53 @@ single-knob changes; be sceptical of large local WR gains.
 - **Submission ID:** 53843506
 - **File:** `submission.tar.gz` (main.py + orbit_lite)
 - **Message:** "v36: raise min_ships_to_launch 4.0→8.0 to eliminate micro-fleets"
-- **Status:** PENDING → TBD
+- **Status:** ✅ COMPLETE
+- **Public score:** **1120.8** (latest observed at 2026-06-19 11:55 UTC+0 table)
 - **Baseline to beat:** 1139.5 (ref 53789266)
-- **Decision tree:**
-  - ELO > 1139.5 → PROMOTE as new control_producer baseline
-  - 1050 < ELO < 1139.5 → Partial improvement; investigate stacking
-  - ELO < 1050 → Regression; try max_waves_per_turn 6→5 or horizon 18→15
+- **Outcome:** No baseline promotion (1120.8 < 1139.5), but also no catastrophic regression (above prior v35 live score).
 
----
+#### v37 Execution Trigger (2026-06-19)
 
-### v37 Initial Counter-Meta Probes (2026-06-19)
+- Trigger source: parent session after 53843506 stabilized.
+- Sequence requested: `v37_candidate_wave_cap_5.py` first, `v37_candidate_horizon_16.py` deprioritized.
+- Constraint: no promotion/merge until full gates conclude.
 
-Goal: run low-risk, transfer-first probes from the new counter-meta roadmap while v36 Kaggle ELO is still settling.
+#### v37 Wave-Cap Candidate — `v37_candidate_wave_cap_5.py`
 
-| Candidate | Change | Validation slice | Result | Verdict |
-|---|---|---|---|---|
-| `v37_candidate_wave_cap_5.py` | `max_waves_per_turn`: 6 -> 5 | vs Producer, n=24, seed 42 | 16W/8L/0T, WR 66.7% [47-82] | Pass on single-seed gate |
-| `v37_candidate_wave_cap_5.py` | `max_waves_per_turn`: 6 -> 5 | vs Producer, n=24, seed 142 | 10W/13L/1T, WR 43.5% [26-63] | Fail anti-mirror consistency |
-| `v37_candidate_wave_cap_5.py` | `max_waves_per_turn`: 6 -> 5 | vs Producer, n=24, seed 242 | 11W/13L/0T, WR 45.8% [28-65] | Fail anti-mirror consistency |
-| `v37_candidate_wave_cap_5.py` | `max_waves_per_turn`: 6 -> 5 | vs Stronger, n=24, seed 42 | 15W/9L/0T, WR 62.5% [43-79] | Positive secondary signal |
-| `v37_candidate_horizon_16.py` | `horizon`: 18 -> 16 | vs Producer, n=24, seed 42 | 11W/13L/0T, WR 45.8% [28-65] | Early fail |
+Single-change candidate from v36 baseline:
+- `max_waves_per_turn`: `6 → 5`
 
-**Interpretation:** wave-cap 5 shows upside on some seeds but fails anti-mirror seed stability versus Producer, so it is not promotion-ready. Horizon 16 underperformed on the first gate and is deprioritized for now.
+##### Seed-block gate vs Producer (n=24 each)
 
-**Action:** hold v37 promotion until v36 Kaggle ELO resolves; if v36 regresses, retry wave-cap tuning with stricter variance controls (or conditional cap) before any Kaggle submit.
+| Label | Result | WR | CI95 |
+|---|---:|---:|---:|
+| `v37_wave_cap_5_vs_producer_n24_s42` | 13W/11L/0T | 54.2% | [35–72] |
+| `v37_wave_cap_5_vs_producer_n24_s142` | 15W/9L/0T | 62.5% | [43–79] |
+| `v37_wave_cap_5_vs_producer_n24_s242` | 18W/6L/0T | 75.0% | [55–88] |
+
+**Seed-block verdict:** ✅ PASS — consistent wins across all three seed blocks.
+
+##### n=48 gate vs Producer
+
+- **Command label:** `v37_wave_cap_5_vs_producer_n48_s42`
+- **Result:** **33W/15L/0T**, WR **68.8%**, CI95 **[55–80]**
+- **Threshold check:** ✅ PASS (`WR ≥ 56%` and `CI lower ≥ 45%`)
+
+##### Mandatory Tournament Gate
+
+- **Script:** `bash scripts/pre_submission_tournament_gate.sh v37_candidate_wave_cap_5.py`
+- **Artifact:** `artifacts/tournament_20260619_134556.json`
+- **Result:** ✅ **PASS** (`n_agents=10`, `n_games=210`, `errors=0`)
+- **Leaderboard:** rank **1/10**, **190.0 pts**, **61.9% 1st-place** (52/84)
+  - 2nd: `kaggle_i_the_orbit` (182.0)
+  - 3rd: `control_producer` (157.5)
+
+**Current recommendation:** `v37_candidate_wave_cap_5.py` is submission-ready under current gates. Keep `v37_candidate_horizon_16.py` on hold unless wave-cap path is rejected for external reasons.
+
+##### Kaggle submissions triggered (pending)
+
+- `53847726` — `submission.tar.gz` — "v37: wave-cap 6->5 after v36 stabilization" — `PENDING`
+- `53847724` — `submission_v37_wave_cap_5.tar.gz` — "v37 wave-cap: max_waves_per_turn 6→5 on v36 baseline" — `PENDING`
 
 ---
 
