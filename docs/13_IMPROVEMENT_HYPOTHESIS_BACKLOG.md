@@ -25,10 +25,18 @@ Hypotheses are ranked by:
 
 | ID | Hypothesis | Why it could work | Validation design (future) |
 |---|---|---|---|
-| H-A1 | Add lightweight lookahead mission scoring on top of HBX2 | Public top strategies repeatedly converge on simulation-aware mission selection | Compare vs HBX2 with fixed seed panel (n=24 then n=48), split by 2P/4P |
+| H-A1 | Add lightweight 2-ply lookahead mission scoring on top of HBX2 | Public top strategies repeatedly converge on simulation-aware mission selection; stepping-stone captures are likely under-picked by 1-ply greedy policies | Compare vs HBX2 with fixed seed panel (n=24 then n=48), split by 2P/4P |
 | H-A2 | Add present-value target scoring + risk discount | Discussion evidence suggests naive target selection leaves value on table | Ablation against HBX2 with one change only; report winrate + CI + runtime |
 | H-A3 | Build mode-specific weights for 2P vs 4P | Community reports 2P and 4P requiring different tactical behavior | Run separate 2P/4P benchmarks and combined weighted score |
 | H-A4 | Per-planet behavioral cloning hybrid (dual-head MLP + orbit_lite geometry) | Forum signal indicates replacing large end-to-end models with per-planet supervised intent prediction can improve win rate quickly while keeping rule-based physics safety | Train on top replay datasets with no-op downsampling (keep all launch frames, keep ~10% hold frames), run n=24 then n=48 vs HBX2 and report winrate + CI + action validity |
+| H-A5 | Add multi-source coalition launches (2-3 synchronized planets per target) | Producer-style single-source launches miss captures when no single planet can meet floor alone; synchronized arrivals can unlock high-value targets | Add coalition candidate generator behind a flag, run ablation vs `control_producer.py` (n=24 then n=48), and log capture success delta on contested planets |
+| H-A6 | Add mathematically-lost planet evacuation ("tavacuation") | Reactive defenses often overcommit to doomed holds; pre-impact evacuation can preserve fleet mass and create immediate counterplay | Trigger evacuation only when projected defense deficit remains negative at arrival; benchmark vs controls with event logging for saved ships and post-evac recapture rate |
+| H-A7 | Add state-dependent parameter ensembling in `_config_for` | Deterministic thresholding makes policies predictable in clone-heavy pools; mild dynamic knobs can reduce exploitability without full refactors | Gate dynamic ROI/aggression modifiers by turn/rank/player-count, then run seed-sweep stability tests (n=24 per seed set) to ensure no catastrophic regressions |
+
+### Producer V2 clone-wall feedback mapping (2026-06-19)
+
+- **Already covered:** 2-ply lookahead and stepping-stone planning (H-A1, now made explicit).
+- **Newly added from feedback:** coalition launches (H-A5), lost-planet evacuation (H-A6), and dynamic parameter ensembling (H-A7).
 
 ---
 
