@@ -1,5 +1,5 @@
 """
-run_tournament.py — Full round-robin 4-player tournament evaluation.
+run_tournament.py — Full round-robin 4-player tournament evaluation with ELO calibration.
 
 10 agents compete in all C(10,4) = 210 unique 4-player combinations.
 Scoring: 1st=3pts, 2nd=2pts, 3rd=1pt, 4th=0pt (ties split equally).
@@ -7,12 +7,18 @@ Scoring: 1st=3pts, 2nd=2pts, 3rd=1pt, 4th=0pt (ties split equally).
 When fewer agents are available (e.g. torch not installed, Kaggle agents missing),
 repeats are automatically increased so the total game count stays at 50+.
 
+Enhanced with:
+  - ELO rating calculation from tournament results
+  - Anchor-based calibration to predict Kaggle ELO
+  - Submission bundle validation support
+
 Usage:
     python3 run_tournament.py                          # test agent.py vs default pool
     python3 run_tournament.py --agent my_agent.py      # test a specific agent
     python3 run_tournament.py --games 50               # limit to 50 random games
     python3 run_tournament.py --workers 4              # parallel workers
     python3 run_tournament.py --dry-run                # print schedule only
+    python3 run_tournament.py --no-rating              # skip ELO computation (for speed)
 
 Requirements: Python 3.11+, kaggle-environments>=1.29.0, torch>=2.0
 Setup:        bash scripts/setup_tournament_env.sh
@@ -33,6 +39,15 @@ import traceback
 from itertools import combinations
 from pathlib import Path
 from typing import Optional
+
+# Import rating system (same directory as run_tournament.py in scripts/)
+try:
+    sys.path.insert(0, str(Path(__file__).parent))
+    from scripts.rating_system import RatingSystem, KNOWN_ANCHORS
+except ImportError:
+    # Fallback if rating_system not available
+    RatingSystem = None
+    KNOWN_ANCHORS = []
 
 
 # ---------------------------------------------------------------------------
@@ -257,6 +272,7 @@ def run_tournament(
     dry_run: bool,
     out_path: Optional[str],
     repeats: int = 1,
+    skip_rating: bool = False,
 ) -> dict:
     print("Loading agent pool...", flush=True)
     pool = build_agent_pool(test_agent_path, root)
@@ -354,7 +370,26 @@ def run_tournament(
     print(f"\nAll games done in {total_time:.1f}s  ({errors} errors)")
 
     leaderboard = _build_leaderboard(stats, n_agents)
-    _print_leaderboard(leaderboard, pool[0]["name"])
+    
+    # Compute ELO ratings and calibration if available
+    ratings = None
+    calibrated = None
+    if RatingSystem and not skip_rating:
+        try:
+            rating_sys = RatingSystem(known_anchors=KNOWN_ANCHORS)
+            # Build tournament results dict for rating calculation
+            tournament_results = {
+                "test_agent": pool[0]["name"],
+                "n_agents": n_agents,
+                "games": game_results,
+            }
+            ratings = rating_sys.compute_ratings(tournament_results)
+            calibrated = rating_sys.calibrate_to_kaggle(ratings)
+            print(f"\n{rating_sys.explain_calibration()}")
+        except Exception as e:
+            print(f"\n⚠  Warning: Could not compute ELO ratings: {e}", flush=True)
+    
+    _print_leaderboard(leaderboard, pool[0]["name"], ratings, calibrated)
 
     output = {
         "test_agent": pool[0]["name"],
@@ -363,6 +398,8 @@ def run_tournament(
         "errors": errors,
         "total_time_s": round(total_time, 1),
         "leaderboard": leaderboard,
+        "ratings": ratings,
+        "calibrated_kaggle_predictions": calibrated,
         "games": game_results,
     }
 
@@ -435,30 +472,59 @@ def _build_leaderboard(stats: dict, n_agents: int) -> list[dict]:
     return rows
 
 
-def _print_leaderboard(leaderboard: list[dict], test_agent_name: str):
-    print(f"\n{'=' * 78}")
+def _print_leaderboard(leaderboard: list[dict], test_agent_name: str, ratings: Optional[dict] = None, calibrated: Optional[dict] = None):
+    print(f"\n{'=' * 100}")
     print(f"TOURNAMENT LEADERBOARD")
-    print(f"{'=' * 78}")
-    header = f"{'Rank':<5} {'Agent':<30} {'Pts':>7} {'Avg':>6} {'1st%':>6} {'1st':>5} {'2nd':>5} {'3rd':>5} {'4th':>5} {'Games':>6}"
+    print(f"{'=' * 100}")
+    
+    # Include ELO columns if available
+    if ratings and calibrated:
+        header = f"{'Rank':<5} {'Agent':<28} {'Pts':>7} {'Avg':>6} {'1st%':>6} {'ELO':>7} {'Pred.KGL':>9} {'1st':>5} {'2nd':>5} {'3rd':>5} {'4th':>5}"
+    else:
+        header = f"{'Rank':<5} {'Agent':<30} {'Pts':>7} {'Avg':>6} {'1st%':>6} {'1st':>5} {'2nd':>5} {'3rd':>5} {'4th':>5} {'Games':>6}"
+    
     print(header)
-    print("-" * 78)
+    print("-" * len(header))
+    
     for row in leaderboard:
         marker = " ◄" if row["name"] == test_agent_name else ""
         p = row["placements"]
-        line = (
-            f"{row['rank']:<5} {row['name'][:29]:<30} {row['pts']:>7.1f} "
-            f"{row['avg_pts']:>6.3f} {row['first_pct']:>5.1f}% "
-            f"{p[0]:>5} {p[1]:>5} {p[2]:>5} {p[3]:>5} {row['games']:>6}{marker}"
-        )
+        
+        if ratings and calibrated:
+            elo = ratings.get(row["name"], 1000.0)
+            calibrated_info = calibrated.get(row["name"], {})
+            pred_kgl = calibrated_info.get("predicted_kaggle_elo", 0.0)
+            line = (
+                f"{row['rank']:<5} {row['name'][:27]:<28} {row['pts']:>7.1f} "
+                f"{row['avg_pts']:>6.3f} {row['first_pct']:>5.1f}% "
+                f"{elo:>7.0f} {pred_kgl:>9.0f} "
+                f"{p[0]:>5} {p[1]:>5} {p[2]:>5} {p[3]:>5}{marker}"
+            )
+        else:
+            line = (
+                f"{row['rank']:<5} {row['name'][:29]:<30} {row['pts']:>7.1f} "
+                f"{row['avg_pts']:>6.3f} {row['first_pct']:>5.1f}% "
+                f"{p[0]:>5} {p[1]:>5} {p[2]:>5} {p[3]:>5} {row['games']:>6}{marker}"
+            )
         print(line)
-    print("=" * 78)
+    
+    print("=" * len(header))
 
     # Summary for the test agent
     test_row = next((r for r in leaderboard if r["name"] == test_agent_name), None)
     if test_row:
-        print(f"\n📊 Test agent '{test_agent_name}': Rank {test_row['rank']}/{len(leaderboard)}  "
-              f"1st={test_row['placements'][0]} ({test_row['first_pct']}%)  "
-              f"Pts={test_row['pts']}")
+        summary = (
+            f"\n📊 Test agent '{test_agent_name}': Rank {test_row['rank']}/{len(leaderboard)}  "
+            f"1st={test_row['placements'][0]} ({test_row['first_pct']}%)  "
+            f"Pts={test_row['pts']}"
+        )
+        if ratings and calibrated:
+            elo = ratings.get(test_agent_name, 1000.0)
+            calibrated_info = calibrated.get(test_agent_name, {})
+            pred_kgl = calibrated_info.get("predicted_kaggle_elo", 0.0)
+            confidence = calibrated_info.get("calibration_confidence", "unknown")
+            summary += f"  |  ELO={elo:.0f}  →  Pred.Kaggle={pred_kgl:.0f} ({confidence})"
+        print(summary)
 
 
 # ---------------------------------------------------------------------------
@@ -515,6 +581,10 @@ def main():
         help="Print the game schedule without running any games"
     )
     parser.add_argument(
+        "--no-rating", action="store_true",
+        help="Skip ELO rating computation (for speed)"
+    )
+    parser.add_argument(
         "--out", default=None,
         help="Path to save JSON results (default: artifacts/tournament_<timestamp>.json)"
     )
@@ -549,6 +619,7 @@ def main():
         dry_run=args.dry_run,
         out_path=out_path,
         repeats=args.repeats,
+        skip_rating=args.no_rating,
     )
 
 

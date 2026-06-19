@@ -5,11 +5,17 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
 if [[ $# -lt 1 ]]; then
-  echo "usage: bash scripts/pre_submission_tournament_gate.sh <candidate_agent.py>" >&2
+  echo "usage: bash scripts/pre_submission_tournament_gate.sh <candidate_agent.py> [submission.tar.gz|submission.zip]" >&2
+  echo "" >&2
+  echo "Options:" >&2
+  echo "  <candidate_agent.py>      Agent to test against tournament pool" >&2
+  echo "  [submission bundle]       Optional: validate submission bundle after tournament PASS" >&2
   exit 1
 fi
 
 CANDIDATE="$1"
+BUNDLE="${2:-}"
+
 if [[ ! -f "$CANDIDATE" ]]; then
   echo "error: candidate file not found: $CANDIDATE" >&2
   exit 1
@@ -74,5 +80,22 @@ if n_agents < 10:
     print("  note: fewer than 10 agents loaded; record fallback reason in docs/operations/BENCHMARK_LOG.md")
 PYEOF
 
-echo
+# Optional: validate submission bundle if provided
+if [[ -n "$BUNDLE" && -f "$BUNDLE" ]]; then
+  echo ""
+  echo "Validating submission bundle: $BUNDLE"
+  if "$VENV_PY" scripts/validate_submission_bundle.py "$BUNDLE"; then
+    echo "✅ Submission bundle validation PASS"
+  else
+    echo "❌ Submission bundle validation FAIL"
+    exit 1
+  fi
+else
+  if [[ -n "$BUNDLE" ]]; then
+    echo "warning: submission bundle not found: $BUNDLE (skipping validation)" >&2
+  fi
+fi
+
+echo ""
 echo "Next mandatory step: log this run in docs/operations/BENCHMARK_LOG.md before Kaggle submission."
+
