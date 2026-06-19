@@ -85,6 +85,7 @@ Welcome! This directory contains all documentation for the Orbit Wars Kaggle com
 - `12_COMPETITION_STATUS_NOTEBOOKS_DISCUSSIONS.md` - Live snapshot of leaderboard, notebook, and discussion meta
 - `13_IMPROVEMENT_HYPOTHESIS_BACKLOG.md` - Prioritized hypotheses for later implementation (documentation-only phase)
 - `14_PLANET_WARS_REFERENCE_REPO_FINDINGS.md` - What to borrow from `eonarheim/planet-wars-competition` (simulation/tests/telemetry, not strategy)
+- `15_CLONING_THE_1_BOT_LOSES_TO_GREEDY.md` - Why pure behavior cloning loses to greedy in Orbit Wars
 
 ### 🏆 Control Baselines (Current)
 **Files**:

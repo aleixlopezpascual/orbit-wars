@@ -13,6 +13,7 @@
 2. **12_COMPETITION_STATUS_NOTEBOOKS_DISCUSSIONS.md** - Current status snapshot from notebooks/discussions
 3. **13_IMPROVEMENT_HYPOTHESIS_BACKLOG.md** - Prioritized backlog for future implementation phase (docs-only now)
 4. **14_PLANET_WARS_REFERENCE_REPO_FINDINGS.md** - Focused note on what the old Planet Wars repo can still teach us
+5. **15_CLONING_THE_1_BOT_LOSES_TO_GREEDY.md** - Negative-result notebook summary: why pure cloning loses to greedy
 
 ### 🗃️ Historical + Operations Docs
 - **Historical v30 docs** - `archive/v30/`
