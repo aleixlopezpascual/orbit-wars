@@ -68,6 +68,21 @@ Fixed to use `final_scores` (planet + fleet ship counts) for true 4P ranking.
 - `run_tournament.py` — added `control_producer` and `control_stronger` to agent pool (always included); fixed ranking to use `final_scores` (ship counts) instead of binary rewards so 3rd/4th place columns populate correctly.
 - **Local venv for orbit_wars + torch:** `aleixlopezpascual-fantastic-system/.venv/bin/python3` — only venv that has both `kaggle_environments[orbit_wars]` and `torch` installed.
 
+### v35 Candidate Ablations (2026-06-19)
+
+| Candidate | Hypothesis | n=24 vs Producer | Verdict |
+|---|---|---:|---|
+| `v35_candidate_comet_timing.py` | Move comet prestrike one turn earlier | 0W/24L/0T | Discard |
+| `v35_candidate_horizon_plus_two.py` | Expand horizon slightly | 11W/13L/0T, WR 45.8% [28–65] | Borderline, discard |
+| `v35_candidate_roi_aggression.py` | Lower ROI fire threshold | 11W/13L/0T, WR 45.8% [28–65] | Borderline, discard |
+| `v35_candidate_reinforce_light.py` | Reduce reinforcement conservatism | 15W/9L/0T, WR 62.5% [43–79] | **Promising** |
+
+**Mandatory tournament gate:** `v35_candidate_reinforce_light.py` passed the offline tournament gate with `n_agents=10`, `n_games=210`, `errors=0`. Artifact: `artifacts/tournament_20260619_093140.json`. Final leaderboard rank: **1/10** with 196.5 pts; `control_producer` ranked 2nd.
+
+**Promoted into `control_producer.py`:** `reinforce_size_beta` lowered from `2.2` to `1.8`.
+
+**Post-promotion sanity:** `control_producer.py` vs `control_stronger.py` at `n=24`, seed 42: **13W/11L/0T** (54.2% WR, CI95 [35–72]).
+
 ### Download Instructions (completed)
 
 1. ~~Open each notebook in Kaggle and copy the agent code.~~
