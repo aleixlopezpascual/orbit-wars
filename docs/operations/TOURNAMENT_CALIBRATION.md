@@ -47,6 +47,7 @@ Confidence: medium (3 fixed anchors, small sample)
 **Fixed Anchors** (never rotate):
 - `control_producer.py` — primary baseline
 - `control_stronger.py` — secondary baseline
+- `v36_candidate_min_ships.py` — current top Kaggle submission anchor
 - Versions should be kept in repo root as locked references
 
 **Rotating Pool** (refresh via `bash scripts/download_kaggle_agents.sh`):

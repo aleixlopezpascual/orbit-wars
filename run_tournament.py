@@ -101,14 +101,17 @@ def build_agent_pool(test_agent_path: str, root: str) -> list[dict]:
       [{"name": str, "path": str}, ...]
 
     The test agent is always index 0. The pool is filled with:
-      - locked local controls + version-history baselines
+      - locked local controls + fixed top Kaggle anchor
+      - version-history baselines
       - downloaded Kaggle agents from tournament_agents/
     up to 10 agents total. Agents that fail to load are skipped with a warning.
     """
     candidates = [
-        # New high-ELO controls (always included — primary and secondary baselines)
+        # Fixed anchors (always included when present)
         "control_producer.py",   # 1180.2 ELO — PRIMARY control
         "control_stronger.py",   # 981.3 ELO  — secondary control
+        "v36_candidate_min_ships.py",  # 1182.9 ELO — current top Kaggle submission
+        "v37_candidate_wave_cap_5.py",  # Recent Kaggle candidate submission
         # Legacy baselines (kept for historical reference)
         "control_hbx2.py",
         "v29_baseline.py",
