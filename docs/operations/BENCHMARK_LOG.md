@@ -117,12 +117,62 @@ single-knob changes; be sceptical of large local WR gains.
 - **Submission ID:** 53843506
 - **File:** `submission.tar.gz` (main.py + orbit_lite)
 - **Message:** "v36: raise min_ships_to_launch 4.0→8.0 to eliminate micro-fleets"
-- **Status:** PENDING → TBD
+- **Status:** ✅ COMPLETE
+- **Public score:** **1120.8**
 - **Baseline to beat:** 1139.5 (ref 53789266)
-- **Decision tree:**
-  - ELO > 1139.5 → PROMOTE as new control_producer baseline
-  - 1050 < ELO < 1139.5 → Partial improvement; investigate stacking
-  - ELO < 1050 → Regression; try max_waves_per_turn 6→5 or horizon 18→15
+- **Outcome:** No baseline promotion (1120.8 < 1139.5), but also no catastrophic regression (above prior v35 live score).
+
+#### v37 Execution Trigger (2026-06-19)
+
+- Trigger source: parent session after 53843506 stabilized.
+- Sequence requested: `v37_candidate_wave_cap_5.py` first, `v37_candidate_horizon_16.py` deprioritized.
+- Constraint: no promotion/merge until full gates conclude.
+
+#### v37 Wave-Cap Candidate — `v37_candidate_wave_cap_5.py`
+
+Single-change candidate from v36 baseline:
+- `max_waves_per_turn`: `6 → 5`
+
+##### Seed-block gate vs Producer (n=24 each)
+
+| Label | Result | WR | CI95 |
+|---|---:|---:|---:|
+| `v37_wave_cap_5_vs_producer_n24_s42` | 13W/11L/0T | 54.2% | [35–72] |
+| `v37_wave_cap_5_vs_producer_n24_s142` | 15W/9L/0T | 62.5% | [43–79] |
+| `v37_wave_cap_5_vs_producer_n24_s242` | 18W/6L/0T | 75.0% | [55–88] |
+
+**Seed-block verdict:** ✅ PASS — consistent wins across all three seed blocks.
+
+##### n=48 gate vs Producer
+
+- **Command label:** `v37_wave_cap_5_vs_producer_n48_s42`
+- **Result:** **33W/15L/0T**, WR **68.8%**, CI95 **[55–80]**
+- **Threshold check:** ✅ PASS (`WR ≥ 56%` and `CI lower ≥ 45%`)
+
+##### Mandatory Tournament Gate
+
+- **Script:** `bash scripts/pre_submission_tournament_gate.sh v37_candidate_wave_cap_5.py`
+- **Artifact:** `artifacts/tournament_20260619_134556.json`
+- **Result:** ✅ **PASS** (`n_agents=10`, `n_games=210`, `errors=0`)
+- **Leaderboard:** rank **1/10**, **190.0 pts**, **61.9% 1st-place** (52/84)
+  - 2nd: `kaggle_i_the_orbit` (182.0)
+  - 3rd: `control_producer` (157.5)
+
+**Current recommendation:** `v37_candidate_wave_cap_5.py` is submission-ready under current gates. Keep `v37_candidate_horizon_16.py` on hold unless wave-cap path is rejected for external reasons.
+
+##### Kaggle submission (2026-06-19)
+
+- **Submission ID:** `53847726`
+- **File:** `submission.tar.gz` (`main.py` from `v37_candidate_wave_cap_5.py` + `orbit_lite/`)
+- **Message:** "v37: wave-cap 6->5 after v36 stabilization"
+- **Status:** ⏳ **PENDING**
+- **Near-simultaneous duplicate observed:** `53847724` (`submission_v37_wave_cap_5.tar.gz`)
+- **Canonical tracking ID:** `53847726`
+
+##### Parallel-prepared secondary artifact (not submitted)
+
+- `v37_candidate_horizon_16.py`
+- Smoke-only signal vs Producer before full gating: `0W/2L` at `n=2` (deprioritized and held)
 
 ---
 
