@@ -1,0 +1,7375 @@
+{
+  "test_agent": "v37_candidate_wave_cap_5.py",
+  "n_agents": 10,
+  "n_games": 210,
+  "errors": 0,
+  "total_time_s": 630.9,
+  "leaderboard": [
+    {
+      "agent_idx": 3,
+      "name": "v36_candidate_min_ships",
+      "pts": 206.5,
+      "avg_pts": 2.458,
+      "games": 84,
+      "errors": 0,
+      "first_pct": 71.4,
+      "placements": [
+        60,
+        22,
+        2,
+        0
+      ],
+      "rank": 1
+    },
+    {
+      "agent_idx": 2,
+      "name": "control_stronger",
+      "pts": 180.0,
+      "avg_pts": 2.143,
+      "games": 84,
+      "errors": 0,
+      "first_pct": 56.0,
+      "placements": [
+        47,
+        36,
+        1,
+        0
+      ],
+      "rank": 2
+    },
+    {
+      "agent_idx": 1,
+      "name": "control_producer",
+      "pts": 177.0,
+      "avg_pts": 2.107,
+      "games": 84,
+      "errors": 0,
+      "first_pct": 56.0,
+      "placements": [
+        47,
+        34,
+        2,
+        1
+      ],
+      "rank": 3
+    },
+    {
+      "agent_idx": 0,
+      "name": "v37_candidate_wave_cap_5.py",
+      "pts": 163.5,
+      "avg_pts": 1.946,
+      "games": 84,
+      "errors": 0,
+      "first_pct": 46.4,
+      "placements": [
+        39,
+        44,
+        1,
+        0
+      ],
+      "rank": 4
+    },
+    {
+      "agent_idx": 8,
+      "name": "v26_baseline",
+      "pts": 97.5,
+      "avg_pts": 1.161,
+      "games": 84,
+      "errors": 0,
+      "first_pct": 7.1,
+      "placements": [
+        6,
+        75,
+        2,
+        1
+      ],
+      "rank": 5
+    },
+    {
+      "agent_idx": 6,
+      "name": "v28_baseline",
+      "pts": 94.0,
+      "avg_pts": 1.119,
+      "games": 84,
+      "errors": 0,
+      "first_pct": 6.0,
+      "placements": [
+        5,
+        73,
+        5,
+        1
+      ],
+      "rank": 6
+    },
+    {
+      "agent_idx": 7,
+      "name": "v27_baseline",
+      "pts": 93.5,
+      "avg_pts": 1.113,
+      "games": 84,
+      "errors": 0,
+      "first_pct": 3.6,
+      "placements": [
+        3,
+        77,
+        2,
+        2
+      ],
+      "rank": 7
+    },
+    {
+      "agent_idx": 4,
+      "name": "control_hbx2",
+      "pts": 88.5,
+      "avg_pts": 1.054,
+      "games": 84,
+      "errors": 0,
+      "first_pct": 2.4,
+      "placements": [
+        2,
+        74,
+        7,
+        1
+      ],
+      "rank": 8
+    },
+    {
+      "agent_idx": 5,
+      "name": "v29_baseline",
+      "pts": 86.5,
+      "avg_pts": 1.03,
+      "games": 84,
+      "errors": 0,
+      "first_pct": 1.2,
+      "placements": [
+        1,
+        75,
+        7,
+        1
+      ],
+      "rank": 9
+    },
+    {
+      "agent_idx": 9,
+      "name": "kaggle_i_the_orbit",
+      "pts": 73.0,
+      "avg_pts": 0.869,
+      "games": 84,
+      "errors": 0,
+      "first_pct": 0.0,
+      "placements": [
+        0,
+        70,
+        4,
+        10
+      ],
+      "rank": 10
+    }
+  ],
+  "ratings": {
+    "v37_candidate_wave_cap_5.py": 1131.8256474641114,
+    "control_stronger": 1126.1504355129173,
+    "control_hbx2": 890.3089828230926,
+    "v26_baseline": 918.3651531093366,
+    "control_producer": 1179.9092639592343,
+    "v36_candidate_min_ships": 1314.141607221973,
+    "v29_baseline": 882.4311172274963,
+    "v28_baseline": 905.1174919700918,
+    "kaggle_i_the_orbit": 806.9057847322329,
+    "v27_baseline": 899.9957471926307
+  },
+  "calibrated_kaggle_predictions": {
+    "v37_candidate_wave_cap_5.py": {
+      "offline_elo": 1131.8,
+      "predicted_kaggle_elo": 1095.9,
+      "calibration_confidence": "high"
+    },
+    "control_stronger": {
+      "offline_elo": 1126.2,
+      "predicted_kaggle_elo": 1088.9,
+      "calibration_confidence": "high"
+    },
+    "control_hbx2": {
+      "offline_elo": 890.3,
+      "predicted_kaggle_elo": 798.6,
+      "calibration_confidence": "low"
+    },
+    "v26_baseline": {
+      "offline_elo": 918.4,
+      "predicted_kaggle_elo": 833.2,
+      "calibration_confidence": "low"
+    },
+    "control_producer": {
+      "offline_elo": 1179.9,
+      "predicted_kaggle_elo": 1155.1,
+      "calibration_confidence": "high"
+    },
+    "v36_candidate_min_ships": {
+      "offline_elo": 1314.1,
+      "predicted_kaggle_elo": 1320.3,
+      "calibration_confidence": "medium"
+    },
+    "v29_baseline": {
+      "offline_elo": 882.4,
+      "predicted_kaggle_elo": 788.9,
+      "calibration_confidence": "low"
+    },
+    "v28_baseline": {
+      "offline_elo": 905.1,
+      "predicted_kaggle_elo": 816.9,
+      "calibration_confidence": "low"
+    },
+    "kaggle_i_the_orbit": {
+      "offline_elo": 806.9,
+      "predicted_kaggle_elo": 696.0,
+      "calibration_confidence": "low"
+    },
+    "v27_baseline": {
+      "offline_elo": 900.0,
+      "predicted_kaggle_elo": 810.6,
+      "calibration_confidence": "low"
+    }
+  },
+  "games": [
+    {
+      "combo": [
+        0,
+        2,
+        4,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "control_hbx2",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.75,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v29_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        2,
+        0,
+        1,
+        2
+      ],
+      "points": [
+        0.5,
+        3.0,
+        2.0,
+        0.5
+      ],
+      "time_s": 8.98,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        6,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 14.47,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        5,
+        6,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "v29_baseline",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 14.34,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        4,
+        5,
+        6
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_hbx2",
+        "v29_baseline",
+        "v28_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 12.18,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        5,
+        7,
+        8
+      ],
+      "names": [
+        "control_stronger",
+        "v29_baseline",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.87,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        2,
+        6
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "control_stronger",
+        "v28_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.11,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        6,
+        7,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v28_baseline",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 15.92,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        5,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v29_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 3.82,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        8,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 9.04,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        4,
+        5
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "control_hbx2",
+        "v29_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.48,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        4,
+        8,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_hbx2",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.66,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        7,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.83,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        2,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "control_stronger",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "points": [
+        1.0,
+        1.0,
+        3.0,
+        1.0
+      ],
+      "time_s": 4.82,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        5,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v29_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.67,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        4,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "control_hbx2",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.06,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        5,
+        7
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.9,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v29_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.27,
+      "error": null
+    },
+    {
+      "combo": [
+        4,
+        5,
+        6,
+        8
+      ],
+      "names": [
+        "control_hbx2",
+        "v29_baseline",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        2,
+        1,
+        0,
+        3
+      ],
+      "points": [
+        1.0,
+        2.0,
+        3.0,
+        0.0
+      ],
+      "time_s": 86.13,
+      "error": null
+    },
+    {
+      "combo": [
+        4,
+        6,
+        7,
+        9
+      ],
+      "names": [
+        "control_hbx2",
+        "v28_baseline",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        2,
+        1,
+        0,
+        3
+      ],
+      "points": [
+        1.0,
+        2.0,
+        3.0,
+        0.0
+      ],
+      "time_s": 73.89,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        7,
+        8
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 9.42,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        6,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.51,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        4,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "control_hbx2",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 12.42,
+      "error": null
+    },
+    {
+      "combo": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "names": [
+        "v29_baseline",
+        "v28_baseline",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        -1,
+        1
+      ],
+      "ranks": [
+        2,
+        3,
+        1,
+        0
+      ],
+      "points": [
+        1.0,
+        0.0,
+        2.0,
+        3.0
+      ],
+      "time_s": 100.42,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        2,
+        5
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "control_stronger",
+        "v29_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 4.49,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        4,
+        7,
+        8
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 9.5,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        3,
+        6
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v28_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.73,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        6,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.32,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        7,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.73,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        5,
+        7,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "v29_baseline",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 12.02,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        4,
+        6,
+        7
+      ],
+      "names": [
+        "control_producer",
+        "control_hbx2",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.92,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        4,
+        5,
+        8
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v29_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.16,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        4,
+        6,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_hbx2",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 14.63,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        4,
+        5,
+        7
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v29_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 11.39,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        3,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        2,
+        0,
+        1,
+        2
+      ],
+      "points": [
+        0.5,
+        3.0,
+        2.0,
+        0.5
+      ],
+      "time_s": 6.85,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        4,
+        6,
+        8
+      ],
+      "names": [
+        "control_stronger",
+        "control_hbx2",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.35,
+      "error": null
+    },
+    {
+      "combo": [
+        4,
+        6,
+        7,
+        8
+      ],
+      "names": [
+        "control_hbx2",
+        "v28_baseline",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        -1,
+        1
+      ],
+      "ranks": [
+        2,
+        1,
+        3,
+        0
+      ],
+      "points": [
+        1.0,
+        2.0,
+        0.0,
+        3.0
+      ],
+      "time_s": 38.14,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        6,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 4.06,
+      "error": null
+    },
+    {
+      "combo": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "names": [
+        "v28_baseline",
+        "v27_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        2,
+        3
+      ],
+      "points": [
+        2.0,
+        3.0,
+        1.0,
+        0.0
+      ],
+      "time_s": 81.68,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        3,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v36_candidate_min_ships",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 3.56,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        3,
+        6
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v36_candidate_min_ships",
+        "v28_baseline"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "points": [
+        1.0,
+        1.0,
+        3.0,
+        1.0
+      ],
+      "time_s": 5.92,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        4,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "control_hbx2",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 3.72,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        6,
+        8,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "v28_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.21,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        5,
+        6,
+        7
+      ],
+      "names": [
+        "control_stronger",
+        "v29_baseline",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 18.31,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        4,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 9.47,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        4,
+        5,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "control_hbx2",
+        "v29_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 24.29,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        5,
+        6,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v29_baseline",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.57,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        5,
+        7,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v29_baseline",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.67,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        7,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 14.42,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v28_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.64,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        5,
+        8,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v29_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 14.38,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        5,
+        7,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "v29_baseline",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 17.13,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        5,
+        7,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "v29_baseline",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.3,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "control_hbx2"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 4.52,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        4,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "control_hbx2",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.28,
+      "error": null
+    },
+    {
+      "combo": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "names": [
+        "control_hbx2",
+        "v29_baseline",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        2,
+        3,
+        0,
+        1
+      ],
+      "points": [
+        1.0,
+        0.0,
+        3.0,
+        2.0
+      ],
+      "time_s": 67.51,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        5,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.94,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        4,
+        5,
+        9
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v29_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 13.34,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "control_stronger",
+        "v36_candidate_min_ships"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        3,
+        1,
+        2
+      ],
+      "points": [
+        3.0,
+        0.0,
+        2.0,
+        1.0
+      ],
+      "time_s": 7.99,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        3,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v36_candidate_min_ships",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "points": [
+        1.0,
+        1.0,
+        3.0,
+        1.0
+      ],
+      "time_s": 6.01,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        4,
+        5,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_hbx2",
+        "v29_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.02,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        6,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "points": [
+        2.0,
+        3.0,
+        0.5,
+        0.5
+      ],
+      "time_s": 12.89,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        5,
+        6
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v29_baseline",
+        "v28_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 16.56,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        5,
+        7,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v29_baseline",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.78,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        7,
+        8,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "v27_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.19,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        4,
+        5,
+        8
+      ],
+      "names": [
+        "control_stronger",
+        "control_hbx2",
+        "v29_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 14.93,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        5,
+        6,
+        7
+      ],
+      "names": [
+        "control_producer",
+        "v29_baseline",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 22.56,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        3,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "points": [
+        1.0,
+        1.0,
+        3.0,
+        1.0
+      ],
+      "time_s": 6.85,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        4,
+        7
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.09,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        4,
+        6,
+        7
+      ],
+      "names": [
+        "control_stronger",
+        "control_hbx2",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.13,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        5,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.13,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        8,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 4.74,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        4,
+        6,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "control_hbx2",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.86,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        5,
+        6,
+        7
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.29,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        4,
+        6
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v28_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 9.64,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        5,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v29_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 4.52,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        4,
+        6
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "control_hbx2",
+        "v28_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.9,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        5,
+        7
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.34,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        4,
+        5,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_hbx2",
+        "v29_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.01,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        6,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.25,
+      "error": null
+    },
+    {
+      "combo": [
+        4,
+        6,
+        8,
+        9
+      ],
+      "names": [
+        "control_hbx2",
+        "v28_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        2,
+        0,
+        1,
+        3
+      ],
+      "points": [
+        1.0,
+        3.0,
+        2.0,
+        0.0
+      ],
+      "time_s": 65.11,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        5,
+        6,
+        8
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 14.76,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        7,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 9.1,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        4,
+        5,
+        6
+      ],
+      "names": [
+        "control_producer",
+        "control_hbx2",
+        "v29_baseline",
+        "v28_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.62,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        4,
+        5,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "control_hbx2",
+        "v29_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 11.31,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        4,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.3,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        5,
+        6
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v28_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.94,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        4,
+        5,
+        7
+      ],
+      "names": [
+        "control_stronger",
+        "control_hbx2",
+        "v29_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 20.69,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        6,
+        7,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "v28_baseline",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 16.54,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        5,
+        8,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "v29_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.17,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        5,
+        6,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "v29_baseline",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.92,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        3,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "points": [
+        3.0,
+        2.0,
+        0.5,
+        0.5
+      ],
+      "time_s": 6.53,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        6,
+        7
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        2,
+        2
+      ],
+      "points": [
+        3.0,
+        2.0,
+        0.5,
+        0.5
+      ],
+      "time_s": 11.93,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        4,
+        5,
+        7
+      ],
+      "names": [
+        "control_producer",
+        "control_hbx2",
+        "v29_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 15.41,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        5,
+        6,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "v29_baseline",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.25,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        4,
+        5,
+        6
+      ],
+      "names": [
+        "control_stronger",
+        "control_hbx2",
+        "v29_baseline",
+        "v28_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 18.35,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        5,
+        6
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v28_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.92,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        4,
+        8,
+        9
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.63,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        6,
+        8,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v28_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 11.62,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        8,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 11.67,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        4,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 3.66,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        5,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 11.27,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        7,
+        8,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v27_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 11.95,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        8,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "points": [
+        1.0,
+        1.0,
+        3.0,
+        1.0
+      ],
+      "time_s": 8.94,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        4,
+        7,
+        8
+      ],
+      "names": [
+        "control_stronger",
+        "control_hbx2",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 22.41,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        6,
+        8,
+        9
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "v28_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 21.84,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        4,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 16.55,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        4,
+        6,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "control_hbx2",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 24.04,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        2,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "control_stronger",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 4.77,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v29_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 4.41,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        7,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        2,
+        3,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        0.0,
+        2.0
+      ],
+      "time_s": 9.03,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        3,
+        5
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v29_baseline"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "points": [
+        1.0,
+        1.0,
+        3.0,
+        1.0
+      ],
+      "time_s": 6.48,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        6,
+        7
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.57,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        5,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v29_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.23,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        6,
+        7,
+        9
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "v28_baseline",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 13.06,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        4,
+        7,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_hbx2",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        2,
+        0,
+        1,
+        2
+      ],
+      "points": [
+        0.5,
+        3.0,
+        2.0,
+        0.5
+      ],
+      "time_s": 45.7,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        4,
+        6,
+        9
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 13.19,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        4,
+        7,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "control_hbx2",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 13.4,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        6,
+        7,
+        8
+      ],
+      "names": [
+        "control_stronger",
+        "v28_baseline",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 16.77,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        6,
+        7,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v28_baseline",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.77,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        4,
+        6,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "control_hbx2",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.36,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        4,
+        6,
+        8
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 22.18,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        4,
+        5
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "control_hbx2",
+        "v29_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.99,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        4,
+        7,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "control_hbx2",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.83,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        7,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 2.96,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        8,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.94,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        6,
+        7,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "v28_baseline",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.88,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        6,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.28,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        5,
+        6
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v29_baseline",
+        "v28_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.88,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        4,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 3.79,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        4,
+        6,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_hbx2",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 11.7,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "control_hbx2",
+        "v29_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.15,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        4,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "control_hbx2",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.14,
+      "error": null
+    },
+    {
+      "combo": [
+        5,
+        7,
+        8,
+        9
+      ],
+      "names": [
+        "v29_baseline",
+        "v27_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        2,
+        1,
+        0,
+        3
+      ],
+      "points": [
+        1.0,
+        2.0,
+        3.0,
+        0.0
+      ],
+      "time_s": 67.2,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "control_hbx2",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.76,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        5,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v29_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.87,
+      "error": null
+    },
+    {
+      "combo": [
+        4,
+        5,
+        7,
+        9
+      ],
+      "names": [
+        "control_hbx2",
+        "v29_baseline",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        2,
+        1,
+        3
+      ],
+      "points": [
+        3.0,
+        1.0,
+        2.0,
+        0.0
+      ],
+      "time_s": 96.98,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        5,
+        8,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "v29_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 3.45,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        6,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.47,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        7,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.85,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        4,
+        8,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "control_hbx2",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.82,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        5,
+        6,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v29_baseline",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 4.89,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        4,
+        5,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "control_hbx2",
+        "v29_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.37,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        6,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 14.79,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        4,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "control_hbx2",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.7,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        4,
+        5
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v29_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 4.01,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        4,
+        7
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "control_hbx2",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.81,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        7,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 37.71,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        5,
+        8
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 11.33,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        5,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v29_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.58,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        4,
+        6
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v28_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.45,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        5,
+        6,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v29_baseline",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.3,
+      "error": null
+    },
+    {
+      "combo": [
+        4,
+        7,
+        8,
+        9
+      ],
+      "names": [
+        "control_hbx2",
+        "v27_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        2,
+        0,
+        1,
+        3
+      ],
+      "points": [
+        1.0,
+        3.0,
+        2.0,
+        0.0
+      ],
+      "time_s": 87.42,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        5,
+        7
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v29_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.67,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        3,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.03,
+      "error": null
+    },
+    {
+      "combo": [
+        4,
+        5,
+        7,
+        8
+      ],
+      "names": [
+        "control_hbx2",
+        "v29_baseline",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        -1,
+        1
+      ],
+      "ranks": [
+        3,
+        1,
+        2,
+        0
+      ],
+      "points": [
+        0.0,
+        2.0,
+        1.0,
+        3.0
+      ],
+      "time_s": 52.06,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        3,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v36_candidate_min_ships",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "points": [
+        1.0,
+        1.0,
+        3.0,
+        1.0
+      ],
+      "time_s": 4.27,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        6,
+        7,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "v28_baseline",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 9.6,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        3,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "points": [
+        1.0,
+        1.0,
+        3.0,
+        1.0
+      ],
+      "time_s": 3.29,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        7,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.18,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        5,
+        6,
+        9
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.5,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        4,
+        6
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "control_hbx2",
+        "v28_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.15,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        6,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 4.33,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        4,
+        5,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_hbx2",
+        "v29_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 12.98,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        5,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v29_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.29,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        3,
+        6
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v28_baseline"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "points": [
+        1.0,
+        1.0,
+        3.0,
+        1.0
+      ],
+      "time_s": 3.49,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        5,
+        8,
+        9
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 9.07,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        6,
+        7,
+        8
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "v28_baseline",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 13.95,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v29_baseline",
+        "v28_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.82,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        5,
+        6
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v29_baseline",
+        "v28_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 9.02,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        2,
+        3,
+        7
+      ],
+      "names": [
+        "control_producer",
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.36,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "control_stronger",
+        "control_hbx2"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.94,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        5,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v29_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.93,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        7,
+        8,
+        9
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "v27_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 9.26,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        6,
+        8
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.22,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        4,
+        7,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_hbx2",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.61,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        5,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.9,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        6,
+        7
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 9.11,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        4,
+        7
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.06,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        5,
+        6,
+        8
+      ],
+      "names": [
+        "control_stronger",
+        "v29_baseline",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.59,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        4,
+        6,
+        7
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 11.64,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        4,
+        7,
+        9
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.31,
+      "error": null
+    },
+    {
+      "combo": [
+        4,
+        5,
+        8,
+        9
+      ],
+      "names": [
+        "control_hbx2",
+        "v29_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        1,
+        2,
+        0,
+        3
+      ],
+      "points": [
+        2.0,
+        1.0,
+        3.0,
+        0.0
+      ],
+      "time_s": 43.91,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        4,
+        6
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v28_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "points": [
+        2.0,
+        3.0,
+        0.5,
+        0.5
+      ],
+      "time_s": 9.98,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        8,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 3.66,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        6,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.56,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        4,
+        8
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 13.39,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        4,
+        8,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "control_hbx2",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 16.57,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        5,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.45,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        3,
+        4
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v36_candidate_min_ships",
+        "control_hbx2"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.39,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        3,
+        5
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v36_candidate_min_ships",
+        "v29_baseline"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "points": [
+        1.0,
+        1.0,
+        3.0,
+        1.0
+      ],
+      "time_s": 6.45,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        6,
+        8
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v28_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        2,
+        2
+      ],
+      "points": [
+        2.0,
+        3.0,
+        0.5,
+        0.5
+      ],
+      "time_s": 16.65,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        3,
+        6,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 3.39,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        6,
+        7
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v28_baseline",
+        "v27_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 6.07,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        3,
+        4,
+        8
+      ],
+      "names": [
+        "control_producer",
+        "v36_candidate_min_ships",
+        "control_hbx2",
+        "v26_baseline"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.35,
+      "error": null
+    },
+    {
+      "combo": [
+        4,
+        5,
+        6,
+        9
+      ],
+      "names": [
+        "control_hbx2",
+        "v29_baseline",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        2,
+        3
+      ],
+      "points": [
+        2.0,
+        3.0,
+        1.0,
+        0.0
+      ],
+      "time_s": 53.51,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        6,
+        8,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "v28_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 4.62,
+      "error": null
+    },
+    {
+      "combo": [
+        1,
+        7,
+        8,
+        9
+      ],
+      "names": [
+        "control_producer",
+        "v27_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 12.99,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        7,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.26,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        5,
+        7,
+        8
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v27_baseline",
+        "v26_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 14.49,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        4,
+        6
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "control_hbx2",
+        "v28_baseline"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 12.62,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        7,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.02,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        4,
+        6,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_hbx2",
+        "v28_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 7.16,
+      "error": null
+    },
+    {
+      "combo": [
+        5,
+        6,
+        7,
+        9
+      ],
+      "names": [
+        "v29_baseline",
+        "v28_baseline",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        2,
+        0,
+        1,
+        3
+      ],
+      "points": [
+        1.0,
+        3.0,
+        2.0,
+        0.0
+      ],
+      "time_s": 30.12,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        3,
+        5,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 19.58,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_stronger",
+        "v36_candidate_min_ships",
+        "control_hbx2"
+      ],
+      "rewards": [
+        -1,
+        -1,
+        1,
+        -1
+      ],
+      "ranks": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "points": [
+        1.0,
+        1.0,
+        3.0,
+        1.0
+      ],
+      "time_s": 4.12,
+      "error": null
+    },
+    {
+      "combo": [
+        0,
+        1,
+        2,
+        9
+      ],
+      "names": [
+        "v37_candidate_wave_cap_5.py",
+        "control_producer",
+        "control_stronger",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        1,
+        0,
+        1,
+        1
+      ],
+      "points": [
+        1.0,
+        3.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 5.43,
+      "error": null
+    },
+    {
+      "combo": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "names": [
+        "v36_candidate_min_ships",
+        "v29_baseline",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 10.44,
+      "error": null
+    },
+    {
+      "combo": [
+        2,
+        4,
+        7,
+        9
+      ],
+      "names": [
+        "control_stronger",
+        "control_hbx2",
+        "v27_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        1,
+        -1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "points": [
+        3.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "time_s": 8.28,
+      "error": null
+    },
+    {
+      "combo": [
+        5,
+        6,
+        8,
+        9
+      ],
+      "names": [
+        "v29_baseline",
+        "v28_baseline",
+        "v26_baseline",
+        "kaggle_i_the_orbit"
+      ],
+      "rewards": [
+        -1,
+        1,
+        -1,
+        -1
+      ],
+      "ranks": [
+        2,
+        0,
+        1,
+        3
+      ],
+      "points": [
+        1.0,
+        3.0,
+        2.0,
+        0.0
+      ],
+      "time_s": 122.46,
+      "error": null
+    }
+  ]
+}
