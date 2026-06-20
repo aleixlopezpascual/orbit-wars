@@ -41,6 +41,85 @@ Fixed to use `final_scores` (planet + fleet ship counts) for true 4P ranking.
 
 ---
 
+## v38/v39 Clone-Wall Ablations (2026-06-20) — Coalition / Lookahead / Tavacuation / Dynamic
+
+### Parent baseline
+
+- Fixed parent: `v36_candidate_min_ships.py`
+- New shared implementation base: `v38_feature_suite.py`
+- Added candidate files (single + combos):
+  - Singles: `v38_candidate_coalition.py`, `v38_candidate_lookahead2ply.py`, `v38_candidate_tavacuation.py`, `v38_candidate_dynamic_config.py`
+  - Pairwise: `v39_candidate_coalition_lookahead.py`, `v39_candidate_coalition_tavacuation.py`, `v39_candidate_coalition_dynamic.py`, `v39_candidate_lookahead_tavacuation.py`, `v39_candidate_lookahead_dynamic.py`, `v39_candidate_tavacuation_dynamic.py`
+  - Triple: `v40_candidate_coalition_lookahead_tavacuation.py`
+
+### Single-feature gate results vs Producer
+
+| Candidate | n=8 | n=24 | n=48 | Gate status |
+|---|---|---|---|---|
+| `v38_candidate_coalition.py` | 6W/2L (75.0%) | 14W/10L (58.3%, CI95 [39–76]) | 30W/18L (62.5%, CI95 [48–75]) | ✅ n=48 pass |
+| `v38_candidate_lookahead2ply.py` | 7W/1L (87.5%) | 14W/10L (58.3%, CI95 [39–76]) | 34W/14L (70.8%, CI95 [57–82]) | ✅ n=48 pass |
+| `v38_candidate_dynamic_config.py` | 7W/1L (87.5%) | 13W/11L (54.2%, CI95 [35–72]) | not advanced | ⚠️ hold |
+| `v38_candidate_tavacuation.py` | 1W/7L (12.5%) | not advanced | not advanced | ❌ fail |
+
+### Pairwise spot-checks
+
+| Candidate | n=8 | n=24 | n=48 | Status |
+|---|---|---|---|---|
+| `v39_candidate_coalition_lookahead.py` | 6W/2L (75.0%) | 14W/10L (58.3%, CI95 [39–76]) | 30W/18L (62.5%, CI95 [48–75]) | ✅ gate pass |
+| `v39_candidate_lookahead_dynamic.py` | 7W/1L (87.5%) | 14W/10L (58.3%, CI95 [39–76]) | 34W/14L (70.8%, CI95 [57–82]) | ✅ gate pass |
+| `v39_candidate_coalition_dynamic.py` | 6W/2L (75.0%) | not advanced | not advanced | ⏸️ pending |
+
+### Mandatory tournament gates run
+
+1. `v38_candidate_lookahead2ply.py`
+   - Artifact: `artifacts/tournament_20260620_185857.json`
+   - Result: rank **5/10**, 145.0 pts, 36.9% 1st-place
+2. `v38_candidate_coalition.py`
+   - Artifact: `artifacts/tournament_20260620_191001.json`
+   - Result: rank **4/10**, 150.0 pts, 36.9% 1st-place
+3. `v39_candidate_lookahead_dynamic.py`
+   - Artifact: `artifacts/tournament_20260620_193008.json`
+   - Result: rank **5/10**, 145.0 pts, 36.9% 1st-place
+
+### Verdict
+
+- All tested v38/v39 candidates **underperform v36 tournament baseline** (`v36_candidate_min_ships` remains top-2 in these pools; tested candidates landed rank 4/10 or 5/10).
+- **No promotion** and **no submission** from this batch.
+- Keep `v36_candidate_min_ships.py` as active submission baseline.
+
+### Follow-up attempts (2026-06-20 late session)
+
+#### Tournament log analysis findings
+
+- The v38/v39 family mostly shifted outcomes from losses into **2nd places**, but did not improve **1st-place conversion**.
+- Repeated weakest matchup remained the high-control tier (`v37_candidate_wave_cap_5`, `v36_candidate_min_ships`, `control_producer`).
+- Practical takeaway: improving head-to-head WR vs Producer alone was insufficient; promotion needs stronger 4P first-place conversion.
+
+#### Additional candidate experiments
+
+| Candidate | Change | vs v36 n24 | vs v36 n48 | vs Producer n48 | Tournament |
+|---|---|---:|---:|---:|---|
+| `v41_candidate_wavecap5_lookahead_guarded.py` | wave-cap 5 + guarded lookahead (0.08), higher 4P ROI | 12W/12L | 24W/23L/1T (51.1%) | 34W/14L (70.8%) | `artifacts/tournament_20260620_195548.json` rank 5/10 |
+| `v41_candidate_wavecap5_minships9.py` | wave-cap 5 + min launch 9.0 | 6W/18L | 19W/29L (39.6%) | 25W/23L (52.1%) | not advanced |
+| `v42_candidate_wavecap5_retest.py` | pure v37-style wave-cap retest on v36 line | 12W/12L | 23W/23L/2T (50.0%) | — | `artifacts/tournament_20260620_203415.json` rank 5/10 |
+| `v43_candidate_wavecap5_beta24.py` | wave-cap 5 + reinforce beta 2.4 | 14W/10L | 24W/24L (50.0%) | 34W/14L (70.8%) | selected as live try |
+
+#### Submission record
+
+- **Candidate submitted:** `v43_candidate_wavecap5_beta24.py`
+- **Bundle:** `submission_v43_candidate_wavecap5_beta24.tar.gz`
+- **Submission message:** `"v43: wave-cap 5 + reinforce beta 2.4 from v36 lineage"`
+- **Submission trigger:** manual user submission via terminal (2026-06-20).
+- **Submission ID / public score:** pending manual update after Kaggle result appears.
+
+#### Learning snapshot
+
+- The strongest offline signal in this block came from **wave-cap + reinforcement-risk tuning**, but gains were fragile and flattened at n=48 vs v36.
+- The current pool still ranks `v36_candidate_min_ships` as stronger tournament baseline than new variants.
+- Next productive direction should target **first-place conversion** in 4P, not just safety/consistency.
+
+---
+
 ## v35+ Methodology Reset (2026-06-18) — New High-Score Controls
 
 ### New Control Baseline: Producer → `control_producer.py` (PRIMARY)

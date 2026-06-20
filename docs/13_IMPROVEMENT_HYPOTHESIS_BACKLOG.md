@@ -38,6 +38,18 @@ Hypotheses are ranked by:
 - **Already covered:** 2-ply lookahead and stepping-stone planning (H-A1, now made explicit).
 - **Newly added from feedback:** coalition launches (H-A5), lost-planet evacuation (H-A6), and dynamic parameter ensembling (H-A7).
 
+### Execution status update (2026-06-20)
+
+| Item | Candidate(s) tested | Outcome | Repeat policy |
+|---|---|---|---|
+| H-A5 coalition launches | `v38_candidate_coalition.py`, `v39_candidate_coalition_lookahead.py` | Strong in H2H vs Producer but weak transfer in 10-agent tournament (best: rank 4/10) | Do not rerun same coalition params (`max_pairs=2`, `eta_slack=1.5`) |
+| H-A1 lightweight lookahead | `v38_candidate_lookahead2ply.py`, `v39_candidate_lookahead_dynamic.py` | Strong H2H but tournament rank 5/10 | Do not rerun same lookahead weight (`0.12`) without additional mechanism |
+| H-A6 tavacuation | `v38_candidate_tavacuation.py` | Early failure (1W/7L at n=8) | Park current tavacuation rule (`pressure_ratio=1.2`, full-leftover evac) |
+| H-A7 dynamic ensembling | `v38_candidate_dynamic_config.py`, `v39_candidate_lookahead_dynamic.py` | No tournament uplift vs lookahead-only variant | Keep as optional modifier; not a standalone promotion path yet |
+| Combination scan | `v39_candidate_coalition_lookahead.py`, `v39_candidate_coalition_dynamic.py`, `v39_candidate_lookahead_dynamic.py` | No tested combo beat v36 in tournament context | Avoid retesting these exact combos unless core primitives change |
+| Wave-cap follow-up | `v41_candidate_wavecap5_lookahead_guarded.py`, `v42_candidate_wavecap5_retest.py` | Consistent neutral vs v36 at n=48 and tournament rank 5/10 | Do not rerun identical wave-cap-only variants |
+| Reinforcement-risk follow-up | `v43_candidate_wavecap5_beta24.py` | Best short gate vs v36 (n=24) but neutral at n=48 | Keep as live probe only; require stronger n=48 edge before promotion |
+
 ---
 
 ## Tier B (medium-term impact, moderate complexity)
