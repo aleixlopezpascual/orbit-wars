@@ -558,3 +558,56 @@ See `plan.md` for full roadmap with M1-M7 details.
 **M5:** Saturation detection + tie-annihilation handling  
 **M6:** Full benchmark validation n=24 → n=48  
 **M7:** Kaggle submission after robust validation  
+
+---
+
+## v48–v59 Diagnostic Cycle (2026-06-20)
+
+### Objective
+Investigate why conservative v36-derived ablations were failing and determine whether offline tournament ranking aligned with live Kaggle outcomes.
+
+### Observability and root-cause diagnostics
+
+- Added `v48_candidate_observability.py` with optional JSONL per-turn telemetry (`OW_DEBUG_LOG=1`).
+- Local telemetry against `control_producer` showed:
+  - early passivity (high zero-action rate in steps 0-49),
+  - low source utilization,
+  - midgame volatility in ship ratio.
+- Built `v52_candidate_deep_diag.py` to instrument planner gate outcomes directly.
+- **Primary finding:** dominant failure mode is `below_roi` with mostly negative candidate scores (not near-threshold misses).
+  - Rejection mix from deep diagnostics (n=1133 planner calls):
+    - `below_roi`: 50.0%
+    - `fired`: 43.5%
+    - `no_sources`: 3.6%
+    - `all_invalid`: 2.6%
+    - `no_targets`: 0.2%
+- Conclusion: simply lowering ROI threshold is insufficient; the issue is score quality (negative expected value), not threshold placement.
+
+### Candidate results summary (new)
+
+| Candidate | Change | Key result |
+|---|---|---|
+| `v49_candidate_early_roi.py` | early roi 1.5→1.2 | Tournament rank 5/10 (no change) |
+| `v50_candidate_more_sources.py` | max_sources_per_lane 12→16 | Tournament rank 5/10 (no change) |
+| `v51_candidate_early_min_ships.py` | early min_ships 8→5 | Tournament rank 5/10 (no change) |
+| `v53_candidate_early_reinforce_beta.py` | early reinforce beta 2.2→0.8 (<50) | Tournament rank 4/10 (improvement vs v48 tier) |
+| `v54_candidate_early_reinforce_plus_minships.py` | v53 + early min_ships | Tournament rank 4/10 (slightly worse than v53) |
+| `v55_candidate_early_reinforce_plus_roi.py` | v53 + early roi | Tournament rank 4/10 (tie with v53 tier) |
+| `v56_candidate_early_reinforce_zero.py` | early reinforce beta 0.0 | Regressed (discard) |
+| `v57_candidate_early_reinforce_1_2.py` | early reinforce beta 1.2 | Tournament rank 4/10 (no uplift over v53 tier) |
+| `v58_candidate_reinforce_beta_short_window.py` | beta 0.8 for <30 only | Better safety vs v36, lost producer gain |
+| `v59_candidate_early_score_shaping.py` | early negative-score damping before greedy select | H2H improved to parity vs v36/v37, but full tournament rank 5/10 (collapsed in mixed pool) |
+
+### Live calibration
+
+- Submitted `v53` as a live calibration run to test offline/live alignment for the reinforce-beta direction.
+- Early live signal: **not promising** (underperforming expectation).
+- Working decision: keep `v36` as competitive baseline; treat v53 line as exploratory unless live trend reverses.
+
+### Meta-learning
+
+1. v36 local architecture appears to be in a **local optimum under scalar knob sweeps**.
+2. H2H improvements can fail to generalize in mixed 10-agent pools; full tournament must remain the promotion gate.
+3. Future improvements should prioritize **structural target/score quality changes** over threshold-only tuning.
+4. Wrapper-based candidates are fine for experiments, but submission bundles must include imported dependencies.
+

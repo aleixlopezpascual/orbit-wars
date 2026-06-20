@@ -251,3 +251,40 @@ Do **not** add:
 - Exhaustive lists of all agent parameters (keep those inline in code)
 - Generic Python best practices
 - Explanations of why certain approaches don't work (focus on what does)
+
+## Latest High-Signal Learnings (2026-06-20)
+
+### 1) Treat ROI failures as score-quality problems, not threshold problems
+
+Deep planner diagnostics on v36-derived candidates showed the dominant rejection mode is `below_roi` with mostly **negative** candidate scores. In this state, lowering `roi_threshold` (e.g., 1.5→1.2) rarely helps because candidates are far below any practical threshold.
+
+**Guideline:** when no-op/low-action behavior appears, instrument planner gates first. If best candidate scores are mostly <= 0, work on score construction / risk modeling / target quality, not threshold tuning.
+
+### 2) Full mixed-pool tournament overrules pairwise wins
+
+Some candidates reached parity in head-to-head vs v36/v37 but dropped back to rank-5 tier in the 10-agent mixed tournament.
+
+**Guideline:** use H2H only as a quick directional filter; promotion decisions must rely on full 10-agent tournament outcomes.
+
+### 3) Reinforcement-risk tuning has a narrow viable band
+
+Reducing `reinforce_size_beta` early can improve passivity symptoms, but aggressive reductions (or combinations with extra permissive knobs) did not produce top-tier tournament gains and degraded live calibration signal.
+
+**Guideline:** keep reinforce-beta experiments conservative and time-bounded; avoid stacking multiple permissive changes before mixed-pool validation.
+
+### 4) Submission bundle rule for wrapper candidates
+
+Wrapper candidates that import another local module will fail Kaggle submission unless all imported files are included.
+
+**Guideline:** for wrapper-based submissions, bundle:
+- `main.py` (submission entry point)
+- `orbit_lite/`
+- every local Python module imported by `main.py` (e.g., `v36_candidate_min_ships.py`)
+
+### 5) Preferred next-step strategy after v53/v59 cycle
+
+Given repeated scalar-ablation plateaus, prioritize **structural planner changes**:
+- improve target/score quality,
+- reduce false-negative candidate scoring in early game,
+- and validate through full mixed-pool tournament before live submission.
+
