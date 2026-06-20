@@ -611,3 +611,31 @@ Investigate why conservative v36-derived ablations were failing and determine wh
 3. Future improvements should prioritize **structural target/score quality changes** over threshold-only tuning.
 4. Wrapper-based candidates are fine for experiments, but submission bundles must include imported dependencies.
 
+---
+
+## v60–v70 Structural Iteration Wrap-Up (2026-06-20)
+
+### What worked
+
+1. **Reproducible gate discipline held up:** n24 -> n48 -> full mixed-pool tournament consistently filtered false positives from H2H-only wins.
+2. **Operational submission path is stable:** wrapper-candidate bundle rules were applied correctly and `v68` was submitted successfully as an exploratory live check.
+3. **Diagnostics remained high-signal:** gate-level telemetry continued to explain why scalar changes plateaued (score quality and target quality bottlenecks, not simple threshold drift).
+
+### What did not work
+
+1. **H1 score decomposition (`v60`)** improved planner rejection shape but hurt match outcomes (over-firing weak missions under pressure).
+2. **Wave/reinforce scalar sweeps (`v62`-`v70`)** produced stronger pairwise records (including vs producer) but repeatedly collapsed to **rank 5** in full mixed tournament.
+3. **Promotion-by-H2H heuristic failed** in this cycle; mixed-pool robustness did not follow pairwise gains.
+
+### Leftovers and current TODOs
+
+1. **`h3-closed-loop-calibration`** remains in progress (live/offline drift not yet closed with a control loop).
+2. **`tournament-gating`** remains in progress for the next structural candidate set (current family plateaued at rank-5 tier).
+3. **Live exploratory submission pending score:** `submission_v68_wave5_reinforce26.tar.gz` (ID `53894098`) is submitted and awaiting Kaggle result.
+
+### Future paths to explore (next structural wave)
+
+1. **Target quality first:** reduce false-negative/false-positive mission scoring in early game via richer mission context, not ROI scalar tweaks.
+2. **Candidate generation breadth:** add constrained multi-source coalition generation that can propose non-greedy but coordinated captures.
+3. **Closed-loop calibration:** adapt reinforcement/risk terms from observed early-game stability metrics rather than fixed early-window constants.
+4. **Promotion rule:** require full mixed-pool uplift before mainline promotion; treat H2H only as directional pre-filter.
