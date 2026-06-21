@@ -59,6 +59,9 @@ Hypotheses are ranked by:
 | H-B1 | Replay-derived opponent profiling | Better adaptation to aggressors/turtles should improve matchup consistency | Evaluate against mixed-opponent panel with slice metrics |
 | H-B2 | Hybrid shot validator (small learned component) | Public notebooks show hybrid rule-based + ML validators as an emerging path | Keep inference lightweight; test impact vs pure heuristic planner |
 | H-B3 | Runtime-guarded fallback policy | Discussion history shows runtime mismatch can silently kill strong logic | Track turn-time percentile and compare score stability |
+| H-B4 | CMA-ES/Optuna search for planner knobs under mixed-pool objective | Manual one-knob sweeps appear saturated; black-box search can find non-intuitive coupled settings | Optimize only 6-10 bounded knobs with tournament score as objective; require reproducibility on held-out seed blocks |
+| H-B5 | Split-vs-stack launch optimizer exploiting non-linear speed curve | Current launch sizing may miss score-positive "faster smaller wave" opportunities due to mass-speed nonlinearity | Add offline what-if evaluator on replay states; promote only if mixed-pool 1st-place conversion improves |
+| H-B6 | Uncertainty-aware mission filter (ensemble disagreement gate) | Current failures include false-positive mission fires; uncertainty gating can suppress brittle launches | Train 3 light scorers on replay rows; fire only when mean score positive and disagreement below threshold |
 
 ### Notes for H-A4 implementation design (future)
 
@@ -77,6 +80,101 @@ Hypotheses are ranked by:
 |---|---|---|---|
 | H-C1 | Structured RL track with strict one-change-at-a-time policy | RL may surpass heuristic ceiling, but only with disciplined training | Separate R&D branch, explicit instability monitors, delayed promotion |
 | H-C2 | Learned value function for mission ranking | Could improve high-variance tactical decisions where heuristics are brittle | Offline training on replay data, then online A/B against HBX2 |
+| H-C3 | League self-play with periodic snapshot distillation | Fixed-opponent training overfits; league rotation can improve robustness in mixed pools | Train against rotating snapshot pool (including controls and prior candidates), then distill to lightweight runtime head for deployment |
+
+### H-C3 execution spec (2026-06-21)
+
+1. **League pool definition**
+   - Seed pool with `control_producer.py`, `control_stronger.py`, `v36_candidate_min_ships.py`, and top recent exploratory candidates.
+   - Maintain 8-12 active opponents with Elo-weighted sampling (bias toward stronger opponents, keep exploration floor for weaker styles).
+
+2. **Snapshot cadence**
+   - Save learner checkpoints every fixed training window (e.g., every N environment steps).
+   - Promote only snapshots that beat current champion in fixed-seed H2H and do not regress in mixed-pool slice metrics.
+
+3. **Distillation target**
+   - Distill league-trained policy into a lightweight runtime head compatible with current `orbit_lite` execution path.
+   - Keep runtime constraints strict (single-turn inference budget, no heavyweight online rollouts).
+
+4. **Offline promotion gates**
+   - Stage A: n24 vs `v36_candidate_min_ships.py`
+   - Stage B: n48 vs same baseline
+   - Stage C: mandatory full tournament gate (210 games / mixed pool)
+   - Require tournament rank uplift over current mid-tier (~rank 5 band) before considering submission.
+
+5. **Failure monitors**
+   - Overfit detector: large gap between in-league winrate and mixed-pool tournament rank.
+   - Stability detector: seed sensitivity drift across at least 3 seed blocks.
+   - Action-quality detector: spike in low-value launches / reduced first-place conversion.
+
+### External research delta note (2026-06-21)
+
+- User-provided strategy research strongly supports the current direction toward hybrid IL/RL.
+- The main **new** addition from that review is formalizing algorithmic hyperparameter search (H-B4) and uncertainty-aware decision gating (H-B6), which were not explicitly tracked before.
+- Engine-behavior claims from external text (e.g., edge-case turn cutoffs) should be treated as hypotheses requiring local instrumentation before strategy changes.
+
+### H-B4 implementation status (2026-06-21)
+
+- Added reproducible bounded-search harness: `scripts/hb4_search.py`.
+- Current bounded knobs: `min_ships_to_launch`, `roi_threshold`, `reinforce_size_beta`, `max_waves_per_turn`, `max_sources_per_lane`, `max_regroup_time`, `horizon_4p`, `max_sources_per_lane_4p`.
+- Objective currently logged as: `avg_pts * 100 + first_pct` from mixed-pool tournament output (`run_tournament.py` JSON artifact).
+
+---
+
+## Kaggle competition intelligence sweep (2026-06-21)
+
+### Summary of findings
+
+Full research sweep of 243 Kaggle discussion threads, recent notebooks, and GitHub agent repos (YuriNakayama/orbit-wars, slawekbiel Producer v2).
+
+**Meta state:**
+- RL agents dominate top ~9 spots (PPO + JAX; 1303+ ELO on GH200 in 6.5h, ~$15)
+- Heuristic/planner agents competitive up to ~1200-1250 ELO but ceiling exists without optimization
+- Our v36 at 1170.5 is in competitive heuristic tier; gap to RL leaders ~130+ ELO
+
+**Key structural gaps identified (YuriNakayama/orbit-wars agent):**
+
+| Feature | Status | Priority |
+|---|---|---|
+| Elimination bonus: extra score when attacking nearly-eliminated players | ❌ missing | HIGH |
+| Safe vs contested neutral classification (reaction time) | ❌ missing | HIGH |
+| Snipe missions: time fleet to arrive when enemy inbound to neutral | ❌ missing | MEDIUM |
+| Crash exploit (4P): capture planet weakened by enemy fleet collision | ❌ missing | MEDIUM |
+| Indirect wealth map: augment target value with downstream planet access | ❌ missing | MEDIUM |
+| Mode-aware aggression (domination ratio tracking) | ❌ missing | MEDIUM |
+| Comet lifetime cap: `turns_profit = min(remaining, comet_life - eta)` | ❌ unknown | LOW |
+
+**Top-tier heuristic gap (Radek's research comment):**
+> "Think how you can incorporate solving optimization problems into your code. Static code will not cut it given how varied the situations you encounter are."
+The jump from ~1200 to higher heuristic ELO requires moving from static greedy scoring to actual optimization (minimax, LP/IP for ship allocation, MCTS).
+
+**Why behavior cloning fails (souldrive notebook finding):**
+LB #1 bot runs a 1-ply search. A 2.4M-parameter neural clone of it loses ~5:1 to the greedy Producer. Search structure cannot be cloned via imitation learning — the autoregressive coupling of fleet-budget decisions is the key unlock.
+
+**obs.step bug (Thread #709392):**
+p0 gets `step` in observation; non-p0 players may not. Our adapter already defaults to `obs.get("step", 0)` — **already handled**.
+
+**Platform insight:**
+- At 1170 ELO we get mixed 2p/4p games
+- At 1250+ ELO, players mostly get 2p games (matchmaking bias)
+- Farming weak opponents: min ELO change is now ~+0/-0 (system fixed June 8)
+
+### New hypotheses from research
+
+| ID | Hypothesis | Source | Est. impact |
+|---|---|---|---|
+| H-D1 | Add elimination bonus (+2.0 score) for attacking opponents with < 20% of our total ships | YuriNakayama agent | MEDIUM |
+| H-D2 | Add safe-neutral bonus (+1.5 score) for neutrals where our closest planet is < 70% of enemy's closest | YuriNakayama agent | MEDIUM |
+| H-D3 | Snipe missions: infer enemy fleet destinations, generate candidate to race them to neutral targets | YuriNakayama agent | HIGH |
+| H-D4 | Crash exploit (4P): detect enemy fleet-planet collision turns, queue fleet to arrive POST_CRASH delay | YuriNakayama agent | HIGH (4P only) |
+| H-D5 | Add 1-ply lookahead (expand candidate search before scoring, not just single-source drain) | Radek / LB #1 analysis | HIGH |
+| H-D6 | Per-owner domination tracking: when domination > 0.6, increase offensive target priority | YuriNakayama agent | MEDIUM |
+
+### Implementation status
+
+| ID | Candidate | Status |
+|---|---|---|
+| H-D1 + H-D2 | `v74_candidate_structural.py` | planned / in progress |
 
 ---
 
