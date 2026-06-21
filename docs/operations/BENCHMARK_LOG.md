@@ -718,3 +718,147 @@ Investigate why conservative v36-derived ablations were failing and determine wh
 2. **Candidate generation breadth:** add constrained multi-source coalition generation that can propose non-greedy but coordinated captures.
 3. **Closed-loop calibration:** adapt reinforcement/risk terms from observed early-game stability metrics rather than fixed early-window constants.
 4. **Promotion rule:** require full mixed-pool uplift before mainline promotion; treat H2H only as directional pre-filter.
+
+---
+
+## External research synthesis (2026-06-21)
+
+Source reviewed: user-provided strategic research note on "beyond-heuristic" evolution (ProducerLite -> IL/RL).
+
+### Comparison vs current project findings
+
+| Topic | External research claim | Current repo evidence | Assessment |
+|---|---|---|---|
+| Heuristic ceiling | Top heuristic planners hit a ceiling and need learned components | v48-v70 cycle repeatedly plateaued despite scalar tuning; mixed-pool rank mostly 4-5 | **Aligned** |
+| Importance of policy learning | IL -> RL progression is likely required for next jump | Backlog already prioritizes per-planet BC hybrid (H-A4) and value-learning tracks | **Aligned** |
+| Hyperparameter optimization | Manual tuning should be replaced by algorithmic optimization (e.g., CMA-ES/Optuna) | Recent sweeps were mostly manual and narrow | **New actionable gap** |
+| Self-play / league robustness | Single-opponent progress overfits; use broader training/eval mix | Our promotion gate already enforces mixed 10-agent tournaments | **Aligned** |
+| Engine specifics | Notes mention practical edge-case timing details | Existing docs use 500-turn model; no local proof yet for alternate cutoff behavior | **Unverified; test before adoption** |
+
+### Practical learnings adopted
+
+1. Treat the note as a **strategic confirmation**, not a wholesale architecture rewrite request.
+2. Prioritize **hybrid learning components** that plug into orbit_lite safety/geometry rather than full end-to-end replacement.
+3. Add one explicit workstream for **algorithmic parameter search** against mixed-pool objective, since this has not been formally run yet.
+4. Keep any engine-behavior claims as **instrumentation tasks first** (no policy changes until measured locally).
+
+### H-B4 harness kickoff (2026-06-21)
+
+- Implemented `scripts/hb4_search.py` for bounded black-box search over coupled ProducerLite knobs.
+- The runner now:
+  - generates candidate files from `v36_candidate_min_ships.py`,
+  - evaluates via `run_tournament.py` artifacts,
+  - ranks trials by objective `avg_pts*100 + first_pct`,
+  - marks trials invalid when test-agent game coverage is too low or tournament errors occur.
+- This is an **offline exploration tool only**; promotion still requires n24 -> n48 -> mandatory tournament gate and documentation in this log.
+
+### H-B4 batch-1 results (2026-06-21)
+
+- Search run: `scripts/hb4_search.py --trials 2 --games 24` (mixed-pool objective).
+- Top trial from search objective:
+  - Candidate: `generated_candidates_batch1/v71_candidate_hb4_b1_001.py`
+  - Search metric snapshot: rank 2/10, avg_pts 2.000, first% 55.6 (9 games participated in sampled 24).
+- Promotion check vs baseline:
+  - `run_validation.py --ch generated_candidates_batch1/v71_candidate_hb4_b1_001.py --bl v36_candidate_min_ships.py -n 24 --seed 42`
+  - Result: **11W/13L (45.8%, CI95 [28-65])**
+- Decision: **do not advance to n=48** for this trial; continue H-B4 exploration with additional bounded samples and then re-gate.
+
+### H-B4 batches 3-4 + screened gating (2026-06-21)
+
+- Batch-3 (`seed=4242`) produced stronger mixed-pool candidates:
+  - `v71_candidate_hb4_b3_001.py` and `v71_candidate_hb4_b3_003.py` both reached rank-1 in 24-game sampled tournaments.
+- Direct n=24 checks vs `v36_candidate_min_ships.py`:
+  - `v71_candidate_hb4_b3_001.py`: **11W/13L** (45.8%, CI95 [28-65]) -> fail
+  - `v71_candidate_hb4_b3_003.py`: **10W/14L** (41.7%, CI95 [24-61]) -> fail
+
+- Added automatic post-search screening to `scripts/hb4_search.py`:
+  - optional `--screen-games`, `--screen-top-k`, and `--screen-baseline`
+  - records n=24 H2H artifacts in search summary for top valid trials.
+
+- Batch-4 screened run (`seed=5353`, trials=2):
+  - `v71_candidate_hb4_b4_001.py`: screened **11W/13L** (45.8%) -> fail
+  - `v71_candidate_hb4_b4_002.py`: screened **12W/12L** (50.0%) -> passes n=24 threshold
+
+- Promotion sequence for `v71_candidate_hb4_b4_002.py`:
+  1. n=48 vs v36: **29W/19L** (60.4%, CI95 [46-73]) -> pass
+  2. Mandatory tournament gate (210 games): `artifacts/tournament_20260621_021619.json`
+     - Result: **rank 5/10**, pts 138.5, 1st% 32.1
+
+- Decision: despite n48 H2H pass, tournament rank remained mid-tier; **no promotion yet**.
+
+### H-B6 uncertainty-gate kickoff (2026-06-21)
+
+- New candidate: `v72_candidate_uncertainty_gate.py` (from v36 lineage).
+- Change: add a lightweight uncertainty gate during candidate scoring:
+  - uncertainty proxy = weighted (ETA risk + low floor-margin risk),
+  - drop high-uncertainty missions above threshold,
+  - apply small score penalty for residual uncertainty.
+- Quick gate vs v36:
+  - `run_validation.py --ch v72_candidate_uncertainty_gate.py --bl v36_candidate_min_ships.py -n 8 --seed 42`
+  - Result: **3W/5L** (37.5%, CI95 [14-69]).
+- Status: early configuration appears too conservative/fragile; tune uncertainty weights/threshold before n24 promotion gate.
+
+### H-B5 split-vs-stack sizing kickoff (2026-06-21)
+
+- New candidate: `v73_candidate_split_stack.py` (from v36 lineage).
+- Structural change:
+  - generate two launch-size variants per (source,target): full stack + split send,
+  - constrain split variant to longer-ETA offensive lanes (`eta >= 6`) to avoid harming defensive/short tactical responses.
+
+- Gate progression vs `v36_candidate_min_ships.py`:
+  - n8 quick check (tuned): **4W/4L** (50.0%)
+  - n24: **14W/10L** (58.3%, CI95 [39-76]) -> pass
+  - n48: **26W/22L** (54.2%, CI95 [40-67]) -> pass
+
+- Mandatory tournament gate:
+  - Artifact: `artifacts/tournament_20260621_100925.json`
+  - Result: **rank 5/10**, pts 139.0, avg 1.655, 1st% 32.1 (27/84 first places)
+
+- Decision: H-B5 improved pairwise gates but still landed in the same mid-tier tournament band; **no promotion yet**.
+
+---
+
+## Kaggle Competition Intel Sweep + H-D1/H-D2/H-D7 Ablations (2026-06-21)
+
+### Research Summary
+
+Full sweep of 243 Kaggle discussion threads, notebooks, and GitHub agent repos.
+
+**Meta findings:**
+- RL agents dominate top ~9 spots (PPO+JAX: 1303+ ELO, GH200, $15 compute, 6.5h)
+- Heuristic/planner ceiling at ~1200-1250 without optimization
+- #1 bot described as "1-ply search agent" — not static greedy
+- BC fails: 2.4M-param clone of #1 bot loses 5:1 to greedy Producer (search structure uncloneable)
+- Autoregressive launch head is the BC unlock (fleet launches must be jointly modeled)
+- Key heuristic gap: YuriNakayama/orbit-wars agent has snipe, crash-exploit, indirect wealth, elimination bonus, reaction-time classification
+
+### H-D1: Elimination bonus (v74b_candidate_elim_only.py)
+
+- Change: +1.0 additive score when enemy owner has < 10% of our total ships
+- 3-seed H2H vs v36: seed42=50%, seed142=56.5%, seed242=50% → avg 51.4%
+- n=48 seed42: 23W/23L/2T (50%)
+- Mandatory tournament gate: **rank 5/10**, pts 144.0, 1st% 35.7
+  - Artifact: `artifacts/tournament_20260621_205546.json`
+- Decision: **no promotion** — same rank-5 pattern as all prior ablations
+
+### H-D2: Safe-neutral bonus (v74c) and combined (v74)
+
+- v74 (both bonuses, aggressive): failed n=24 at 41.7% — overfires on marginal missions
+- v74c (safe-neutral only): failed n=24 at 45.8%
+- Decision: both variants blocked
+
+### H-D7: Production-weighted shortlist (v75_candidate_prod_ranking.py)
+
+- Change: rank shortlist by `prod * 4.0 - proximity` instead of `-proximity`
+- n=8: 3W/5L (37.5%) — early failure
+- Decision: pure-proximity shortlist is intentional; it selects reachable targets. Production weighting overshoots to farther targets, wasting ships on long-distance missions
+
+### Overall H-D series verdict
+
+**Pattern confirmed:** every structural change (H-A, H-B, H-D series, 15+ candidates) lands at rank 5/10 in mixed-pool tournament. The rank-5 ceiling is architectural: the greedy single-source planner cannot beat itself with score adjustments alone.
+
+**Root cause (from research):** the #1 bot runs a 1-ply search. Any agent using independent greedy mission scoring will converge to similar behavior regardless of scoring tweaks, because the bottleneck is joint fleet coordination, not individual mission ROI.
+
+### Tournament pool observation (v74b run)
+
+Notable: v37 (wave_cap=5) ranked **1st/10** in this tournament run (197.0 pts, 65.5% 1st-place), v36 ranked **2nd** (177.5 pts, 54.8%). This is consistent with prior offline results where v37 dominated. Despite this, v37 and v36 are essentially tied live (1170.0 vs 1170.5). Offline tournament and live Kaggle ELO are not tightly correlated for same-tier agents.
