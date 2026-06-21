@@ -630,8 +630,8 @@ Investigate why conservative v36-derived ablations were failing and determine wh
 ### Leftovers and current TODOs
 
 1. **`h3-closed-loop-calibration`** remains in progress (live/offline drift not yet closed with a control loop).
-2. **`tournament-gating`** remains in progress for the next structural candidate set (current family plateaued at rank-5 tier).
-3. **Live exploratory submission pending score:** `submission_v68_wave5_reinforce26.tar.gz` (ID `53894098`) is submitted and awaiting Kaggle result.
+2. **`tournament-gating`** completed for this structural family; no candidate promoted over control in mixed-pool results.
+3. **Live exploratory submission resolved:** `submission_v68_wave5_reinforce26.tar.gz` (ID `53894098`) completed with score below control.
 
 ### Future paths to explore (next structural wave)
 
@@ -639,3 +639,24 @@ Investigate why conservative v36-derived ablations were failing and determine wh
 2. **Candidate generation breadth:** add constrained multi-source coalition generation that can propose non-greedy but coordinated captures.
 3. **Closed-loop calibration:** adapt reinforcement/risk terms from observed early-game stability metrics rather than fixed early-window constants.
 4. **Promotion rule:** require full mixed-pool uplift before mainline promotion; treat H2H only as directional pre-filter.
+
+---
+
+## Kaggle Submission Update (2026-06-21)
+
+### Latest live scores
+
+| Submission | ID | Status | Public score | Notes |
+|---|---:|---|---:|---|
+| `submission_v66_wave5_reinforce24.tar.gz` | 53895844 | COMPLETE | 1105.0 | standalone wave-cap=5, reinforce beta 2.4 |
+| `submission_v68_wave5_reinforce26.tar.gz` | 53894098 | COMPLETE | 1061.3 | exploratory wave-cap=5, reinforce beta 2.6 |
+| `submission_v43_candidate_wavecap5_beta24.tar.gz` | 53894119 | COMPLETE | 1164.9 | wave-cap=5, reinforce beta 2.4 from v36 lineage |
+| `submission_v53_early_reinforce_beta.tar.gz` | 53887843 | COMPLETE | 1118.3 | early reinforce beta window tweak |
+| `submission_v48_observability.tar.gz` | 53861063 | COMPLETE | 1159.1 | v36-equivalent + observability scaffolding |
+| `submission.tar.gz` (v36) | 53843506 | COMPLETE | 1170.5 | control reference in this cycle |
+
+### Decision update
+
+- The initial v68 spike did not hold after stabilization; both v68 (1061.3) and v66 (1105.0) underperformed the v36 control.
+- `v36` remains the live reference in this batch; v43/v48 are closer but still below v36.
+- Next live attempts should stay near v36 with single-change deltas and strict promotion criteria.
