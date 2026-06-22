@@ -346,6 +346,31 @@ Assess whether high-ELO Kaggle agent `exp50` provides transferable improvements 
 
 ---
 
+## Final-hour candidate sweep (2026-06-22)
+
+### Setup
+
+- **Gate:** `run_tournament.py --pool-profile kaggle_latest10 --max-agents 10 --steps 500 --seed 42`
+- **Baseline:** `v43_candidate_wavecap5_beta24.py`
+- **Goal:** test H-E2 / H-E4 final-hour variants without Kaggle submission
+
+### Results
+
+| Candidate | Hypothesis | Rank | Pts | 1st% | Verdict |
+|---|---|---:|---:|---:|---|
+| `v43_candidate_wavecap5_beta24.py` | anchor | 2/8 | 60.5 | 37.1% | baseline |
+| `v77_candidate_trackfleets256.py` | H-E2 track_fleets capacity bump | 2/8 | 60.5 | 37.1% | no gain |
+| `v78_candidate_smwv2_risk_focus.py` | H-E4 risk-enabled SMW V2 tune | 8/8 | 40.5 | 8.6% | fail |
+| `v79_candidate_smwv2_aggressive.py` | H-E4 aggressive SMW V2 tune | 8/8 | 41.5 | 11.4% | fail |
+
+### Recommendation
+
+- **No-go** for manual submission changes.
+- Clear winner criterion for this sweep was to beat v43 on both total points and 1st-place rate in the same curated tournament; none of the variants did.
+- Keep `v43_candidate_wavecap5_beta24.py` as the protected live anchor.
+
+---
+
 ### v35 Candidate Ablations (2026-06-19)
 
 | Candidate | Hypothesis | n=24 vs Producer | Verdict |
