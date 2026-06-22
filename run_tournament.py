@@ -108,22 +108,27 @@ def build_agent_pool(test_agent_path: str, root: str) -> list[dict]:
     """
     candidates = [
         # Fixed anchors (always included when present)
-        "control_producer.py",   # 1180.2 ELO — PRIMARY control
-        "control_stronger.py",   # 981.3 ELO  — secondary control
-        "v36_candidate_min_ships.py",  # 1182.9 ELO — current top Kaggle submission
-        "v37_candidate_wave_cap_5.py",  # Recent Kaggle candidate submission
-        # Legacy baselines (kept for historical reference)
+        "control_producer.py",          # 1180.2 ELO — PRIMARY control
+        "control_stronger.py",          # 981.3 ELO  — secondary control
+        "v36_candidate_min_ships.py",   # best live Kaggle submission
+        "v37_candidate_wave_cap_5.py",  # strong offline performer
+        # ── Kaggle public agents (prioritised BEFORE legacy baselines) ────────
+        # These are the real competition opponents and must be in every pool.
+        # They were previously placed after legacy baselines and silently dropped
+        # when the pool reached its 10-agent cap — causing tournaments to run
+        # against an artificially easy pool. Fixed 2026-06-22.
+        # kaggle_smw_v2 (1300+ ELO) added 2026-06-22 — top public agent.
+        "tournament_agents/kaggle_smw_v2.py",        # 1300+ ELO — Strategic Multi-Wave V2 (shorooghahmadi)
+        "tournament_agents/kaggle_v44_elo.py",      # 1266+ ELO public agent
+        "tournament_agents/kaggle_i_the_orbit.py",  # hoard-then-dump strategy
+        "tournament_agents/kaggle_v2_gru.py",       # GRU neural agent
+        "tournament_agents/kaggle_producer.py",     # Producer variant
+        # Legacy baselines (lower priority — dropped when pool is full)
         "control_hbx2.py",
         "v29_baseline.py",
         "v28_baseline.py",
         "v27_baseline.py",
         "v26_baseline.py",
-        # Kaggle downloads
-        "tournament_agents/kaggle_i_the_orbit.py",
-        "tournament_agents/kaggle_v2_gru.py",
-        "tournament_agents/kaggle_v44_elo.py",
-        # Fallback if the locked local Producer control is missing
-        "tournament_agents/kaggle_producer.py",
     ]
 
     pool = [{"name": Path(test_agent_path).name, "path": test_agent_path}]
