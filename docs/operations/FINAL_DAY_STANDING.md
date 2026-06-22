@@ -49,7 +49,30 @@ Identical 8-agent `kaggle_latest10` field, seed 42, 500 steps:
 - **Decision: v80 does not go live.** Fall back to defending with proven agents.
 - v36 ranked **1st in both** tournaments (64.5 / 68.0 pts) → strongest owned agent (live best 1170.5).
 
-## Final submission recommendation
+## FINAL DECISION (2026-06-23): HOLD — submit nothing further
 
-- Make the final two (tracked) submissions **v36** (1170.5 best, local rank 1) and **v43** (1164.9 best draw), replacing the dead SMW-987.
-- Best-of-latest-2 shown → max of two proven, above-silver-cutoff draws. Secures bronze, real silver shot, zero unproven-code risk.
+Keep the current tracked pair **{SMW-987, v43-1138.9}** untouched. No final-day submission.
+
+### Why (the decisive reasoning)
+
+1. **The dead SMW-987 is not costing points.** Leaderboard shows the *max* of the tracked
+   pair: `max(987, 1138.9) = 1138.9`. The wasted slot is an opportunity cost only, not an
+   active drag — so there is no urgency to replace it.
+2. **The current v43 is already converged** against a recent pool (low σ). It is the safest
+   form of the (marginal) bronze position we can hold.
+3. **Resubmitting has neutral-to-negative EV under meta shift.** ELO is relative to the pool,
+   and the pool strengthened sharply in the final days (many Jun-22 submissions at 1400–1800).
+   Fixed heuristic agents do not improve; their rating drifts down or holds as the field rises.
+   A fresh v36/v43 would most likely converge **at or below** its historical score, not above.
+   A fresh v43 is identical code to the current v43 → same true skill, measured over a *harder*
+   window → no gain. The only upside (max-of-two effect) is ~cancelled by the meta downdraft and
+   re-convergence variance, while the downside (both draws land low) is real.
+4. **No agent of higher converged skill exists for the current meta.** Heuristic tuning is
+   saturated; the focus-fire port (v80) failed the gate. There is no last-day change that
+   reliably buys silver.
+
+### Residual risk (acknowledged, unavoidable)
+
+Bronze is marginal (rank 338 vs ~324 cutoff on the strict 3245-team basis) and the tracked v43
+will keep drifting during final eval (Jun 24 – Jul 8). No resubmission we can make reduces this
+risk — they only add variance. Holding is the minimum-variance choice.

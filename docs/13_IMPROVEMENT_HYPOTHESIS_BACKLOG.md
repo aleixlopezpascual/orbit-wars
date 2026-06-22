@@ -236,6 +236,33 @@ All H-D candidates confirmed the rank-5 pattern (now rank 4 with corrected pool 
 - **Promotion rule:** require a candidate to beat v43 on both total points and 1st-place rate in the same `kaggle_latest10` tournament before any manual submission consideration.
 - **Decision:** no-go on all final-hour variants; keep v43 as the live anchor.
 
+### Final-day forensic session (2026-06-23) — replay analysis + focus-fire retest
+
+Tooling added: `scripts/analyze_replays.py` (+ tests) — parses Kaggle replays, identifies our
+seat by `info.TeamNames`, computes win/loss via `rewards`, and a focus-fire (multi-source
+coordination) proxy. Fetch script fixed for Kaggle CLI 2.2.x (`id` episode column).
+
+Evidence (see `docs/operations/`):
+- **SMW-987 autopsy:** the public SMW V2 (≈1300 reputation) scored **987** for us — **not a bug**.
+  53% W/L over 15 episodes; first-turn warmup 9–15 s absorbed by overage (`actTimeout=1s`,
+  `agentTimeout=2s`, steady-state turns ≤0.25 s); weak in 4P; rating still converging from μ₀=600.
+- **v43 loss analysis:** winners out-coordinate v43 (focus-fire proxy 26.5 vs 12.6 in losses,
+  worst in 4P) → GAP=FOCUS_FIRE confirmed at the top, BUT the focus-fire flagship (SMW) sits at
+  987 < v43 1138 live.
+- **v80 focus-fire coalition** (`v80_candidate_focus_fire_coalition.py`, v43 knobs + 2-source
+  coalition at `eta_slack=1.0`): won n=24 H2H vs v43 (58.3%) but **failed the tournament gate**
+  (59.5 pts / 34.3% 1st vs v43's 60.5 / 37.1%). Repeats the H-A5 weak-transfer pattern.
+- v36 ranked **1st in both** `kaggle_latest10` tournaments (strongest owned agent).
+
+**Decision: HOLD — no final-day submission.** Resubmitting proven agents is neutral-to-negative
+EV under the late-stage meta shift (ELO is pool-relative; the field strengthened, fixed agents
+don't rise; a fresh v43 = same skill measured over a harder window). The dead SMW-987 slot does
+not lower the displayed score (best-of-two shows v43). Keep the converged v43 as the
+minimum-variance bronze hold. See `docs/operations/FINAL_DAY_STANDING.md`.
+
+**Do not repeat:** focus-fire / coalition variants (v80, H-A5) — confirmed no tournament transfer
+across multiple operating points. Submitting public SMW V2 — confirmed 987, not a bug to fix.
+
 ---
 
 ## Guardrails for future implementation phase
