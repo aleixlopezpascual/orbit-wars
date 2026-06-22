@@ -222,9 +222,12 @@ All H-D candidates confirmed the rank-5 pattern (now rank 4 with corrected pool 
 | H-E3 | Submit kaggle_smw_v2 directly | It's public, self-contained, 1300+ ELO with no dev cost | LOW (30min) |
 | H-E4 | Tune SMW V2 config knobs via H-B4-style search | Marginal gain over raw V2 baseline | MEDIUM (2h) |
 
-### Recommendation (competition ~36h remaining)
+### Recommendation update (competition final hours, 2026-06-22 late)
 
-**H-E3 first** (submit SMW V2 directly to get a 1300 ELO anchor on the leaderboard), then attempt **H-E1** (focus fire port) if time permits. H-E4 (knob tuning V2) offers the best risk/reward if H-E1 is too risky under time pressure.
+- Keep **v43_candidate_wavecap5_beta24** as the protected live anchor unless a challenger has clear repeatable uplift.
+- Use `run_tournament.py --pool-profile kaggle_latest10 --max-agents 10 --steps 500` as the submission gate.
+- Use `--pool-profile mixed20` only for stress/regression checks.
+- Do not submit based on mixed20 rank alone.
 
 ---
 

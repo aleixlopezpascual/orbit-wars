@@ -942,3 +942,44 @@ Three viable paths:
 2. **Port `enable_focus_fire` into our orbit_lite codebase** — multi-source strike coordination is the confirmed structural gap. High effort (~4-8h to port + test). Highest upside if it works. Risk: integration bugs under competition time pressure.
 
 3. **Tune kaggle_smw_v2 knobs on top of the public base** — run H-B4-style search over SMW V2's config, keep best knobs, submit. Medium effort (~2h). Upside: marginal vs just submitting V2 directly.
+
+---
+
+## 2026-06-22 (late) — pool-profile split and alignment recovery
+
+### Problem observed
+
+A broad 20-agent tournament (`mixed20`, 300 steps, 4845 games) produced rankings that did not match live Kaggle ordering:
+- `v43` ranked mid-table offline while remaining top among our live submissions.
+- Several weak/legacy agents were over-rewarded in local fixed-pool round robin.
+
+Conclusion: a single offline tournament profile was mixing two goals (Kaggle score prediction vs regression robustness) and underperforming at both.
+
+### Fix implemented
+
+`run_tournament.py` now supports explicit pool profiles:
+
+- `kaggle_latest10` (submission decision profile): curated 10-agent pool intended to track live Kaggle meta.
+- `mixed20` (robustness profile): broad stress pool including legacy baselines.
+
+CLI additions:
+- `--pool-profile {mixed20,kaggle_latest10}`
+- `--max-agents` remains supported (default 10).
+
+### Validation run (Kaggle-like profile)
+
+Run:
+- `--pool-profile kaggle_latest10 --max-agents 10 --steps 500 --repeats 3`
+- Artifact: `artifacts/tournament_20260622_kaggle_latest10_steps500_r3.json`
+
+Result:
+- `v43_candidate_wavecap5_beta24.py` **rank 1/10** (435.5 pts, 35.7% first-place)
+
+This restored the prior directionality where v43 was top in the curated offline pool and aligned with live medal-zone behavior.
+
+### Operational policy (final hours)
+
+1. Use `kaggle_latest10` + `steps=500` for **submission decisions**.
+2. Use `mixed20` only for **regression/stress testing**.
+3. **Risk-off rule:** do not replace `v43` unless new candidate shows strong, repeatable uplift in the Kaggle-like profile.
+4. With Kaggle's "latest 2 submissions active" rule, every new submit is destructive to one active runner; treat submits as high-cost actions.
