@@ -12,6 +12,7 @@ __pycache__/
 # Artifacts (large log/result files)
 artifacts/logs/
 artifacts/tournament_*.json
+artifacts/kaggle/
 
 # Submission archives
 *.tar.gz

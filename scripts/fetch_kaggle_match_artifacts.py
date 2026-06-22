@@ -54,6 +54,9 @@ def parse_episode_rows(csv_text: str):
             if "episode" in normalized and "id" in normalized:
                 episode_field = original
                 break
+    # Kaggle CLI 2.2.x emits a bare "id" column for `competitions episodes`.
+    if episode_field is None:
+        episode_field = header_map.get("id")
     if episode_field is None:
         raise ValueError("Could not find an episode id column in Kaggle episode output.")
 
