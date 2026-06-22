@@ -117,15 +117,18 @@ def build_agent_pool(test_agent_path: str, root: str) -> list[dict]:
         # They were previously placed after legacy baselines and silently dropped
         # when the pool reached its 10-agent cap — causing tournaments to run
         # against an artificially easy pool. Fixed 2026-06-22.
-        # Meta-shift agents added 2026-06-22 (June 12-13 meta shift):
-        "tournament_agents/kaggle_smw_v2.py",        # 1300+ ELO — Strategic Multi-Wave V2
-        "tournament_agents/kaggle_apex_hybrid.py",   # 107 votes — Apex Hybrid dynamic ring (June 21)
-        "tournament_agents/kaggle_meta0622.py",      # 85 votes  — Pilkwang meta snapshot (June 22)
-        "tournament_agents/kaggle_simple1200.py",    # 168 votes — Simple Orbit Intruder 1200+
-        "tournament_agents/kaggle_v44_elo.py",       # 1266+ ELO public agent
-        "tournament_agents/kaggle_i_the_orbit.py",   # hoard-then-dump strategy
-        "tournament_agents/kaggle_v2_gru.py",        # GRU neural agent
-        "tournament_agents/kaggle_producer.py",      # Producer variant
+        # Meta-shift agents added 2026-06-22 (June 12-13 meta shift), ordered
+        # by current local challenge level vs v36 (highest first).
+        "tournament_agents/kaggle_apex_hybrid.py",   # strongest new threat (beats v36 in local gates)
+        "tournament_agents/kaggle_i_the_orbit.py",   # consistently competitive
+        "tournament_agents/kaggle_v2_gru.py",        # medium challenge
+        "tournament_agents/kaggle_producer_v2.py",   # Producer V2 public notebook
+        "tournament_agents/kaggle_v44_elo.py",       # medium/low challenge but still relevant
+        # Bench agents (kept available, but lower priority for capped pool)
+        "tournament_agents/kaggle_smw_v2.py",        # currently weak in local replay harness
+        "tournament_agents/kaggle_producer.py",      # legacy producer variant
+        "tournament_agents/kaggle_meta0622.py",      # currently weak in local replay harness
+        "tournament_agents/kaggle_simple1200.py",    # currently weak in local replay harness
         # Legacy baselines (lower priority — dropped when pool is full)
         "control_hbx2.py",
         "v29_baseline.py",

@@ -41,6 +41,7 @@ KERNELS=(
   "kaggle_i_the_orbit     olasadek/i-the-orbit                                        pull"
   "kaggle_v2_gru          caoyupeng/v2-gru                                            pull"
   "kaggle_v44_elo         itzzomkar/1266-elo-the-v44-agent-100-self-contained         pull"
+  "kaggle_producer_v2     slawekbiel/the-producer-v2                                  output"
   # --- Meta-shift agents (output-based, orbit_lite bundles) ---
   "kaggle_smw_v2          shorooghahmadi/orbit-wars-strategic-multi-wave-fleet        output"  # 1300+ ELO
   "kaggle_apex_hybrid     AmgedAlfaqih/apex-hybrid-dynamic-ring-control-border-defense output"  # 107 votes, June 21
