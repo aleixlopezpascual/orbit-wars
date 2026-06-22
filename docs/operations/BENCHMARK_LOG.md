@@ -862,3 +862,83 @@ Full sweep of 243 Kaggle discussion threads, notebooks, and GitHub agent repos.
 ### Tournament pool observation (v74b run)
 
 Notable: v37 (wave_cap=5) ranked **1st/10** in this tournament run (197.0 pts, 65.5% 1st-place), v36 ranked **2nd** (177.5 pts, 54.8%). This is consistent with prior offline results where v37 dominated. Despite this, v37 and v36 are essentially tied live (1170.0 vs 1170.5). Offline tournament and live Kaggle ELO are not tightly correlated for same-tier agents.
+
+---
+
+## 2026-06-22 — Tournament pool fix + SMW V2 discovery
+
+### Critical bug fix: Kaggle agents silently excluded from tournament pool
+
+**Root cause discovered:** `run_tournament.py` caps pool at 10 agents. Previous ordering placed 4 internal controls + 5 legacy baselines (v26–v29, hbx2) into the pool before Kaggle agents, filling the cap. All prior tournament runs (v73, v74b, etc.) were against an internal-only pool (~850–1180 ELO), never against the Kaggle agents we actually compete against.
+
+**Fix (2026-06-22):** Kaggle agents reordered to slots 5–9 in pool candidate list, before legacy baselines.
+
+**Impact:** All prior "rank 5/10" tournament results were optimistic — that rank was achieved against a weak pool. Corrected pool includes kaggle_smw_v2 (1300+ ELO), kaggle_i_the_orbit, kaggle_v44_elo, kaggle_v2_gru, kaggle_producer.
+
+### H-D8: roi_threshold 1.5 → 1.2 (v76_candidate_roi_12.py)
+
+- Hypothesis: kaggle_v44_elo uses roi_threshold=1.2; matching this knob may close gap
+- Gate vs v36 (corrected pool):
+  - n=8: **4W/4L** (50%)
+  - n=24: **12W/12L** (50%)
+- Direct H2H vs kaggle_v44_elo: **13W/3L** (81%) — we already beat v44_elo at roi=1.5
+- Full tournament (10-agent corrected pool, artifact `tournament_20260622_103736.json`):
+  - **Rank 4/10**, pts 131.5, 1st% 27.4%, Pred.Kaggle≈919
+  - Pool order: kaggle_i_the_orbit (1st), kaggle_producer (2nd), v37 (3rd), v76 (4th), control_producer (5th)
+- Decision: **no promotion** — roi_threshold reduction is neutral vs v36; gap to top is structural
+
+### kaggle_smw_v2 (shorooghahmadi, 1300+ ELO) — new pool anchor
+
+**Source:** `https://www.kaggle.com/code/shorooghahmadi/orbit-wars-strategic-multi-wave-fleet`
+
+**Architecture:** ProducerLite variant (same orbit_lite family, no neural weights, pure torch tensor heuristic). Self-contained 2510-line file.
+
+**Key structural features absent from our v36:**
+
+| Feature | SMW V2 | Our v36 | Impact |
+|---|---|---|---|
+| `enable_focus_fire=True` | ✅ up to 4 sources per target | ❌ single-source only | HIGH |
+| `track_fleets=True` | ✅ enemy fleet tracking in garrison | ❌ stateless | HIGH |
+| `enable_potential_risk` | available (disabled by default) | ❌ missing | MEDIUM |
+| `min_ships_to_launch` | `4.0` | `8.0` | LOW |
+
+**Focus fire mechanism:** when `enable_focus_fire=True`, the planner builds multi-source strike packages (up to `max_strike_sources=4` planets coordinating on the same target). This is the "1-ply joint optimization" we identified architecturally missing. Single-source greedy assignments converge regardless of scoring tweaks; multi-source coordination unlocks captures no individual planet can achieve alone.
+
+**H2H calibration:**
+- kaggle_smw_v2 vs v36: **13W/3L** (81% win rate for smw_v2) — clearest gap measured so far
+- Added to tournament pool at slot 6 (highest-priority Kaggle anchor)
+
+**Repo path:** `tournament_agents/kaggle_smw_v2.py`
+
+### Live Kaggle scores (2026-06-22, ~36h to deadline)
+
+| Submission | ELO | Status |
+|---|---|---|
+| v36 original | 1170.5 | ❌ frozen (not latest 2) |
+| v36 resubmit | 1033.9 (rising) | ✅ active |
+| v43 wavecap5+beta24 | 1131.7 (rising) | ✅ active |
+
+The two active submissions are v36-resubmit and v43. Meta has shifted since June 12-13 (Producer V2, 1266+ ELO public agent, RL threads — community-wide score drop confirmed in Discussion #708962).
+
+### Meta shift summary (confirmed root cause)
+
+Three simultaneous events on June 12, 2026 raised the competitive floor:
+1. `slawekbiel/the-producer-v2` — strong heuristic baseline made public
+2. "Struggling with RL?" thread (65 votes) — unlocked IL/RL path for entire community
+3. `itzzomkar/1266-elo-the-v44-agent-100-self-contained` — 1266+ ELO public submission
+
+June 13: `shorooghahmadi/orbit-wars-strategic-multi-wave-fleet` V2 (focus-fire ProducerLite) reaching 1300+ ELO.
+
+Heuristic ceiling without focus-fire or fleet-tracking: ~1170–1200 ELO.
+
+---
+
+## What to do next (2026-06-22, ~36h remaining)
+
+Three viable paths:
+
+1. **Submit kaggle_smw_v2 directly** — it's public, self-contained, likely ~1300 ELO. Fastest path to leaderboard improvement. No development required. Risk: same as submitting any public notebook.
+
+2. **Port `enable_focus_fire` into our orbit_lite codebase** — multi-source strike coordination is the confirmed structural gap. High effort (~4-8h to port + test). Highest upside if it works. Risk: integration bugs under competition time pressure.
+
+3. **Tune kaggle_smw_v2 knobs on top of the public base** — run H-B4-style search over SMW V2's config, keep best knobs, submit. Medium effort (~2h). Upside: marginal vs just submitting V2 directly.

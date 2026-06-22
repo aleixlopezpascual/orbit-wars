@@ -172,9 +172,59 @@ p0 gets `step` in observation; non-p0 players may not. Our adapter already defau
 
 ### Implementation status
 
-| ID | Candidate | Status |
+| ID | Candidate | Status | Outcome |
+|---|---|---|---|
+| H-D1 + H-D2 | `v74_candidate_structural.py` | ❌ failed n=24 | Overfires on marginal missions (41.7%) |
+| H-D1 only | `v74b_candidate_elim_only.py` | ⚠️ neutral | 3-seed avg 51.4%, rank 5/10 tournament |
+| H-D2 only | `v74c_candidate_safe_neutral.py` | ❌ failed n=24 | 45.8% |
+| H-D7 | `v75_candidate_prod_ranking.py` | ❌ failed n=8 | Prod weighting overshoots to far targets |
+| H-D8 | `v76_candidate_roi_12.py` | ⚠️ neutral | 50% pairwise vs v36; rank 4/10 corrected pool |
+
+### H-D series verdict (final)
+
+All H-D candidates confirmed the rank-5 pattern (now rank 4 with corrected pool still below top). Score adjustments and threshold tuning cannot break the single-source greedy planner ceiling.
+
+**Do not repeat:** H-D1 elimination bonus, H-D2 safe-neutral bonus, H-D7 production weighting, H-D8 roi_threshold reduction — as isolated changes, none produce tournament uplift.
+
+---
+
+## SMW V2 (kaggle_smw_v2) architectural analysis (2026-06-22)
+
+### Context
+
+`shorooghahmadi/orbit-wars-strategic-multi-wave-fleet` V2 is the top public heuristic agent at **1300+ ELO**. It's a ProducerLite variant (same orbit_lite family, no neural weights, 2510 lines of pure torch tensor heuristic). Our v36 achieves 1170.5 ELO — a gap of ~130 ELO.
+
+### Head-to-head: kaggle_smw_v2 beats v36 at 81% (n=16, seed=42)
+
+### Key structural differences
+
+| Feature | SMW V2 | Our v36 |
 |---|---|---|
-| H-D1 + H-D2 | `v74_candidate_structural.py` | planned / in progress |
+| `enable_focus_fire` | ✅ `True` (≤4 sources/target) | ❌ missing |
+| `track_fleets` | ✅ `True` | ❌ `False` |
+| `enable_potential_risk` | available | ❌ missing |
+| `min_ships_to_launch` | `4.0` | `8.0` |
+| 4P `horizon` | `13` | same |
+| 4P `max_sources_per_lane` | `6` | same |
+
+### Focus fire: the confirmed gap
+
+`enable_focus_fire=True` builds multi-source strike packages: up to `max_strike_sources=4` source planets coordinate simultaneous arrivals at the same target. This implements exactly the "1-ply joint optimization" identified as the architectural bottleneck:
+- Single-source greedy: each planet picks independently → convergence regardless of scoring
+- Focus fire: jointly selects source subsets per target → captures unlocked that no single planet can achieve
+
+### New hypotheses from SMW V2
+
+| ID | Hypothesis | Why it could work | Est. effort |
+|---|---|---|---|
+| H-E1 | Port `enable_focus_fire` into our orbit_lite codebase | Confirmed 130 ELO gap; structural change not a knob tweak | HIGH (4–8h) |
+| H-E2 | Enable `track_fleets=True` in movement config | Better defensive garrison projection under incoming threats | MEDIUM (2h) |
+| H-E3 | Submit kaggle_smw_v2 directly | It's public, self-contained, 1300+ ELO with no dev cost | LOW (30min) |
+| H-E4 | Tune SMW V2 config knobs via H-B4-style search | Marginal gain over raw V2 baseline | MEDIUM (2h) |
+
+### Recommendation (competition ~36h remaining)
+
+**H-E3 first** (submit SMW V2 directly to get a 1300 ELO anchor on the leaderboard), then attempt **H-E1** (focus fire port) if time permits. H-E4 (knob tuning V2) offers the best risk/reward if H-E1 is too risky under time pressure.
 
 ---
 
