@@ -721,6 +721,269 @@ Investigate why conservative v36-derived ablations were failing and determine wh
 
 ---
 
+## External research synthesis (2026-06-21)
+
+Source reviewed: user-provided strategic research note on "beyond-heuristic" evolution (ProducerLite -> IL/RL).
+
+### Comparison vs current project findings
+
+| Topic | External research claim | Current repo evidence | Assessment |
+|---|---|---|---|
+| Heuristic ceiling | Top heuristic planners hit a ceiling and need learned components | v48-v70 cycle repeatedly plateaued despite scalar tuning; mixed-pool rank mostly 4-5 | **Aligned** |
+| Importance of policy learning | IL -> RL progression is likely required for next jump | Backlog already prioritizes per-planet BC hybrid (H-A4) and value-learning tracks | **Aligned** |
+| Hyperparameter optimization | Manual tuning should be replaced by algorithmic optimization (e.g., CMA-ES/Optuna) | Recent sweeps were mostly manual and narrow | **New actionable gap** |
+| Self-play / league robustness | Single-opponent progress overfits; use broader training/eval mix | Our promotion gate already enforces mixed 10-agent tournaments | **Aligned** |
+| Engine specifics | Notes mention practical edge-case timing details | Existing docs use 500-turn model; no local proof yet for alternate cutoff behavior | **Unverified; test before adoption** |
+
+### Practical learnings adopted
+
+1. Treat the note as a **strategic confirmation**, not a wholesale architecture rewrite request.
+2. Prioritize **hybrid learning components** that plug into orbit_lite safety/geometry rather than full end-to-end replacement.
+3. Add one explicit workstream for **algorithmic parameter search** against mixed-pool objective, since this has not been formally run yet.
+4. Keep any engine-behavior claims as **instrumentation tasks first** (no policy changes until measured locally).
+
+### H-B4 harness kickoff (2026-06-21)
+
+- Implemented `scripts/hb4_search.py` for bounded black-box search over coupled ProducerLite knobs.
+- The runner now:
+  - generates candidate files from `v36_candidate_min_ships.py`,
+  - evaluates via `run_tournament.py` artifacts,
+  - ranks trials by objective `avg_pts*100 + first_pct`,
+  - marks trials invalid when test-agent game coverage is too low or tournament errors occur.
+- This is an **offline exploration tool only**; promotion still requires n24 -> n48 -> mandatory tournament gate and documentation in this log.
+
+### H-B4 batch-1 results (2026-06-21)
+
+- Search run: `scripts/hb4_search.py --trials 2 --games 24` (mixed-pool objective).
+- Top trial from search objective:
+  - Candidate: `generated_candidates_batch1/v71_candidate_hb4_b1_001.py`
+  - Search metric snapshot: rank 2/10, avg_pts 2.000, first% 55.6 (9 games participated in sampled 24).
+- Promotion check vs baseline:
+  - `run_validation.py --ch generated_candidates_batch1/v71_candidate_hb4_b1_001.py --bl v36_candidate_min_ships.py -n 24 --seed 42`
+  - Result: **11W/13L (45.8%, CI95 [28-65])**
+- Decision: **do not advance to n=48** for this trial; continue H-B4 exploration with additional bounded samples and then re-gate.
+
+### H-B4 batches 3-4 + screened gating (2026-06-21)
+
+- Batch-3 (`seed=4242`) produced stronger mixed-pool candidates:
+  - `v71_candidate_hb4_b3_001.py` and `v71_candidate_hb4_b3_003.py` both reached rank-1 in 24-game sampled tournaments.
+- Direct n=24 checks vs `v36_candidate_min_ships.py`:
+  - `v71_candidate_hb4_b3_001.py`: **11W/13L** (45.8%, CI95 [28-65]) -> fail
+  - `v71_candidate_hb4_b3_003.py`: **10W/14L** (41.7%, CI95 [24-61]) -> fail
+
+- Added automatic post-search screening to `scripts/hb4_search.py`:
+  - optional `--screen-games`, `--screen-top-k`, and `--screen-baseline`
+  - records n=24 H2H artifacts in search summary for top valid trials.
+
+- Batch-4 screened run (`seed=5353`, trials=2):
+  - `v71_candidate_hb4_b4_001.py`: screened **11W/13L** (45.8%) -> fail
+  - `v71_candidate_hb4_b4_002.py`: screened **12W/12L** (50.0%) -> passes n=24 threshold
+
+- Promotion sequence for `v71_candidate_hb4_b4_002.py`:
+  1. n=48 vs v36: **29W/19L** (60.4%, CI95 [46-73]) -> pass
+  2. Mandatory tournament gate (210 games): `artifacts/tournament_20260621_021619.json`
+     - Result: **rank 5/10**, pts 138.5, 1st% 32.1
+
+- Decision: despite n48 H2H pass, tournament rank remained mid-tier; **no promotion yet**.
+
+### H-B6 uncertainty-gate kickoff (2026-06-21)
+
+- New candidate: `v72_candidate_uncertainty_gate.py` (from v36 lineage).
+- Change: add a lightweight uncertainty gate during candidate scoring:
+  - uncertainty proxy = weighted (ETA risk + low floor-margin risk),
+  - drop high-uncertainty missions above threshold,
+  - apply small score penalty for residual uncertainty.
+- Quick gate vs v36:
+  - `run_validation.py --ch v72_candidate_uncertainty_gate.py --bl v36_candidate_min_ships.py -n 8 --seed 42`
+  - Result: **3W/5L** (37.5%, CI95 [14-69]).
+- Status: early configuration appears too conservative/fragile; tune uncertainty weights/threshold before n24 promotion gate.
+
+### H-B5 split-vs-stack sizing kickoff (2026-06-21)
+
+- New candidate: `v73_candidate_split_stack.py` (from v36 lineage).
+- Structural change:
+  - generate two launch-size variants per (source,target): full stack + split send,
+  - constrain split variant to longer-ETA offensive lanes (`eta >= 6`) to avoid harming defensive/short tactical responses.
+
+- Gate progression vs `v36_candidate_min_ships.py`:
+  - n8 quick check (tuned): **4W/4L** (50.0%)
+  - n24: **14W/10L** (58.3%, CI95 [39-76]) -> pass
+  - n48: **26W/22L** (54.2%, CI95 [40-67]) -> pass
+
+- Mandatory tournament gate:
+  - Artifact: `artifacts/tournament_20260621_100925.json`
+  - Result: **rank 5/10**, pts 139.0, avg 1.655, 1st% 32.1 (27/84 first places)
+
+- Decision: H-B5 improved pairwise gates but still landed in the same mid-tier tournament band; **no promotion yet**.
+
+---
+
+## Kaggle Competition Intel Sweep + H-D1/H-D2/H-D7 Ablations (2026-06-21)
+
+### Research Summary
+
+Full sweep of 243 Kaggle discussion threads, notebooks, and GitHub agent repos.
+
+**Meta findings:**
+- RL agents dominate top ~9 spots (PPO+JAX: 1303+ ELO, GH200, $15 compute, 6.5h)
+- Heuristic/planner ceiling at ~1200-1250 without optimization
+- #1 bot described as "1-ply search agent" — not static greedy
+- BC fails: 2.4M-param clone of #1 bot loses 5:1 to greedy Producer (search structure uncloneable)
+- Autoregressive launch head is the BC unlock (fleet launches must be jointly modeled)
+- Key heuristic gap: YuriNakayama/orbit-wars agent has snipe, crash-exploit, indirect wealth, elimination bonus, reaction-time classification
+
+### H-D1: Elimination bonus (v74b_candidate_elim_only.py)
+
+- Change: +1.0 additive score when enemy owner has < 10% of our total ships
+- 3-seed H2H vs v36: seed42=50%, seed142=56.5%, seed242=50% → avg 51.4%
+- n=48 seed42: 23W/23L/2T (50%)
+- Mandatory tournament gate: **rank 5/10**, pts 144.0, 1st% 35.7
+  - Artifact: `artifacts/tournament_20260621_205546.json`
+- Decision: **no promotion** — same rank-5 pattern as all prior ablations
+
+### H-D2: Safe-neutral bonus (v74c) and combined (v74)
+
+- v74 (both bonuses, aggressive): failed n=24 at 41.7% — overfires on marginal missions
+- v74c (safe-neutral only): failed n=24 at 45.8%
+- Decision: both variants blocked
+
+### H-D7: Production-weighted shortlist (v75_candidate_prod_ranking.py)
+
+- Change: rank shortlist by `prod * 4.0 - proximity` instead of `-proximity`
+- n=8: 3W/5L (37.5%) — early failure
+- Decision: pure-proximity shortlist is intentional; it selects reachable targets. Production weighting overshoots to farther targets, wasting ships on long-distance missions
+
+### Overall H-D series verdict
+
+**Pattern confirmed:** every structural change (H-A, H-B, H-D series, 15+ candidates) lands at rank 5/10 in mixed-pool tournament. The rank-5 ceiling is architectural: the greedy single-source planner cannot beat itself with score adjustments alone.
+
+**Root cause (from research):** the #1 bot runs a 1-ply search. Any agent using independent greedy mission scoring will converge to similar behavior regardless of scoring tweaks, because the bottleneck is joint fleet coordination, not individual mission ROI.
+
+### Tournament pool observation (v74b run)
+
+Notable: v37 (wave_cap=5) ranked **1st/10** in this tournament run (197.0 pts, 65.5% 1st-place), v36 ranked **2nd** (177.5 pts, 54.8%). This is consistent with prior offline results where v37 dominated. Despite this, v37 and v36 are essentially tied live (1170.0 vs 1170.5). Offline tournament and live Kaggle ELO are not tightly correlated for same-tier agents.
+
+---
+
+## 2026-06-22 — Tournament pool fix + SMW V2 discovery
+
+### Critical bug fix: Kaggle agents silently excluded from tournament pool
+
+**Root cause discovered:** `run_tournament.py` caps pool at 10 agents. Previous ordering placed 4 internal controls + 5 legacy baselines (v26–v29, hbx2) into the pool before Kaggle agents, filling the cap. All prior tournament runs (v73, v74b, etc.) were against an internal-only pool (~850–1180 ELO), never against the Kaggle agents we actually compete against.
+
+**Fix (2026-06-22):** Kaggle agents reordered to slots 5–9 in pool candidate list, before legacy baselines.
+
+**Impact:** All prior "rank 5/10" tournament results were optimistic — that rank was achieved against a weak pool. Corrected pool includes kaggle_smw_v2 (1300+ ELO), kaggle_i_the_orbit, kaggle_v44_elo, kaggle_v2_gru, kaggle_producer.
+
+### H-D8: roi_threshold 1.5 → 1.2 (v76_candidate_roi_12.py)
+
+- Hypothesis: kaggle_v44_elo uses roi_threshold=1.2; matching this knob may close gap
+- Gate vs v36 (corrected pool):
+  - n=8: **4W/4L** (50%)
+  - n=24: **12W/12L** (50%)
+- Direct H2H vs kaggle_v44_elo: **13W/3L** (81%) — we already beat v44_elo at roi=1.5
+- Full tournament (10-agent corrected pool, artifact `tournament_20260622_103736.json`):
+  - **Rank 4/10**, pts 131.5, 1st% 27.4%, Pred.Kaggle≈919
+  - Pool order: kaggle_i_the_orbit (1st), kaggle_producer (2nd), v37 (3rd), v76 (4th), control_producer (5th)
+- Decision: **no promotion** — roi_threshold reduction is neutral vs v36; gap to top is structural
+
+### kaggle_smw_v2 (shorooghahmadi, 1300+ ELO) — new pool anchor
+
+**Source:** `https://www.kaggle.com/code/shorooghahmadi/orbit-wars-strategic-multi-wave-fleet`
+
+**Architecture:** ProducerLite variant (same orbit_lite family, no neural weights, pure torch tensor heuristic). Self-contained 2510-line file.
+
+**Key structural features absent from our v36:**
+
+| Feature | SMW V2 | Our v36 | Impact |
+|---|---|---|---|
+| `enable_focus_fire=True` | ✅ up to 4 sources per target | ❌ single-source only | HIGH |
+| `track_fleets=True` | ✅ enemy fleet tracking in garrison | ❌ stateless | HIGH |
+| `enable_potential_risk` | available (disabled by default) | ❌ missing | MEDIUM |
+| `min_ships_to_launch` | `4.0` | `8.0` | LOW |
+
+**Focus fire mechanism:** when `enable_focus_fire=True`, the planner builds multi-source strike packages (up to `max_strike_sources=4` planets coordinating on the same target). This is the "1-ply joint optimization" we identified architecturally missing. Single-source greedy assignments converge regardless of scoring tweaks; multi-source coordination unlocks captures no individual planet can achieve alone.
+
+**H2H calibration:**
+- kaggle_smw_v2 vs v36: **13W/3L** (81% win rate for smw_v2) — clearest gap measured so far
+- Added to tournament pool at slot 6 (highest-priority Kaggle anchor)
+
+**Repo path:** `tournament_agents/kaggle_smw_v2.py`
+
+### Live Kaggle scores (2026-06-22, ~36h to deadline)
+
+| Submission | ELO | Status |
+|---|---|---|
+| v36 original | 1170.5 | ❌ frozen (not latest 2) |
+| v36 resubmit | 1033.9 (rising) | ✅ active |
+| v43 wavecap5+beta24 | 1131.7 (rising) | ✅ active |
+
+The two active submissions are v36-resubmit and v43. Meta has shifted since June 12-13 (Producer V2, 1266+ ELO public agent, RL threads — community-wide score drop confirmed in Discussion #708962).
+
+### Meta shift summary (confirmed root cause)
+
+Three simultaneous events on June 12, 2026 raised the competitive floor:
+1. `slawekbiel/the-producer-v2` — strong heuristic baseline made public
+2. "Struggling with RL?" thread (65 votes) — unlocked IL/RL path for entire community
+3. `itzzomkar/1266-elo-the-v44-agent-100-self-contained` — 1266+ ELO public submission
+
+June 13: `shorooghahmadi/orbit-wars-strategic-multi-wave-fleet` V2 (focus-fire ProducerLite) reaching 1300+ ELO.
+
+Heuristic ceiling without focus-fire or fleet-tracking: ~1170–1200 ELO.
+
+---
+
+## What to do next (2026-06-22, ~36h remaining)
+
+Three viable paths:
+
+1. **Submit kaggle_smw_v2 directly** — it's public, self-contained, likely ~1300 ELO. Fastest path to leaderboard improvement. No development required. Risk: same as submitting any public notebook.
+
+2. **Port `enable_focus_fire` into our orbit_lite codebase** — multi-source strike coordination is the confirmed structural gap. High effort (~4-8h to port + test). Highest upside if it works. Risk: integration bugs under competition time pressure.
+
+3. **Tune kaggle_smw_v2 knobs on top of the public base** — run H-B4-style search over SMW V2's config, keep best knobs, submit. Medium effort (~2h). Upside: marginal vs just submitting V2 directly.
+
+---
+
+## 2026-06-22 (late) — pool-profile split and alignment recovery
+
+### Problem observed
+
+A broad 20-agent tournament (`mixed20`, 300 steps, 4845 games) produced rankings that did not match live Kaggle ordering:
+- `v43` ranked mid-table offline while remaining top among our live submissions.
+- Several weak/legacy agents were over-rewarded in local fixed-pool round robin.
+
+Conclusion: a single offline tournament profile was mixing two goals (Kaggle score prediction vs regression robustness) and underperforming at both.
+
+### Fix implemented
+
+`run_tournament.py` now supports explicit pool profiles:
+
+- `kaggle_latest10` (submission decision profile): curated 10-agent pool intended to track live Kaggle meta.
+- `mixed20` (robustness profile): broad stress pool including legacy baselines.
+
+CLI additions:
+- `--pool-profile {mixed20,kaggle_latest10}`
+- `--max-agents` remains supported (default 10).
+
+### Validation run (Kaggle-like profile)
+
+Run:
+- `--pool-profile kaggle_latest10 --max-agents 10 --steps 500 --repeats 3`
+- Artifact: `artifacts/tournament_20260622_kaggle_latest10_steps500_r3.json`
+
+Result:
+- `v43_candidate_wavecap5_beta24.py` **rank 1/10** (435.5 pts, 35.7% first-place)
+
+This restored the prior directionality where v43 was top in the curated offline pool and aligned with live medal-zone behavior.
+
+### Operational policy (final hours)
+
+1. Use `kaggle_latest10` + `steps=500` for **submission decisions**.
+2. Use `mixed20` only for **regression/stress testing**.
+3. **Risk-off rule:** do not replace `v43` unless new candidate shows strong, repeatable uplift in the Kaggle-like profile.
+4. With Kaggle's "latest 2 submissions active" rule, every new submit is destructive to one active runner; treat submits as high-cost actions.
+
 ## Kaggle Submission Update (2026-06-21)
 
 ### Latest live scores

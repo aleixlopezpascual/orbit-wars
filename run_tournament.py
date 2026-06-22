@@ -1,7 +1,7 @@
 """
 run_tournament.py — Full round-robin 4-player tournament evaluation with ELO calibration.
 
-10 agents compete in all C(10,4) = 210 unique 4-player combinations.
+Default run uses 10 agents (C(10,4) = 210 unique 4-player combinations).
 Scoring: 1st=3pts, 2nd=2pts, 3rd=1pt, 4th=0pt (ties split equally).
 
 When fewer agents are available (e.g. torch not installed, Kaggle agents missing),
@@ -17,6 +17,8 @@ Usage:
     python3 run_tournament.py --agent my_agent.py      # test a specific agent
     python3 run_tournament.py --games 50               # limit to 50 random games
     python3 run_tournament.py --workers 4              # parallel workers
+    python3 run_tournament.py --max-agents 20          # larger pool (more combos)
+    python3 run_tournament.py --pool-profile kaggle_latest10 --max-agents 10
     python3 run_tournament.py --dry-run                # print schedule only
     python3 run_tournament.py --no-rating              # skip ELO computation (for speed)
 
@@ -95,7 +97,12 @@ def _can_load_agent(path: str) -> bool:
         sys.modules.pop(name, None)
 
 
-def build_agent_pool(test_agent_path: str, root: str) -> list[dict]:
+def build_agent_pool(
+    test_agent_path: str,
+    root: str,
+    max_agents: int = 10,
+    pool_profile: str = "mixed20",
+) -> list[dict]:
     """
     Returns the ordered list of validated agent descriptors:
       [{"name": str, "path": str}, ...]
@@ -104,27 +111,46 @@ def build_agent_pool(test_agent_path: str, root: str) -> list[dict]:
       - locked local controls + fixed top Kaggle anchor
       - version-history baselines
       - downloaded Kaggle agents from tournament_agents/
-    up to 10 agents total. Agents that fail to load are skipped with a warning.
+    up to max_agents agents total. Agents that fail to load are skipped with a warning.
     """
-    candidates = [
-        # Fixed anchors (always included when present)
-        "control_producer.py",   # 1180.2 ELO — PRIMARY control
-        "control_stronger.py",   # 981.3 ELO  — secondary control
-        "v36_candidate_min_ships.py",  # 1182.9 ELO — current top Kaggle submission
-        "v37_candidate_wave_cap_5.py",  # Recent Kaggle candidate submission
-        # Legacy baselines (kept for historical reference)
-        "control_hbx2.py",
-        "v29_baseline.py",
-        "v28_baseline.py",
-        "v27_baseline.py",
-        "v26_baseline.py",
-        # Kaggle downloads
-        "tournament_agents/kaggle_i_the_orbit.py",
-        "tournament_agents/kaggle_v2_gru.py",
-        "tournament_agents/kaggle_v44_elo.py",
-        # Fallback if the locked local Producer control is missing
-        "tournament_agents/kaggle_producer.py",
-    ]
+    candidate_profiles = {
+        # Full mixed pool (good for robustness / stress tests, up to 20 agents).
+        "mixed20": [
+            "control_producer.py",
+            "control_stronger.py",
+            "v36_candidate_min_ships.py",
+            "v37_candidate_wave_cap_5.py",
+            "v66_candidate_standalone_wave5_reinforce24.py",
+            "tournament_agents/kaggle_apex_hybrid.py",
+            "tournament_agents/kaggle_i_the_orbit.py",
+            "tournament_agents/kaggle_producer_v2.py",
+            "tournament_agents/kaggle_smw_v2.py",
+            "tournament_agents/kaggle_v2_gru.py",
+            "tournament_agents/kaggle_v44_elo.py",
+            "tournament_agents/kaggle_producer.py",
+            "tournament_agents/kaggle_meta0622.py",
+            "tournament_agents/kaggle_simple1200.py",
+            "control_hbx2.py",
+            "v29_baseline.py",
+            "v28_baseline.py",
+            "v27_baseline.py",
+            "v26_baseline.py",
+        ],
+        # Kaggle-latest curated 10-agent profile (the one that looked most aligned).
+        "kaggle_latest10": [
+            "control_producer.py",
+            "control_stronger.py",
+            "v36_candidate_min_ships.py",
+            "v37_candidate_wave_cap_5.py",
+            "tournament_agents/kaggle_apex_hybrid.py",
+            "tournament_agents/kaggle_i_the_orbit.py",
+            "tournament_agents/kaggle_producer_v2.py",
+            "tournament_agents/kaggle_v2_gru.py",
+            "tournament_agents/kaggle_v44_elo.py",
+            "tournament_agents/kaggle_smw_v2.py",
+        ],
+    }
+    candidates = candidate_profiles.get(pool_profile, candidate_profiles["mixed20"])
 
     pool = [{"name": Path(test_agent_path).name, "path": test_agent_path}]
 
@@ -139,7 +165,7 @@ def build_agent_pool(test_agent_path: str, root: str) -> list[dict]:
             pool.append({"name": name, "path": full_path})
         else:
             print(f"  ⚠  Skipping {name}: failed to load (missing torch or other dependency)")
-        if len(pool) >= 10:
+        if len(pool) >= max_agents:
             break
 
     return pool
@@ -267,6 +293,8 @@ def _run_game(args: tuple) -> dict:
 def run_tournament(
     test_agent_path: str,
     root: str,
+    max_agents: int,
+    pool_profile: str,
     n_games: Optional[int],
     steps: int,
     act_timeout: int,
@@ -278,7 +306,12 @@ def run_tournament(
     skip_rating: bool = False,
 ) -> dict:
     print("Loading agent pool...", flush=True)
-    pool = build_agent_pool(test_agent_path, root)
+    pool = build_agent_pool(
+        test_agent_path,
+        root,
+        max_agents=max_agents,
+        pool_profile=pool_profile,
+    )
 
     if len(pool) < 4:
         print(
@@ -313,7 +346,8 @@ def run_tournament(
     print(f"ORBIT WARS TOURNAMENT")
     print(f"{'=' * 60}")
     print(f"  Test agent : {pool[0]['name']} ({pool[0]['path']})")
-    print(f"  Agents     : {n_agents}/10")
+    print(f"  Agents     : {n_agents}/{max_agents}")
+    print(f"  Pool       : {pool_profile}")
     print(f"  Combos     : {n_combos} unique × {repeats} repeat(s)")
     print(f"  Games      : {len(all_combos)}")
     print(f"  Workers    : {workers}")
@@ -546,13 +580,23 @@ def _auto_detect_root() -> str:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Run a full round-robin 4-player tournament among 10 agents.",
+        description="Run a full round-robin 4-player tournament among up to N agents.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
     parser.add_argument(
         "--agent", default="agent.py",
         help="Path to the test agent (default: agent.py in repo root)"
+    )
+    parser.add_argument(
+        "--max-agents", type=int, default=10,
+        help="Maximum number of agents to include in pool (default: 10)"
+    )
+    parser.add_argument(
+        "--pool-profile",
+        choices=["mixed20", "kaggle_latest10"],
+        default="mixed20",
+        help="Agent pool profile: mixed20 (broad robustness) or kaggle_latest10 (curated Kaggle-like)"
     )
     parser.add_argument(
         "--games", type=int, default=None,
@@ -596,6 +640,9 @@ def main():
         help="Repo root directory (auto-detected by default)"
     )
     args = parser.parse_args()
+    if args.max_agents < 4:
+        print("ERROR: --max-agents must be at least 4.", file=sys.stderr)
+        sys.exit(1)
 
     root = args.root or _auto_detect_root()
 
@@ -614,6 +661,8 @@ def main():
     run_tournament(
         test_agent_path=agent_path,
         root=root,
+        max_agents=args.max_agents,
+        pool_profile=args.pool_profile,
         n_games=args.games,
         steps=args.steps,
         act_timeout=args.act_timeout,
