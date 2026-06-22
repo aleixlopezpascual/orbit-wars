@@ -62,3 +62,44 @@ def test_count_focus_fire_ignores_same_source_repeat():
         {"turn": 6, "owner": 0, "from_planet_id": 0, "target_planet_id": 1, "ships": 4},
     ]
     assert ar.count_focus_fire_events(launches, owner=0, window=2, min_sources=2) == 0
+
+
+def test_find_seat_by_name():
+    replay = {"info": {"TeamNames": ["Jeki", "Aleix López", "Dapp", "ysd"]}}
+    assert ar.find_seat_by_name(replay, "Aleix López") == 1
+    assert ar.find_seat_by_name(replay, "Nobody") is None
+
+
+def _two_seat_replay():
+    # Seat 1 (us) loses; seat 0 wins and uses a 2-source focus-fire strike on planet 2.
+    def planet(pid, owner, x, y, ships):
+        return [pid, owner, x, y, 2.0, ships, 3]
+
+    def fleet(fid, owner, x, y, ang, frm, ships):
+        return [fid, owner, x, y, ang, frm, ships]
+
+    p_src0 = planet(0, 0, 10, 50, 30)   # our enemy's source A
+    p_src1 = planet(1, 0, 50, 10, 30)   # enemy source B
+    p_tgt = planet(2, -1, 50, 50, 5)    # contested neutral target
+    p_us = planet(3, 1, 90, 90, 30)     # our planet
+    steps = [
+        [{"observation": {"planets": [p_src0, p_src1, p_tgt, p_us], "fleets": []}}],
+        # turn 1: two enemy fleets launch from planets 0 and 1 toward planet 2
+        [{"observation": {"planets": [p_src0, p_src1, p_tgt, p_us],
+                          "fleets": [fleet(10, 0, 12, 50, 0.0, 0, 6),
+                                     fleet(11, 0, 50, 12, 1.5708, 1, 6)]}}],
+    ]
+    return {
+        "steps": steps,
+        "rewards": [1, -1],
+        "info": {"TeamNames": ["Enemy", "Aleix López"]},
+    }
+
+
+def test_episode_report_identifies_our_loss_and_ff_gap():
+    rep = ar.episode_report(_two_seat_replay(), our_name="Aleix López")
+    assert rep["our_seat"] == 1
+    assert rep["our_won"] is False
+    assert rep["our_focus_fire"] == 0
+    assert rep["winner_seat"] == 0
+    assert rep["winner_focus_fire"] == 1

@@ -4,4 +4,6 @@ from scripts.analyze_replays import (  # noqa: F401
     detect_launches,
     count_focus_fire_events,
     summarize_episode,
+    find_seat_by_name,
+    episode_report,
 )

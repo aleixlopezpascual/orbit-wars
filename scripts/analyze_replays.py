@@ -119,10 +119,78 @@ def summarize_episode(replay: dict) -> dict:
     return summary
 
 
+def find_seat_by_name(replay: dict, name: str) -> int | None:
+    """Seat index whose TeamName matches `name`, else None."""
+    names = replay.get("info", {}).get("TeamNames", []) or []
+    for seat, team in enumerate(names):
+        if team == name:
+            return seat
+    return None
+
+
+def episode_report(replay: dict, our_name: str) -> dict:
+    """Per-episode summary from our seat's perspective.
+
+    Returns our seat, win/loss (via top-level rewards), focus-fire counts for us
+    and the winner, player count, and per-seat focus-fire events.
+    """
+    states = iter_board_states(replay)
+    launches = detect_launches(states)
+    rewards = replay.get("rewards", []) or []
+    seats = list(range(len(rewards))) if rewards else sorted(
+        {l["owner"] for l in launches if l["owner"] >= 0}
+    )
+    ff = {s: count_focus_fire_events(launches, s) for s in seats}
+    our_seat = find_seat_by_name(replay, our_name)
+    winner_seat = None
+    if rewards:
+        max_r = max(rewards)
+        winners = [s for s, r in enumerate(rewards) if r == max_r]
+        winner_seat = winners[0] if len(winners) == 1 else None
+    our_reward = rewards[our_seat] if (our_seat is not None and our_seat < len(rewards)) else None
+    our_won = None
+    if our_reward is not None and rewards:
+        our_won = our_reward == max(rewards) and len([r for r in rewards if r == max(rewards)]) == 1
+    return {
+        "player_count": len(seats),
+        "our_seat": our_seat,
+        "our_reward": our_reward,
+        "our_won": our_won,
+        "our_focus_fire": ff.get(our_seat, 0) if our_seat is not None else None,
+        "our_launches": sum(1 for l in launches if l["owner"] == our_seat),
+        "winner_seat": winner_seat,
+        "winner_focus_fire": ff.get(winner_seat, 0) if winner_seat is not None else None,
+        "focus_fire_by_seat": ff,
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Analyze Orbit Wars replay JSON files.")
     ap.add_argument("paths", nargs="+", help="Replay JSON file(s).")
+    ap.add_argument("--our-name", default=None,
+                    help="Team name to treat as 'us' for win/loss + focus-fire gap aggregation.")
     args = ap.parse_args()
+    if args.our_name:
+        reports = []
+        for path in args.paths:
+            replay = json.loads(Path(path).read_text())
+            reports.append((path, episode_report(replay, args.our_name)))
+        losses = [r for _, r in reports if r["our_won"] is False]
+        wins = [r for _, r in reports if r["our_won"] is True]
+        for path, r in reports:
+            tag = "WIN " if r["our_won"] else ("LOSS" if r["our_won"] is False else "??? ")
+            print(f"{tag} {Path(path).name} | {r['player_count']}P | "
+                  f"our_ff={r['our_focus_fire']} winner_ff={r['winner_focus_fire']} "
+                  f"our_launches={r['our_launches']}")
+        def avg(vals):
+            vals = [v for v in vals if v is not None]
+            return round(sum(vals) / len(vals), 2) if vals else None
+        print("\n=== AGGREGATE ===")
+        print(f"games: {len(reports)} | wins: {len(wins)} | losses: {len(losses)}")
+        print(f"avg our focus-fire (losses): {avg([r['our_focus_fire'] for r in losses])}")
+        print(f"avg winner focus-fire (losses): {avg([r['winner_focus_fire'] for r in losses])}")
+        print(f"avg our focus-fire (wins): {avg([r['our_focus_fire'] for r in wins])}")
+        return 0
     for path in args.paths:
         replay = json.loads(Path(path).read_text())
         print(f"== {path} ==")
