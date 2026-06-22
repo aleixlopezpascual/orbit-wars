@@ -31,13 +31,21 @@ if [[ -z "$KAGGLE_BIN" ]]; then
 fi
 echo "Using kaggle CLI: $KAGGLE_BIN"
 
-# Top public agents by votes (as of June 2026)
-# Format: "agent_name kernel_ref"
+# Top public agents — updated 2026-06-22 to capture meta shift
+# Format: "agent_name kernel_ref [output|pull]"
+#   output = use `kaggle kernels output` (gets submission.tar.gz; needed for orbit_lite-based agents)
+#   pull   = use `kaggle kernels pull` (gets .ipynb/.py source; older agents)
 KERNELS=(
-  "kaggle_producer        ranjeet258/orbit-wars-producer"
-  "kaggle_i_the_orbit     olasadek/i-the-orbit"
-  "kaggle_v2_gru          caoyupeng/v2-gru"
-  "kaggle_v44_elo         itzzomkar/1266-elo-the-v44-agent-100-self-contained"
+  # --- Original pool (pull-based) ---
+  "kaggle_producer        ranjeet258/orbit-wars-producer                              pull"
+  "kaggle_i_the_orbit     olasadek/i-the-orbit                                        pull"
+  "kaggle_v2_gru          caoyupeng/v2-gru                                            pull"
+  "kaggle_v44_elo         itzzomkar/1266-elo-the-v44-agent-100-self-contained         pull"
+  # --- Meta-shift agents (output-based, orbit_lite bundles) ---
+  "kaggle_smw_v2          shorooghahmadi/orbit-wars-strategic-multi-wave-fleet        output"  # 1300+ ELO
+  "kaggle_apex_hybrid     AmgedAlfaqih/apex-hybrid-dynamic-ring-control-border-defense output"  # 107 votes, June 21
+  "kaggle_meta0622        pilkwang/orbit-wars-meta-snapshot-0622                      output"  # 85 votes, June 22 (today)
+  "kaggle_simple1200      alycemiki/light-ver-1200-simple-orbit-intruder              output"  # 168 votes, 1200+ ELO claimed
 )
 
 echo "Downloading ${#KERNELS[@]} Kaggle agents into ${OUT_DIR}/"
@@ -46,22 +54,55 @@ echo
 for ENTRY in "${KERNELS[@]}"; do
   AGENT_NAME=$(echo "$ENTRY" | awk '{print $1}')
   KERNEL_REF=$(echo "$ENTRY" | awk '{print $2}')
+  DOWNLOAD_MODE=$(echo "$ENTRY" | awk '{print $3}')
   PULL_DIR="${TMP_DIR}/${AGENT_NAME}"
   mkdir -p "$PULL_DIR"
-  echo "→ Pulling ${KERNEL_REF} ..."
-  if ! $KAGGLE_BIN kernels pull "$KERNEL_REF" -p "$PULL_DIR" 2>&1; then
-    echo "  WARNING: failed to pull ${KERNEL_REF}, skipping" >&2
-    continue
-  fi
 
-  # Find the downloaded file — could be .py or .ipynb
-  PY_FILE=$(find "$PULL_DIR" -name "*.py" | head -1)
-  IPYNB_FILE=$(find "$PULL_DIR" -name "*.ipynb" | head -1)
+  if [[ "$DOWNLOAD_MODE" == "output" ]]; then
+    # output mode: downloads submission.tar.gz containing main.py + orbit_lite/
+    echo "→ Fetching output ${KERNEL_REF} ..."
+    if ! $KAGGLE_BIN kernels output "$KERNEL_REF" -p "$PULL_DIR" 2>&1; then
+      echo "  WARNING: failed to fetch output ${KERNEL_REF}, skipping" >&2
+      continue
+    fi
+    TAR_FILE=$(find "$PULL_DIR" -name "*.tar.gz" | head -1)
+    if [[ -z "$TAR_FILE" ]]; then
+      # No tarball — try a direct .py output
+      PY_FILE=$(find "$PULL_DIR" -name "*.py" | grep -v "\.log" | head -1)
+      if [[ -z "$PY_FILE" ]]; then
+        echo "  WARNING: no .tar.gz or .py found in output for ${KERNEL_REF}, skipping" >&2
+        continue
+      fi
+      cp "$PY_FILE" "${OUT_DIR}/${AGENT_NAME}.py"
+      echo "  Saved: tournament_agents/${AGENT_NAME}.py (from output .py)"
+    else
+      EXTRACT_DIR="${TMP_DIR}/${AGENT_NAME}_extracted"
+      mkdir -p "$EXTRACT_DIR"
+      tar -xzf "$TAR_FILE" -C "$EXTRACT_DIR"
+      MAIN_PY=$(find "$EXTRACT_DIR" -maxdepth 1 -name "main.py" | head -1)
+      if [[ -z "$MAIN_PY" ]]; then
+        echo "  WARNING: no main.py in tarball for ${KERNEL_REF}, skipping" >&2
+        continue
+      fi
+      cp "$MAIN_PY" "${OUT_DIR}/${AGENT_NAME}.py"
+      echo "  Saved: tournament_agents/${AGENT_NAME}.py (from output tarball main.py)"
+    fi
+  else
+    # pull mode: downloads .ipynb or .py source
+    echo "→ Pulling ${KERNEL_REF} ..."
+    if ! $KAGGLE_BIN kernels pull "$KERNEL_REF" -p "$PULL_DIR" 2>&1; then
+      echo "  WARNING: failed to pull ${KERNEL_REF}, skipping" >&2
+      continue
+    fi
 
-  if [[ -n "$PY_FILE" ]]; then
-    cp "$PY_FILE" "${OUT_DIR}/${AGENT_NAME}.py"
-    echo "  Saved: tournament_agents/${AGENT_NAME}.py (from .py source)"
-  elif [[ -n "$IPYNB_FILE" ]]; then
+    # Find the downloaded file — could be .py or .ipynb
+    PY_FILE=$(find "$PULL_DIR" -name "*.py" | head -1)
+    IPYNB_FILE=$(find "$PULL_DIR" -name "*.ipynb" | head -1)
+
+    if [[ -n "$PY_FILE" ]]; then
+      cp "$PY_FILE" "${OUT_DIR}/${AGENT_NAME}.py"
+      echo "  Saved: tournament_agents/${AGENT_NAME}.py (from .py source)"
+    elif [[ -n "$IPYNB_FILE" ]]; then
     # Extract notebook cells with proper handling of Jupyter magic commands:
     # - %%writefile <path>: write cell content to that path
     # - !...: shell commands — skip
@@ -179,6 +220,7 @@ PYEOF
     echo "  WARNING: no .py or .ipynb found for ${KERNEL_REF}, skipping" >&2
     continue
   fi
+  fi  # end pull mode
 
   # Quick validation: check agent() function is present
   OUT_FILE="${OUT_DIR}/${AGENT_NAME}.py"

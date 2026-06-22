@@ -117,12 +117,15 @@ def build_agent_pool(test_agent_path: str, root: str) -> list[dict]:
         # They were previously placed after legacy baselines and silently dropped
         # when the pool reached its 10-agent cap — causing tournaments to run
         # against an artificially easy pool. Fixed 2026-06-22.
-        # kaggle_smw_v2 (1300+ ELO) added 2026-06-22 — top public agent.
-        "tournament_agents/kaggle_smw_v2.py",        # 1300+ ELO — Strategic Multi-Wave V2 (shorooghahmadi)
-        "tournament_agents/kaggle_v44_elo.py",      # 1266+ ELO public agent
-        "tournament_agents/kaggle_i_the_orbit.py",  # hoard-then-dump strategy
-        "tournament_agents/kaggle_v2_gru.py",       # GRU neural agent
-        "tournament_agents/kaggle_producer.py",     # Producer variant
+        # Meta-shift agents added 2026-06-22 (June 12-13 meta shift):
+        "tournament_agents/kaggle_smw_v2.py",        # 1300+ ELO — Strategic Multi-Wave V2
+        "tournament_agents/kaggle_apex_hybrid.py",   # 107 votes — Apex Hybrid dynamic ring (June 21)
+        "tournament_agents/kaggle_meta0622.py",      # 85 votes  — Pilkwang meta snapshot (June 22)
+        "tournament_agents/kaggle_simple1200.py",    # 168 votes — Simple Orbit Intruder 1200+
+        "tournament_agents/kaggle_v44_elo.py",       # 1266+ ELO public agent
+        "tournament_agents/kaggle_i_the_orbit.py",   # hoard-then-dump strategy
+        "tournament_agents/kaggle_v2_gru.py",        # GRU neural agent
+        "tournament_agents/kaggle_producer.py",      # Producer variant
         # Legacy baselines (lower priority — dropped when pool is full)
         "control_hbx2.py",
         "v29_baseline.py",
