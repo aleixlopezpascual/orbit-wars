@@ -229,6 +229,13 @@ All H-D candidates confirmed the rank-5 pattern (now rank 4 with corrected pool 
 - Use `--pool-profile mixed20` only for stress/regression checks.
 - Do not submit based on mixed20 rank alone.
 
+### Final-hour evaluation (2026-06-22)
+
+- **H-E2:** `v77_candidate_trackfleets256.py` kept v43-level tournament output (rank 2/8, 60.5 pts, 37.1% 1st) but did not improve it.
+- **H-E4:** `v78_candidate_smwv2_risk_focus.py` and `v79_candidate_smwv2_aggressive.py` both underperformed the v43 anchor in the same curated pool.
+- **Promotion rule:** require a candidate to beat v43 on both total points and 1st-place rate in the same `kaggle_latest10` tournament before any manual submission consideration.
+- **Decision:** no-go on all final-hour variants; keep v43 as the live anchor.
+
 ---
 
 ## Guardrails for future implementation phase
