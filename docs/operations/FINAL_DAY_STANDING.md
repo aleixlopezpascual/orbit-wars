@@ -33,3 +33,23 @@ Snapshot source: public leaderboard CSV 2026-06-22T22:06 UTC; submissions list 2
 - Counter-evidence: SMW (focus-fire flagship) = 987 < v43 1138 live.
 - **User decision: BRANCH = FOCUS_FIRE port** (accept higher ceiling + risk).
 - **Safety rail:** tracked pair = {v43 proven floor, focus-fire port}. Port goes live only if it clears local kaggle_latest10 gate vs v43. v43 best-shown protects bronze if the port flops.
+
+## v80 Gate Result (2026-06-23) — FAILED
+
+Identical 8-agent `kaggle_latest10` field, seed 42, 500 steps:
+
+| Metric | v80 (focus-fire) | v43 | Promotion needs |
+|---|---|---|---|
+| n=24 H2H vs v43 | 58.3% (CI [39–76]) | — | informative only |
+| Tournament points | 59.5 | **60.5** | v80 > v43 ✗ |
+| Tournament 1st% | 34.3% | **37.1%** | v80 > v43 ✗ |
+| ELO / Pred.Kaggle | 1036 / 978 | 1031 / 972 | ~tie |
+
+- **Verdict: v80 does NOT clear the gate.** Strong H2H, zero tournament uplift — the H-A5 pattern repeats; consistent with SMW (focus-fire flagship) = 987 live.
+- **Decision: v80 does not go live.** Fall back to defending with proven agents.
+- v36 ranked **1st in both** tournaments (64.5 / 68.0 pts) → strongest owned agent (live best 1170.5).
+
+## Final submission recommendation
+
+- Make the final two (tracked) submissions **v36** (1170.5 best, local rank 1) and **v43** (1164.9 best draw), replacing the dead SMW-987.
+- Best-of-latest-2 shown → max of two proven, above-silver-cutoff draws. Secures bronze, real silver shot, zero unproven-code risk.
