@@ -1,18 +1,42 @@
+# Secrets & credentials
+.env
+.env.*
+*.pem
+*.key
+kaggle.json
+.kaggle/
+.netrc
+credentials*
+*secret*
+
 # Downloaded Kaggle agent files — not committed
 tournament_agents/*.py
 tournament_agents/orbit_lite/
 
 # Python virtual environment
 .venv/
+venv/
+env/
 
 # Python cache
 __pycache__/
-*.pyc
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.ipynb_checkpoints/
 
 # Artifacts (large log/result files)
 artifacts/logs/
 artifacts/tournament_*.json
 artifacts/kaggle/
+*.log
 
 # Submission archives
 *.tar.gz
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
