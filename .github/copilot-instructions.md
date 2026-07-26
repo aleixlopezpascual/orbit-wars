@@ -75,17 +75,17 @@ Simulates multiple matches and returns final scores. Use to benchmark against ba
 ### Control Gate (Sanity Check)
 ```bash
 # Primary control sanity (Producer vs Stronger — must confirm Producer wins ~60%+)
-VENV=/Users/aleix.lopez/copilot-worktrees/orbit-wars/aleixlopezpascual-fantastic-system/.venv/bin/python3
+VENV=.venv/bin/python3
 $VENV run_validation.py --ch control_producer.py --bl control_stronger.py -n 24 --seed 42
 ```
 `control_producer.py` (1180.2 ELO) is the **primary control**. `control_stronger.py` (981.3 ELO) is the secondary reference.
 `control_hbx2.py` is retained as a historical snapshot but is no longer the active control.
 
-> **Venv note:** `orbit_wars` + `torch` are only available in `aleixlopezpascual-fantastic-system/.venv`. Use that Python for all local validation and tournament runs.
+> **Venv note:** `orbit_wars` + `torch` are only available in the project's local `.venv`. Use that Python for all local validation and tournament runs.
 
 ### Candidate Gate (Ablation Testing)
 ```bash
-VENV=/Users/aleix.lopez/copilot-worktrees/orbit-wars/aleixlopezpascual-fantastic-system/.venv/bin/python3
+VENV=.venv/bin/python3
 # Run candidate vs primary control
 $VENV run_validation.py --ch <candidate>.py --bl control_producer.py -n 24 --seed 42
 ```
